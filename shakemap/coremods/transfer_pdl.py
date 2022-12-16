@@ -59,6 +59,11 @@ class PDLTransfer(TransferBaseModule):
                 del params["cmdline_args"]
 
             params.update(properties)
+
+            if "properties" in params:
+                product_properties.update(params["properties"])
+                del params["properties"]
+
             if self.usedevconfig is True:
                 if params["devconfig"] is None or not os.path.isfile(
                     params["devconfig"]
@@ -80,6 +85,9 @@ class PDLTransfer(TransferBaseModule):
                 product_properties=product_properties,
                 cmdline_args=cmdline_args,
             )
+            logging.debug(f"Properties: {params}")
+            logging.debug(f"Product Properties: {product_properties}")
+            logging.debug(f"Cmdline Args: {cmdline_args}")
             if self.cancel:
                 msg = sender.cancel()
             else:
