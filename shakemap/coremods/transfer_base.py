@@ -49,19 +49,26 @@ class TransferBaseModule(CoreModule):
         # get the path to the transfer.conf spec file
         configspec = os.path.join(get_data_path(), "transferspec.conf")
 
-        # look for an event specific transfer.conf file
-        transfer_conf = os.path.join(self.datadir, "transfer.conf")
+        # Get the system transfer.conf file
+        transfer_conf = os.path.join(install_path, "config", "transfer.conf")
         if not os.path.isfile(transfer_conf):
-            # if not there, use the system one
-            transfer_conf = os.path.join(install_path, "config", "transfer.conf")
-            if not os.path.isfile(transfer_conf):
-                raise FileNotFoundError(f"{transfer_conf} does not exist.")
-
+            raise FileNotFoundError(f"{transfer_conf} does not exist.")
         # get the config information for transfer
-        self.config = ConfigObj(transfer_conf, configspec=configspec)
-        results = self.config.validate(Validator())
+        config_global = ConfigObj(transfer_conf, configspec=configspec)
+
+        # Validate the resulting config dict
+        results = config_global.validate(Validator())
         if not isinstance(results, bool) or not results:
-            config_error(self.config, results)
+            config_error(config_global, results)
+
+        # look for an event-specific transfer.conf file
+        transfer_event_conf = os.path.join(self.datadir, "transfer.conf")
+        if os.path.isfile(transfer_event_conf):
+            config_event_global = ConfigObj(transfer_event_conf)
+            # Add the event-specific stuff to the global stuff
+            config_global.merge(config_event_global)
+
+        self.config = config_global
 
         # get the output container with all the things in it
         products_dir = os.path.join(self.datadir, "products")
@@ -84,6 +91,7 @@ class TransferBaseModule(CoreModule):
             with open(save_file, "wt") as f:
                 tnow = datetime.utcnow().strftime(constants.TIMEFMT)
                 f.write(f"Saved {tnow} by {self.command_name}\n")
+            logging.info("...done.")
 
     def getProperties(self, info, props=None):
         properties = {}
