@@ -1,13 +1,10 @@
-# usgs imports
-from impactutils.colors.cpalette import ColorPalette
-
 # third party imports
-from shapely.geometry import MultiLineString
-from shapely.geometry import mapping
-from scipy.ndimage.filters import median_filter
-from skimage import measure
 import numpy as np
+from esi_utils_colors.cpalette import ColorPalette
 from openquake.hazardlib import imt
+from scipy.ndimage.filters import median_filter
+from shapely.geometry import MultiLineString, mapping
+from skimage import measure
 
 
 def contour(imtdict, imtype, filter_size, gmice):

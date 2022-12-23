@@ -1,48 +1,44 @@
 # stdlib imports
 import argparse
-import inspect
-import os.path
-
-# from multiprocessing import Pool
 import concurrent.futures as cf
 import copy
+import inspect
 import json
+import os.path
 
 # third party
-from configobj import ConfigObj
-from mapio.geodict import GeoDict
-from mapio.grid2d import Grid2D
-import numpy as np
-from scipy.interpolate import griddata
-import matplotlib
-import matplotlib.pyplot as plt
-from matplotlib.ticker import NullLocator
-from impactutils.colors.cpalette import ColorPalette
-import rasterio.features
 import cartopy.crs as ccrs
 import cartopy.feature as cfeature
+import matplotlib
+import matplotlib.pyplot as plt
+import numpy as np
+import rasterio.features
 from cartopy.feature import ShapelyFeature
 from cartopy.io.shapereader import Reader
+from configobj import ConfigObj
+from esi_utils_colors.cpalette import ColorPalette
+from esi_utils_geo.city import Cities
+from esi_utils_io.smcontainers import ShakeMapOutputContainer
+from mapio.geodict import GeoDict
+from mapio.grid2d import Grid2D
+from mapio.reader import read
+from matplotlib.ticker import NullLocator
 from PIL import Image
+from scipy.interpolate import griddata
 
 # local imports
-# from mapio.gmt import GMTGrid
-from mapio.reader import read
-from impactutils.io.smcontainers import ShakeMapOutputContainer
-from impactutils.mapping.city import Cities
-
-
+from shakelib.utils.imt_string import oq_to_file
+from shakemap.mapping.mapmaker import draw_map
 from shakemap.utils.config import (
+    check_extra_values,
+    config_error,
     get_config_paths,
     get_configspec,
     get_custom_validator,
-    config_error,
-    check_extra_values,
     get_data_path,
 )
-from .base import CoreModule, Contents
-from shakemap.mapping.mapmaker import draw_map
-from shakelib.utils.imt_string import oq_to_file
+
+from .base import Contents, CoreModule
 
 WATERCOLOR = "#7AA1DA"
 
@@ -449,8 +445,8 @@ def make_pin_thumbnail(adict):
     num_pixels = 300
     randx = np.random.rand(num_pixels)
     randy = np.random.rand(num_pixels)
-    rx = (randx * metadata["nx"]).astype(np.int)
-    ry = (randy * metadata["ny"]).astype(np.int)
+    rx = (randx * metadata["nx"]).astype(np.int_)
+    ry = (randy * metadata["ny"]).astype(np.int_)
     rvals = np.arange(num_pixels)
 
     x_grid = np.arange(400)
@@ -464,7 +460,7 @@ def make_pin_thumbnail(adict):
         (mx_grid, my_grid),
         method="nearest",
     )
-    grid = (grid * 10 + 0.5).astype(np.int).astype(np.float) / 10.0
+    grid = (grid * 10 + 0.5).astype(np.int_).astype(np.float32) / 10.0
 
     rgrid = griddata(
         np.hstack([randx.reshape((-1, 1)) * 400, randy.reshape((-1, 1)) * 400]),

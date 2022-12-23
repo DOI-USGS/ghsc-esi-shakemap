@@ -1,16 +1,18 @@
 #!/usr/bin/env python
+
+# stdlib imports
 import os
 import sys
-import numpy as np
 import time
 
+# third party imports
+import numpy as np
+from esi_utils_rupture.edge_rupture import EdgeRupture, QuadRupture
+from esi_utils_rupture.origin import Origin
+from esi_utils_time.ancient_time import HistoricTime
 
-from impactutils.rupture.edge_rupture import EdgeRupture, QuadRupture
-from impactutils.rupture.origin import Origin
-from impactutils.time.ancient_time import HistoricTime
-
+# local imports
 from shakelib.sites import Sites
-
 
 homedir = os.path.dirname(os.path.abspath(__file__))  # where is this script?
 shakedir = os.path.abspath(os.path.join(homedir, "..", ".."))

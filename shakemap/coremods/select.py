@@ -1,22 +1,24 @@
 """
 Parse STREC output and create/select a GMPE set for an event.
 """
+
+
 # stdlib imports
+import json
 import os.path
 import shutil
-from collections import OrderedDict
 import textwrap
-import json
+from collections import OrderedDict
+
+# local imports
+import shakemap.utils.config as cfg
 
 # third party imports
 from configobj import ConfigObj
-from impactutils.rupture.origin import Origin
-
-# local imports
-from .base import CoreModule
-import shakemap.utils.config as cfg
+from esi_utils_rupture.origin import Origin
+from shakemap.coremods.base import CoreModule
+from shakemap.utils.layers import update_config_regions, validate_config
 from shakemap.utils.probs import get_weights
-from shakemap.utils.layers import validate_config, update_config_regions
 
 
 class SelectModule(CoreModule):

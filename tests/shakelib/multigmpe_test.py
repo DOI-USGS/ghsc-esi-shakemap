@@ -7,36 +7,35 @@ import sys
 import time as time
 
 # third party imports
-from impactutils.time.ancient_time import HistoricTime
 import numpy as np
-from openquake.hazardlib import imt, const
+import pytest
+from esi_utils_rupture.distance import Distance
+from esi_utils_rupture.origin import Origin
+from esi_utils_rupture.point_rupture import PointRupture
+from esi_utils_rupture.quad_rupture import QuadRupture
+from esi_utils_time.ancient_time import HistoricTime
+from openquake.hazardlib import const, imt
 from openquake.hazardlib.gsim.abrahamson_2014 import AbrahamsonEtAl2014
 from openquake.hazardlib.gsim.atkinson_boore_2006 import AtkinsonBoore2006
-from openquake.hazardlib.gsim.base import RuptureContext
-from openquake.hazardlib.gsim.base import DistancesContext
-from openquake.hazardlib.gsim.base import SitesContext
+from openquake.hazardlib.gsim.base import DistancesContext, RuptureContext, SitesContext
 from openquake.hazardlib.gsim.boore_2014 import BooreEtAl2014
+from openquake.hazardlib.gsim.campbell_2003 import Campbell2003, Campbell2003MwNSHMP2008
 from openquake.hazardlib.gsim.campbell_bozorgnia_2008 import CampbellBozorgnia2008
 from openquake.hazardlib.gsim.campbell_bozorgnia_2014 import CampbellBozorgnia2014
-from openquake.hazardlib.gsim.campbell_2003 import Campbell2003
-from openquake.hazardlib.gsim.campbell_2003 import Campbell2003MwNSHMP2008
 from openquake.hazardlib.gsim.chiou_youngs_2008 import ChiouYoungs2008
 from openquake.hazardlib.gsim.chiou_youngs_2014 import ChiouYoungs2014
 from openquake.hazardlib.gsim.pezeshk_2011 import PezeshkEtAl2011NEHRPBC
 from openquake.hazardlib.gsim.zhao_2006 import ZhaoEtAl2006Asc
-import pytest
-from impactutils.rupture.origin import Origin
-from impactutils.rupture.quad_rupture import QuadRupture
-from impactutils.rupture.point_rupture import PointRupture
-from impactutils.rupture.distance import Distance
 
 # local imports
-from shakelib.conversions.imc.boore_kishida_2017 import BooreKishida2017
-from shakelib.multigmpe import filter_gmpe_list
-from shakelib.multigmpe import MultiGMPE, stuff_context, set_sites_depth_parameters
 import shakelib.sites as sites
-from shakelib.sites import Sites
-
+from shakelib.conversions.imc.boore_kishida_2017 import BooreKishida2017
+from shakelib.multigmpe import (
+    MultiGMPE,
+    filter_gmpe_list,
+    set_sites_depth_parameters,
+    stuff_context,
+)
 
 homedir = os.path.dirname(os.path.abspath(__file__))  # where is this script?
 shakedir = os.path.abspath(os.path.join(homedir, "..", ".."))
@@ -2622,7 +2621,7 @@ def test_multigmpe_get_sites_depth_parameters():
     dy = 0.0083
     xspan = 0.0083 * 5
     yspan = 0.0083 * 5
-    site = Sites.fromCenter(
+    site = sites.Sites.fromCenter(
         cx, cy, xspan, yspan, dx, dy, vs30File=vs30file, padding=True, resample=False
     )
     sctx = site.getSitesContext()
@@ -2839,7 +2838,7 @@ def test_multigmpe_get_mean_stddevs():
     dy = 0.0083
     xspan = 0.0083 * 5
     yspan = 0.0083 * 5
-    site = Sites.fromCenter(
+    site = sites.Sites.fromCenter(
         cx, cy, xspan, yspan, dx, dy, vs30File=vs30file, padding=True, resample=False
     )
     sctx = site.getSitesContext()

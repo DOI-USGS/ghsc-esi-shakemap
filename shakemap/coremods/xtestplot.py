@@ -2,16 +2,13 @@
 import os.path
 
 # third party
-
 import matplotlib.pyplot as plt
-
-# neic imports
-from impactutils.io.smcontainers import ShakeMapOutputContainer
+from esi_utils_io.smcontainers import ShakeMapOutputContainer
 
 # local imports
-from shakemap.utils.config import get_config_paths
-from .base import CoreModule
 from shakelib.utils.imt_string import oq_to_file
+from shakemap.coremods.base import CoreModule
+from shakemap.utils.config import get_config_paths
 
 
 class XTestPlot(CoreModule):

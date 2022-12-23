@@ -7,17 +7,17 @@ import os.path
 # third party imports
 import numpy as np
 import pytest
+from esi_utils_rupture.factory import get_rupture
+from esi_utils_rupture.origin import Origin
 from openquake.hazardlib.gsim.chiou_youngs_2014 import ChiouYoungs2014
-from impactutils.rupture.factory import get_rupture
-from impactutils.rupture.origin import Origin
 
 # local imports
-from shakelib.utils.exception import ShakeLibException
-from shakelib.utils.utils import get_extent, is_stable, replace_dyfi
-from shakelib.station import StationList
-from shakelib.virtualipe import VirtualIPE
 from shakelib.gmice.wgrw12 import WGRW12
 from shakelib.multigmpe import MultiGMPE
+from shakelib.station import StationList
+from shakelib.utils.exception import ShakeLibException
+from shakelib.utils.utils import get_extent, is_stable, replace_dyfi
+from shakelib.virtualipe import VirtualIPE
 
 homedir = os.path.dirname(os.path.abspath(__file__))
 datadir = os.path.join(homedir, "utils_data")

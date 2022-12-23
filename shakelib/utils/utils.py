@@ -1,20 +1,17 @@
-import numpy as np
+# stdlib imports
 import logging
 
-from openquake.hazardlib import imt
-from openquake.hazardlib import const
+# third party imports
+import numpy as np
+from esi_utils_rupture.base import Rupture
+from esi_utils_rupture.edge_rupture import EdgeRupture
+from esi_utils_rupture.quad_rupture import QuadRupture
+from openquake.hazardlib import const, imt
 from openquake.hazardlib.geo.utils import OrthographicProjection
-from openquake.hazardlib.gsim.base import SitesContext
-from openquake.hazardlib.gsim.base import DistancesContext
-from openquake.hazardlib.gsim.base import RuptureContext
-from strec.gmreg import Regionalizer
-from impactutils.rupture.edge_rupture import EdgeRupture
-from impactutils.rupture.quad_rupture import QuadRupture
-from impactutils.rupture.base import Rupture
-
+from openquake.hazardlib.gsim.base import DistancesContext, RuptureContext, SitesContext
 from shakelib.multigmpe import set_sites_depth_parameters
 from shakelib.station import StationList
-
+from strec.gmreg import Regionalizer
 
 DEFAULT_ACTIVE_COEFFS = [27.24, 250.4, 579.1]
 DEFAULT_STABLE_COEFFS = [63.4, 465.4, 581.3]
@@ -215,7 +212,7 @@ def _get_extent_from_multigmpe(rupture, config, ipe):
     d_min = config["extent"]["mmi"]["mindist"]
     d_max = config["extent"]["mmi"]["maxdist"]
     dx.rjb = np.logspace(np.log10(d_min), np.log10(d_max), size)
-    dx.rrup = np.sqrt(dx.rjb ** 2 + origin.depth ** 2)
+    dx.rrup = np.sqrt(dx.rjb**2 + origin.depth**2)
     dx.rhypo = dx.rrup
     dx.repi = dx.rjb
     dx.rx = np.zeros_like(dx.rjb)

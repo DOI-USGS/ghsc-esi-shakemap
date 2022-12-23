@@ -1,15 +1,18 @@
 #!/usr/bin/env python
 
-import numpy as np
+# stdlib imports
 import os.path
+
+import numpy as np
 from configobj import ConfigObj
 
-from impactutils.rupture.origin import Origin
+# third party imports
+from esi_utils_rupture.origin import Origin
 
+# local imports
+from shakemap.coremods.select import validate_config
 from shakemap.utils.config import get_config_paths
 from shakemap.utils.probs import get_weights
-from shakemap.coremods.select import validate_config
-
 
 homedir = os.path.dirname(os.path.abspath(__file__))
 

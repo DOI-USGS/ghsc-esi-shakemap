@@ -2,13 +2,13 @@
 import os.path
 
 # third party imports
-from impactutils.rupture.origin import read_event_file
-from impactutils.rupture import constants
+from esi_utils_rupture import constants
+from esi_utils_rupture.origin import read_event_file
 
 # local imports
-from .base import CoreModule
-from shakemap.utils.config import get_config_paths
+from shakemap.coremods.base import CoreModule
 from shakemap.utils.amps import AmplitudeHandler
+from shakemap.utils.config import get_config_paths
 
 
 class AssociateModule(CoreModule):

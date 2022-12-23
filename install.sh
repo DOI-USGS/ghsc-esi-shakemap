@@ -139,13 +139,21 @@ fi
 
 
 # Update the conda tool
-echo "##################Updating conda tool..."
-CVERSION=`conda -V`
-echo "Current conda version: ${CVERSION}"
-conda update -n base -c defaults conda -y
-CVERSION=`conda -V`
-echo "New conda version: ${CVERSION}"
-echo "##################Done updating conda tool..."
+CVNUM=`conda -V | cut -f2 -d' '`
+LATEST=`conda search conda | tail -1 | tr -s ' ' | cut -f2 -d" "`
+echo "${CVNUM}"
+echo "${LATEST}"
+if [ ${LATEST} != ${CVNUM} ]; then
+    echo "##################Updating conda tool..."
+    CVERSION=`conda -V`
+    echo "Current conda version: ${CVERSION}"
+    conda update -n base -c defaults conda -y
+    CVERSION=`conda -V`
+    echo "New conda version: ${CVERSION}"
+    echo "##################Done updating conda tool..."
+else
+    echo "conda ${CVNUM} already matches latest version ${LATEST}. No update required."
+fi
 
 # Start in conda base environment
 echo "Activate base virtual environment"
@@ -214,7 +222,11 @@ if [ -d bin/__pycache__ ]; then
 fi
 
 echo "#############Installing pip dependencies##############"
-pip install --no-dependencies -r requirements.txt 
+pip install -r requirements.txt 
+if [ $? -ne 0 ]; then
+    echo "Installation of pip requirements failed."
+    exit 1
+fi
 pip install --upgrade --no-dependencies git+https://github.com/gem/oq-engine
 # pip install --upgrade --no-dependencies https://github.com/gem/oq-engine/archive/engine-3.12.zip
 

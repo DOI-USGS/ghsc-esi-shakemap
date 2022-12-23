@@ -46,17 +46,17 @@ References:
     `[link] <http://peer.berkeley.edu/publications/peer_reports/reports_2013/webPEER-2013-09-Spudich.pdf>`__
 """  # noqa
 
-import numpy as np
+# stdlib imports
 import copy
 
+# third party imports
+import numpy as np
 import openquake.hazardlib.geo as geo
+from esi_utils_rupture import utils
+from esi_utils_rupture.distance import get_distance
+from esi_utils_vectors.ecef import ecef2latlon, latlon2ecef
+from esi_utils_vectors.vector import Vector
 from openquake.hazardlib.geo.utils import OrthographicProjection
-
-from impactutils.rupture import utils
-from impactutils.rupture.distance import get_distance
-from impactutils.vectorutils.ecef import latlon2ecef
-from impactutils.vectorutils.ecef import ecef2latlon
-from impactutils.vectorutils.vector import Vector
 
 
 class Rowshandel2013(object):

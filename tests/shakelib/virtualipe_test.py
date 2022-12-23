@@ -1,19 +1,19 @@
 #!/usr/bin/env python
 
 # stdlib modules
-import sys
 import os.path
+import sys
 
 # third party modules
 import numpy as np
+import openquake.hazardlib.const as oqconst
+import pytest
+from esi_utils_rupture.distance import Distance
+from esi_utils_rupture.factory import get_rupture
+from esi_utils_rupture.origin import Origin
 from openquake.hazardlib.gsim.boore_2014 import BooreEtAl2014
 from openquake.hazardlib.gsim.chiou_youngs_2014 import ChiouYoungs2014
-import openquake.hazardlib.const as oqconst
 from openquake.hazardlib.imt import MMI, PGA, PGV, SA
-import pytest
-from impactutils.rupture.distance import Distance
-from impactutils.rupture.origin import Origin
-from impactutils.rupture.factory import get_rupture
 
 # local imports
 from shakelib.gmice.wgrw12 import WGRW12
@@ -21,7 +21,6 @@ from shakelib.multigmpe import MultiGMPE
 from shakelib.sites import Sites
 from shakelib.utils.exception import ShakeLibException
 from shakelib.virtualipe import VirtualIPE
-
 
 homedir = os.path.dirname(os.path.abspath(__file__))  # where is this script?
 shakedir = os.path.abspath(os.path.join(homedir, "..", ".."))

@@ -3,15 +3,15 @@ import os.path
 import zipfile
 
 # third party imports
-from impactutils.io.smcontainers import ShakeMapOutputContainer
+from esi_utils_io.smcontainers import ShakeMapOutputContainer
 from mapio.gdal import GDALGrid
 from mapio.geodict import GeoDict
 from mapio.grid2d import Grid2D
 
 # local imports
-from .base import CoreModule, Contents
-from shakemap.utils.config import get_config_paths
 from shakelib.utils.imt_string import oq_to_file
+from shakemap.coremods.base import Contents, CoreModule
+from shakemap.utils.config import get_config_paths
 
 FORMATS = {"shapefile": ("ESRI Shapefile", "shp"), "geojson": ("GeoJSON", "json")}
 

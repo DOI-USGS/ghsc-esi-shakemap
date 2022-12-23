@@ -1,14 +1,12 @@
 # stdlib imports
-import os.path
-from datetime import datetime
-import shutil
 import logging
+import os.path
 
 # third party imports
-from impactutils.transfer.securesender import SecureSender
+from esi_utils_transfer.securesender import SecureSender
 
 # local imports
-from .transfer_base import TransferBaseModule
+from shakemap.coremods.transfer_base import TransferBaseModule
 
 
 class SCPTransfer(TransferBaseModule):

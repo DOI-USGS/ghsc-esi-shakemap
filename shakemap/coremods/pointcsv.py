@@ -1,15 +1,12 @@
 # stdlib imports
 import os.path
-import json
 
 # third party imports
-import numpy as np
-import pandas as pd
 import h5py
-from impactutils.io.smcontainers import ShakeMapOutputContainer
+import pandas as pd
 
 # local imports
-from .base import CoreModule, Contents
+from shakemap.coremods.base import Contents, CoreModule
 from shakemap.utils.config import get_config_paths
 
 

@@ -1,12 +1,12 @@
+# stdlib imports
 import os
 import subprocess
 import tempfile
 
+# third party imports
 import numpy as np
-
-from impactutils.rupture.factory import get_rupture
-from impactutils.rupture.origin import Origin
-
+from esi_utils_rupture.factory import get_rupture
+from esi_utils_rupture.origin import Origin
 
 homedir = os.path.dirname(os.path.abspath(__file__))
 shakedir = os.path.abspath(os.path.join(homedir, "..", "..", ".."))

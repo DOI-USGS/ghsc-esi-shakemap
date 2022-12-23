@@ -1,18 +1,15 @@
-# stdlib
+# stdlib imports
 import os.path
 
-# third party
-
+# third party imports
 import matplotlib.pyplot as plt
 import numpy as np
-
-# neic imports
-from impactutils.io.smcontainers import ShakeMapOutputContainer
+from esi_utils_io.smcontainers import ShakeMapOutputContainer
 
 # local imports
-from shakemap.utils.config import get_config_paths
-from .base import CoreModule
 from shakelib.utils.imt_string import oq_to_file
+from shakemap.coremods.base import CoreModule
+from shakemap.utils.config import get_config_paths
 
 
 class XTestImage(CoreModule):

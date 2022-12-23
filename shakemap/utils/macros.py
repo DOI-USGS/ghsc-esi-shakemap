@@ -1,10 +1,8 @@
-# from local imports
-# from shakemap.utils.queue import TIMEFMT
-
 # stdlib imports
 from datetime import datetime
 
-from impactutils.rupture import constants
+# third party imports
+from esi_utils_rupture import constants
 
 DATE_STR_FMT = "%b %d, %Y"
 TIME_OF_DAY_FMT = "%H:%M:%S"

@@ -1,47 +1,40 @@
 # stdlib imports
-from datetime import datetime
 from collections import defaultdict
-
-# third party imports
-import numpy as np
-import matplotlib.image as image
-import matplotlib.pyplot as plt
-import matplotlib.ticker as mticker
-from matplotlib.colors import LightSource
-import matplotlib.patheffects as path_effects
-from matplotlib.font_manager import FontProperties
-from matplotlib import patches
-
-# from matplotlib import colors
+from datetime import datetime
 
 import cartopy.crs as ccrs  # projections
-import pyproj
-
-from shapely.geometry import shape as sShape
-from shapely.geometry import Polygon as sPolygon
-from shapely.geometry import LineString as sLineString
-from shapely.geometry import GeometryCollection
-from shapely.geometry import mapping
-
 import fiona
+import matplotlib.image as image
+import matplotlib.patheffects as path_effects
+import matplotlib.pyplot as plt
+import matplotlib.ticker as mticker
+import numpy as np
+import pyproj
+from esi_utils_cartopy.mercatormap import MercatorMap
+from esi_utils_cartopy.scalebar import draw_scale
+
+# third party imports
+from esi_utils_colors.cpalette import ColorPalette
+from esi_utils_rupture import constants
+from esi_utils_rupture.factory import rupture_from_dict
+from esi_utils_rupture.point_rupture import PointRupture
+from esi_utils_textformat.text import set_num_precision
+from mapio.geodict import GeoDict
+from mapio.grid2d import Grid2D
+from matplotlib import patches
+from matplotlib.colors import LightSource
+from matplotlib.font_manager import FontProperties
 from openquake.hazardlib import imt
 
-# neic imports
-from impactutils.mapping.mercatormap import MercatorMap
-from impactutils.colors.cpalette import ColorPalette
-from impactutils.mapping.scalebar import draw_scale
-from impactutils.textformat.text import set_num_precision
-from impactutils.rupture.point_rupture import PointRupture
-from impactutils.rupture import constants
-from impactutils.rupture.factory import rupture_from_dict
-from mapio.grid2d import Grid2D
-from mapio.geodict import GeoDict
-
-
 # local imports
-from shakelib.plotting.contour import contour, getContourLevels
 from shakelib.gmice.wgrw12 import WGRW12
+from shakelib.plotting.contour import contour, getContourLevels
 from shakemap.utils.utils import get_object_from_config
+from shapely.geometry import GeometryCollection
+from shapely.geometry import LineString as sLineString
+from shapely.geometry import Polygon as sPolygon
+from shapely.geometry import mapping
+from shapely.geometry import shape as sShape
 
 # define some constants
 WATERCOLOR = "#7AA1DA"
@@ -744,7 +737,7 @@ def _draw_colorbar(fig, mmimap, tdict):
 
     Args:
         fig (Figure): Matplotlib Figure object.
-        mmimap (ColorPalette): Impactutils MMI ColorPalette instance.
+        mmimap (ColorPalette): esi_utils_colors MMI ColorPalette instance.
         tdict (dict): Dictionary containing the text strings in the user's
             choice of language.
     """
@@ -1219,7 +1212,7 @@ def _draw_license(fig, adict):
     if logo_text:
         logo_text = str(logo_text).strip()
         # Increase vertical space if license text has a lot of lines:
-        height = max(.04, sum(.01 for x in logo_text if x == "\n"))
+        height = max(0.04, sum(0.01 for x in logo_text if x == "\n"))
         bottom = -0.04 - height
         width = 0.8
         left = 0.1
@@ -1229,13 +1222,17 @@ def _draw_license(fig, adict):
             logo = image.imread(logo_path)
             h, w, cc = logo.shape
             logo_ratio = w / h
-            lax.imshow(logo, aspect="equal", extent=(0, logo_ratio, 0, 1),
-                       interpolation="bilinear")
+            lax.imshow(
+                logo,
+                aspect="equal",
+                extent=(0, logo_ratio, 0, 1),
+                interpolation="bilinear",
+            )
             text_left = logo_ratio + 0.25
         else:
             text_left = 0
         lax.set_aspect("equal", adjustable="datalim")
-        lax.set_xlim(0, width/height)
+        lax.set_xlim(0, width / height)
         lax.set_ylim(0, 1)
         lax.axis("off")
         from datetime import datetime

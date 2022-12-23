@@ -3,21 +3,20 @@
 # stdlib imports
 import datetime
 import io
-import numpy as np
+import os.path
 import random
 import string
 import sys
 import tempfile
-import os.path
 
 # third party imports
+import numpy as np
 import pytest
-from impactutils.io.smcontainers import ShakeMapOutputContainer
-from impactutils.rupture.point_rupture import PointRupture
+from esi_utils_io.smcontainers import ShakeMapOutputContainer
+from esi_utils_rupture.point_rupture import PointRupture
 
 # local imports
 from shakelib.utils.containers import ShakeMapInputContainer
-
 
 homedir = os.path.dirname(os.path.abspath(__file__))  # where is this script?
 shakedir = os.path.abspath(os.path.join(homedir, "..", "..", ".."))
@@ -134,8 +133,8 @@ mech="" netid="us" network="" />"""
         assert dict_equal(config, config2)
         container3.close()
 
-    except Exception:
-        assert 1 == 2
+    except Exception as e:
+        raise (e)
     finally:
         os.remove(datafile)
 

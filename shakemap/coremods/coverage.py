@@ -1,17 +1,17 @@
 # stdlib imports
-import os.path
 import json
+import os.path
 
 # third party imports
 import numpy as np
-from scipy.ndimage import gaussian_filter
-from impactutils.io.smcontainers import ShakeMapOutputContainer
+from esi_utils_io.smcontainers import ShakeMapOutputContainer
 from openquake.hazardlib import imt
+from scipy.ndimage import gaussian_filter
 
 # local imports
-from .base import CoreModule, Contents
-from shakemap.utils.config import get_config_paths
 from shakelib.utils.imt_string import oq_to_file
+from shakemap.coremods.base import Contents, CoreModule
+from shakemap.utils.config import get_config_paths
 
 # Not really relevant, but seemingly necessary
 COMPONENT = "GREATER_OF_TWO_HORIZONTAL"

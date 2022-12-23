@@ -2,50 +2,51 @@
 Process a ShakeMap, based on the configuration and data found in
 shake_data.hdf, and produce output in shake_result.hdf.
 """
-import os
+# stdlib imports
 import argparse
-import inspect
-import os.path
-import time as time
+import concurrent.futures as cf
 import copy
-from time import gmtime, strftime
-import shutil
-from datetime import date
+import inspect
 import json
+import os
+import os.path
+import shutil
+import time as time
+from datetime import date
+from time import gmtime, strftime
 
+# third party imports
+import cartopy.io.shapereader as shpreader
+import fiona
 import numpy as np
 import numpy.ma as ma
-from openquake.hazardlib import imt
 import openquake.hazardlib.const as oqconst
-import fiona
-import cartopy.io.shapereader as shpreader
-from shapely.geometry import shape
-
-import concurrent.futures as cf
-from impactutils.rupture.point_rupture import PointRupture
-from impactutils.rupture.distance import Distance, get_distance, get_distance_measures
-from impactutils.io.smcontainers import ShakeMapOutputContainer
-from impactutils.rupture import constants
-
-# local imports
+from esi_utils_io.smcontainers import ShakeMapOutputContainer
+from esi_utils_rupture import constants
+from esi_utils_rupture.distance import Distance, get_distance, get_distance_measures
+from esi_utils_rupture.point_rupture import PointRupture
 from mapio.geodict import GeoDict
 from mapio.grid2d import Grid2D
-from .base import CoreModule, Contents
-from shakelib.sites import Sites
+from openquake.hazardlib import imt
+
+# local imports
+from shakelib.directivity.rowshandel2013 import Rowshandel2013
 from shakelib.multigmpe import MultiGMPE
-from shakelib.virtualipe import VirtualIPE
-from shakelib.utils.utils import get_extent, thirty_sec_min, thirty_sec_max
-from shakelib.utils.imt_string import oq_to_file
+from shakelib.sites import Sites
 from shakelib.utils.containers import ShakeMapInputContainer
-from shakemap.utils.config import get_config_paths
-from shakemap.utils.utils import get_object_from_config
+from shakelib.utils.imt_string import oq_to_file
+from shakelib.utils.utils import get_extent, thirty_sec_max, thirty_sec_min
+from shakelib.virtualipe import VirtualIPE
 from shakemap._version import get_versions
+from shakemap.c.clib import geodetic_distance_fast, make_sd_array, make_sigma_matrix
+from shakemap.coremods.base import Contents, CoreModule
+from shakemap.utils.config import get_config_paths
 from shakemap.utils.generic_amp import get_generic_amp_factors
-from shakemap.c.clib import make_sigma_matrix, geodetic_distance_fast, make_sd_array
+from shakemap.utils.utils import get_object_from_config
+from shapely.geometry import shape
 
 # from shakemap.utils.exception import TerminateShakeMap
 
-from shakelib.directivity.rowshandel2013 import Rowshandel2013
 
 #
 # default_stddev_inter: This is a stand-in for tau when the gmpe set
@@ -804,7 +805,7 @@ class ModelModule(CoreModule):
             self.rupture_obj._origin.time.day,
         )
         nostart = date(1970, 1, 1)
-        self.df1.df["flagged"] = np.full_like(self.df1.df["lon"], 0, dtype=np.bool)
+        self.df1.df["flagged"] = np.full_like(self.df1.df["lon"], 0, dtype=bool)
         if "bad_stations" not in self.config["data"]:
             return
         for sid, dates in self.config["data"]["bad_stations"].items():
@@ -1131,7 +1132,7 @@ class ModelModule(CoreModule):
         if df1["MMI"] is None:
             df1["MMI"] = np.full_like(df1["lon"], np.nan)
             df1["MMI_sd"] = np.full_like(df1["lon"], np.nan)
-        df1["MMI_outliers"] = np.full_like(df1["lon"], True, dtype=np.bool)
+        df1["MMI_outliers"] = np.full_like(df1["lon"], True, dtype=bool)
         for imtstr in preferred_imts:
             if "derived_MMI_from_" + imtstr in df1:
                 ixx = (np.isnan(df1["MMI"]) | df1["MMI_outliers"]) & ~(
@@ -1311,7 +1312,7 @@ class ModelModule(CoreModule):
                 for i in range(len_types):
                     T_D[sa_inds[imt_types[i]], i] = sta_tau[sa_inds[imt_types[i]], 0]
                 corr_HH_D = np.zeros((len_types, len_types))
-                ones = np.ones(len_types, dtype=np.long).reshape((-1, 1))
+                ones = np.ones(len_types, dtype=np.int_).reshape((-1, 1))
                 t1 = imt_types.reshape((1, -1)) * ones
                 t2 = imt_types.reshape((-1, 1)) * ones.T
                 self.ccf.getCorrelation(t1, t2, corr_HH_D)
@@ -1329,7 +1330,7 @@ class ModelModule(CoreModule):
                             sa_inds[imt_types[i - 1]], 0
                         ]
                 corr_HH_D = np.zeros((len_types + 1, len_types + 1))
-                ones = np.ones(len_types + 1, dtype=np.long).reshape((-1, 1))
+                ones = np.ones(len_types + 1, dtype=np.int_).reshape((-1, 1))
                 t1 = imt_types_alt.reshape((1, -1)) * ones
                 t2 = imt_types_alt.reshape((-1, 1)) * ones.T
                 self.ccf.getCorrelation(t1, t2, corr_HH_D)
@@ -1340,13 +1341,13 @@ class ModelModule(CoreModule):
             geodetic_distance_fast(
                 sta_lons_rad, sta_lats_rad, sta_lons_rad, sta_lats_rad, matrix22
             )
-            ones = np.ones(nsta, dtype=np.long).reshape((-1, 1))
+            ones = np.ones(nsta, dtype=np.int_).reshape((-1, 1))
             t1_22 = sta_per_ix.reshape((1, -1)) * ones
             t2_22 = sta_per_ix.reshape((-1, 1)) * ones.T
             self.ccf.getCorrelation(t1_22, t2_22, matrix22)
             sta_phi_flat = sta_phi.flatten()
             make_sigma_matrix(matrix22, sta_phi_flat, sta_phi_flat)
-            np.fill_diagonal(matrix22, np.diag(matrix22) + sta_sig_extra ** 2)
+            np.fill_diagonal(matrix22, np.diag(matrix22) + sta_sig_extra**2)
             cov_WD_WD_inv = np.linalg.pinv(matrix22)
             #
             # Hold on to some things we'll need later
@@ -1554,9 +1555,9 @@ class ModelModule(CoreModule):
         lons_out_rad = self.lons_out_rad
         lats_out_rad = self.lats_out_rad
         d12_cols = self.smnx
-        ones = np.ones(d12_cols, dtype=np.long).reshape((-1, 1))
+        ones = np.ones(d12_cols, dtype=np.int_).reshape((-1, 1))
         t1_12 = sta_per_ix.reshape((1, -1)) * ones
-        t2_12 = np.full((d12_cols, nsta), outperiod_ix, dtype=np.long)
+        t2_12 = np.full((d12_cols, nsta), outperiod_ix, dtype=np.int_)
         # sdsta is the standard deviation of the stations
         sdsta_phi = sta_phi.flatten()
         matrix12_phi = np.empty(t2_12.shape, dtype=np.double)
@@ -1723,7 +1724,7 @@ class ModelModule(CoreModule):
         )
         bbox = (gd.xmin, gd.ymin, gd.xmax, gd.ymax)
         if vector is None:
-            return np.zeros((gd.ny, gd.nx), dtype=np.bool)
+            return np.zeros((gd.ny, gd.nx), dtype=bool)
 
         with fiona.open(vector) as c:
             tshapes = list(c.items(bbox=bbox))
@@ -1732,9 +1733,9 @@ class ModelModule(CoreModule):
                 shapes.append(shape(tshp[1]["geometry"]))
             if len(shapes):
                 grid = Grid2D.rasterizeFromGeometry(shapes, gd, fillValue=0.0)
-                return grid.getData().astype(np.bool)
+                return grid.getData().astype(bool)
             else:
-                return np.zeros((gd.ny, gd.nx), dtype=np.bool)
+                return np.zeros((gd.ny, gd.nx), dtype=bool)
 
     def _getMaskedGrids(self, bmask):
         """
@@ -1911,7 +1912,7 @@ class ModelModule(CoreModule):
         else:
             info[op][un]["total_flagged_mi"] = "0"
         if "df1" in self.dataframes:
-            all_flagged = np.full(self.df1.df["lon"].shape, False, dtype=np.bool)
+            all_flagged = np.full(self.df1.df["lon"].shape, False, dtype=bool)
             for imtstr in self.df1.imts:
                 if "MMI" in imtstr:
                     continue
@@ -2136,7 +2137,7 @@ class ModelModule(CoreModule):
                 else:
                     mytau = sdf[key + "_tau"][six]
                 myphi = sdf[key + "_phi"][six]
-                mysigma = np.sqrt(mytau ** 2 + myphi ** 2)
+                mysigma = np.sqrt(mytau**2 + myphi**2)
                 mysigma_rock = sdf[key + "_sigma_rock"][six]
                 mysigma_soil = sdf[key + "_sigma_soil"][six]
                 imt_name = key.lower().replace("_pred", "")
@@ -2598,7 +2599,7 @@ class ModelModule(CoreModule):
             target_res = (
                 -(latspan + lonspan)
                 - np.sqrt(
-                    latspan ** 2 + lonspan ** 2 + 2 * latspan * lonspan * (2 * nmax - 1)
+                    latspan**2 + lonspan**2 + 2 * latspan * lonspan * (2 * nmax - 1)
                 )
             ) / (2 * (1 - nmax))
 

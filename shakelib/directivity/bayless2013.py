@@ -1,13 +1,16 @@
 #!/usr/bin/env python
 
-import numpy as np
-import openquake.hazardlib.geo as geo
+# stdlib imports
 import copy
 
-from impactutils.rupture.distance import get_distance
-from impactutils.rupture.utils import _distance_sq_to_segment
-import impactutils.vectorutils.ecef as ecef
-from impactutils.vectorutils.vector import Vector
+import esi_utils_vectors.ecef as ecef
+
+# third party imports
+import numpy as np
+import openquake.hazardlib.geo as geo
+from esi_utils_rupture.distance import get_distance
+from esi_utils_rupture.utils import _distance_sq_to_segment
+from esi_utils_vectors.vector import Vector
 
 
 class Bayless2013(object):

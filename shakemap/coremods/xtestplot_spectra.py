@@ -1,18 +1,14 @@
-# stdlib
+# stdlib imports
 import os.path
 
 # third party
-
 import matplotlib.pyplot as plt
-
 import numpy as np
-
-# neic imports
-from impactutils.io.smcontainers import ShakeMapOutputContainer
+from esi_utils_io.smcontainers import ShakeMapOutputContainer
 
 # local imports
+from shakemap.coremods.base import CoreModule
 from shakemap.utils.config import get_config_paths
-from .base import CoreModule
 
 
 class XTestPlotSpectra(CoreModule):

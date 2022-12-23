@@ -1,16 +1,20 @@
 #!/usr/bin/env python
 
-import os.path
-import tempfile
-import shutil
-import zipfile
+# stdlib imports
 import logging
+import os.path
+import shutil
+import tempfile
+import zipfile
 from xml.dom import minidom
 
+# third party imports
+from esi_utils_io.smcontainers import ShakeMapOutputContainer
+
+# local imports
 from shakemap.coremods.base import Contents
-from shakemap.utils.config import get_config_paths
 from shakemap.coremods.kml import create_kmz
-from impactutils.io.smcontainers import ShakeMapOutputContainer
+from shakemap.utils.config import get_config_paths
 
 
 def test_create_kmz():

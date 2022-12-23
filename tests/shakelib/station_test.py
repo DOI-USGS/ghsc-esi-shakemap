@@ -1,18 +1,17 @@
 #!/usr/bin/env python
 
 # stdlib modules
+import json
 import os.path
 import pickle
 import sys
 import tempfile
-import json
 
 # third party modules
 import numpy as np
 
 # local imports
 from shakelib.station import StationList
-
 
 homedir = os.path.dirname(os.path.abspath(__file__))  # where is this script?
 shakedir = os.path.abspath(os.path.join(homedir, "..", ".."))
@@ -258,7 +257,7 @@ def compare_dataframes(df1, df2):
     idx2 = np.argsort(df2["id"])
 
     for key in df1.keys():
-        if df1[key].dtype == np.float:
+        if df1[key].dtype in [np.float32, np.float64]:
             assert np.allclose(df1[key][idx1], df2[key][idx2], equal_nan=True)
         else:
             assert (df1[key][idx1] == df2[key][idx2]).all()

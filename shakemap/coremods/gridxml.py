@@ -1,21 +1,21 @@
 # stdlib imports
-import os.path
 import logging
-from datetime import datetime
+import os.path
 import re
 from collections import OrderedDict
+from datetime import datetime
 
 # third party imports
 import numpy as np
-from impactutils.io.smcontainers import ShakeMapOutputContainer
-from impactutils.rupture import constants
-from mapio.shake import ShakeGrid
-from mapio.geodict import GeoDict
 
 # local imports
-from .base import CoreModule, Contents
-from shakemap.utils.config import get_config_paths
 import shakemap
+from esi_utils_io.smcontainers import ShakeMapOutputContainer
+from esi_utils_rupture import constants
+from mapio.geodict import GeoDict
+from mapio.shake import ShakeGrid
+from shakemap.coremods.base import Contents, CoreModule
+from shakemap.utils.config import get_config_paths
 
 
 def _oq_to_gridxml(oqimt):

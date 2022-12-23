@@ -1,27 +1,27 @@
 # stdlib imports
-import os.path
 import glob
 import json
+import os.path
 import shutil
 
 # third party imports
 import fiona
+from configobj import ConfigObj
+from esi_utils_io.smcontainers import ShakeMapOutputContainer
 from fiona.crs import from_epsg
 from openquake.hazardlib import imt
-from configobj import ConfigObj
 
 # local imports
-from .base import CoreModule, Contents
 from shakelib.plotting.contour import contour
-from shakemap.utils.utils import get_object_from_config
-from impactutils.io.smcontainers import ShakeMapOutputContainer
 from shakelib.utils.imt_string import oq_to_file
+from shakemap.coremods.base import Contents, CoreModule
 from shakemap.utils.config import (
+    config_error,
     get_config_paths,
     get_configspec,
     get_custom_validator,
-    config_error,
 )
+from shakemap.utils.utils import get_object_from_config
 
 FORMATS = {"geojson": ("GeoJSON", "json")}
 

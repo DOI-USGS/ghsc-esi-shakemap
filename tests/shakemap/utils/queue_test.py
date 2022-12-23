@@ -1,25 +1,27 @@
 #!/usr/bin/env python
 
+# stdlib imports
 import io
+import json
+import logging
 import os
 import os.path
-import socket
-import json
-from datetime import datetime, timedelta, timezone
-import logging
-import time
 import shlex
 import shutil
+import socket
+import time
+from datetime import datetime, timedelta, timezone
 
+# third party imports
 import pytest
-from shapely.geometry import Polygon
-from impactutils.rupture import constants
 
+# local imports
 import shakemap.utils.queue as queue
-from shakemap.utils.queue import Queue
-from shakemap.utils.queue import EventQueue
-from shakemap.utils.config import get_config_paths
+from esi_utils_rupture import constants
 from shakemap.utils.amps import AmplitudeHandler
+from shakemap.utils.config import get_config_paths
+from shakemap.utils.queue import EventQueue, Queue
+from shapely.geometry import Polygon
 
 
 def get_dummy_logger(name):

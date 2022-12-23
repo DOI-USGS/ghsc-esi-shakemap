@@ -1,8 +1,12 @@
 #!/usr/bin/env python
 
+# stdlib imports
 import os.path
 
-from impactutils.io.smcontainers import ShakeMapOutputContainer
+# third party imports
+from esi_utils_io.smcontainers import ShakeMapOutputContainer
+
+# local imports
 from shakemap.utils.macros import get_macros
 
 
