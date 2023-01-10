@@ -8,3 +8,4 @@ esi-utils-transfer
 esi-utils-vectors
 mapio
 ps2ff
+usgs-strec>=2.2.3

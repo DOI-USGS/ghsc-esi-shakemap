@@ -361,5 +361,5 @@ def is_stable(lon, lat):
         bool: Is the point classified as tectonically stable.
     """
     reg = Regionalizer.load()
-    region_info = reg.getRegions(lat, lon, 0)
+    region_info = reg.getRegions(lat, lon)
     return region_info["TectonicRegion"] == "Stable"
