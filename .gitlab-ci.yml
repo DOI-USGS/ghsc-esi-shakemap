@@ -36,6 +36,7 @@ stages:
     - pwd
     - source activate shakemap
     - strec_cfg update --datafolder /root/.strec/data --slab --gcmt
+    - pytest tests/shakelib/multigmpe_test.py
 
 # Create test job
 Test Build:
