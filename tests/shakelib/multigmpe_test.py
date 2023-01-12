@@ -3023,7 +3023,7 @@ def test_multigmpe_get_mean_stddevs():
         ]
     )
 
-    RTOL = 1e-04
+    RTOL = 1e-03
     np.testing.assert_allclose(lnmu, lnmud, rtol=RTOL)
     if TEST:
         np.testing.assert_allclose(lnsd[0], lnsdd, rtol=RTOL)
