@@ -35,6 +35,7 @@ stages:
     - echo ${PATH}
     - pwd
     - source activate shakemap
+    - strec_cfg update --datafolder /root/.strec/config.ini --slab --gcmt
 
 # Create test job
 Test Build:
