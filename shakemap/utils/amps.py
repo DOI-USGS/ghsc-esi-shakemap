@@ -1,20 +1,20 @@
-# import sys
-import sqlite3
+# stdlib imports
+import json
 import os.path
 import re
-from xml.dom import minidom
-from datetime import datetime, timezone, timedelta
-from collections import OrderedDict
+import sqlite3
 import time
-import defusedxml.cElementTree as dET
 import xml.etree.cElementTree as ET
-import json
+from collections import OrderedDict
+from datetime import datetime, timedelta, timezone
 from itertools import zip_longest
+from xml.dom import minidom
 
 # third party libraries
+import defusedxml.cElementTree as dET
 import numpy as np
+from esi_utils_rupture import constants
 from openquake.hazardlib.geo.geodetic import geodetic_distance
-from impactutils.rupture import constants
 
 # local libraries
 

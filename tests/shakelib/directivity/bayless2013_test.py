@@ -1,22 +1,22 @@
 #!/usr/bin/env python
 
 # stdlib imports
+import copy
 import os.path
 import sys
 import time as time
-import copy
 
+# third party imports
 import numpy as np
-
-from openquake.hazardlib.geo.utils import OrthographicProjection
+from esi_utils_rupture.origin import Origin
+from esi_utils_rupture.quad_rupture import QuadRupture
+from esi_utils_time.ancient_time import HistoricTime
+from esi_utils_vectors.ecef import ecef2latlon
+from esi_utils_vectors.vector import Vector
 from openquake.hazardlib.geo import point
+from openquake.hazardlib.geo.utils import OrthographicProjection
 
-from impactutils.time.ancient_time import HistoricTime
-from impactutils.vectorutils.vector import Vector
-from impactutils.vectorutils.ecef import ecef2latlon
-from impactutils.rupture.origin import Origin
-from impactutils.rupture.quad_rupture import QuadRupture
-
+# local imports
 from shakelib.directivity.bayless2013 import Bayless2013
 
 homedir = os.path.dirname(os.path.abspath(__file__))  # where is this script?

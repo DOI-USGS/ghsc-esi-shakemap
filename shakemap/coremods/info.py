@@ -1,13 +1,13 @@
 # stdlib imports
-import os.path
 import json
+import os.path
 
 # third party imports
 import numpy as np
-from impactutils.io.smcontainers import ShakeMapOutputContainer
+from esi_utils_io.smcontainers import ShakeMapOutputContainer
 
 # local imports
-from .base import CoreModule, Contents
+from shakemap.coremods.base import Contents, CoreModule
 from shakemap.utils.config import get_config_paths
 
 

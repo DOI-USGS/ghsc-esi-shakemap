@@ -6,14 +6,13 @@ import os.path
 import time
 
 # third party
-import numpy as np
-from openquake.hazardlib.geo.geodetic import azimuth
-from mapio.geodict import GeoDict
 import matplotlib.pyplot as plt
-
-from impactutils.rupture.origin import Origin
-from impactutils.rupture.quad_rupture import QuadRupture
-from impactutils.time.ancient_time import HistoricTime
+import numpy as np
+from esi_utils_rupture.origin import Origin
+from esi_utils_rupture.quad_rupture import QuadRupture
+from esi_utils_time.ancient_time import HistoricTime
+from mapio.geodict import GeoDict
+from openquake.hazardlib.geo.geodetic import azimuth
 
 homedir = os.path.dirname(os.path.abspath(__file__))  # where is this script?
 

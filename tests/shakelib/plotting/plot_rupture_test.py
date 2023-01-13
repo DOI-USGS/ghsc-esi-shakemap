@@ -1,20 +1,22 @@
 #!/usr/bin/env python
 
+# stdlib imports
 import os.path
 import sys
 import time
-import pytest
 
-from openquake.hazardlib.geo.geodetic import azimuth
-import numpy as np
+# third party imports
 import matplotlib.pyplot as plt
+import numpy as np
+import pytest
+from esi_utils_rupture.origin import Origin
+from esi_utils_rupture.quad_rupture import QuadRupture
+from esi_utils_time.ancient_time import HistoricTime
 from mpl_toolkits.mplot3d import axes3d
+from openquake.hazardlib.geo.geodetic import azimuth
 
-from impactutils.rupture.quad_rupture import QuadRupture
-from impactutils.rupture.origin import Origin
-from impactutils.time.ancient_time import HistoricTime
-
-from shakelib.plotting.plotrupture import plot_rupture_wire3d, map_rupture
+# local imports
+from shakelib.plotting.plotrupture import map_rupture, plot_rupture_wire3d
 
 homedir = os.path.dirname(os.path.abspath(__file__))  # where is this script?
 shakedir = os.path.abspath(os.path.join(homedir, "..", ".."))

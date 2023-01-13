@@ -1,26 +1,27 @@
 #!/usr/bin/env python
 
+# stdlib imports
 import copy
-from importlib import import_module
 import logging
+from importlib import import_module
 
+# third party imports
 import numpy as np
-
+from openquake.hazardlib import const
+from openquake.hazardlib.contexts import RuptureContext
 from openquake.hazardlib.gsim.base import GMPE
 from openquake.hazardlib.gsim.boore_2014 import BooreEtAl2014
 from openquake.hazardlib.gsim.campbell_bozorgnia_2014 import CampbellBozorgnia2014
 from openquake.hazardlib.imt import PGA, PGV, SA
-from openquake.hazardlib import const
 from openquake.hazardlib.valid import gsim
-from openquake.hazardlib.contexts import RuptureContext
 
-from shakelib.conversions.imt.abrahamson_bhasin_2020 import AbrahamsonBhasin2020
 from shakelib.conversions.imc.boore_kishida_2017 import BooreKishida2017
-from shakelib.sites import Sites
-from shakelib.multiutils import gmpe_gmas
 
-# Special case GMPEs:
-from shakelib.gmpe.nga_east import NGAEast
+# local imports
+from shakelib.conversions.imt.abrahamson_bhasin_2020 import AbrahamsonBhasin2020
+from shakelib.gmpe.nga_east import NGAEast  # Special case GMPEs
+from shakelib.multiutils import gmpe_gmas
+from shakelib.sites import Sites
 
 
 def set_sites_depth_parameters(sites, gmpe):
@@ -988,7 +989,7 @@ class MultiGMPE(GMPE):
             # Find the derivative w.r.t. the rupture distance
             dm_dr = (lmean - tmean) / delta_distance
             # The additional variance is (dm/dr)^2 * dvar
-            delta_var[i] = dm_dr ** 2 * dvar
+            delta_var[i] = dm_dr**2 * dvar
             # Put the rupture distance back to what it was
             rup_dist -= delta_distance
         for i, stdtype in enumerate(stddev_types):

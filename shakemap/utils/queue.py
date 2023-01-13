@@ -1,34 +1,33 @@
-# System imports
+# stdlib imports
+import copy
+import json
+import logging
 import os
 import os.path
-import socket
-import json
-from collections import OrderedDict
-import sys
-from datetime import datetime, timezone
-import time as time
-import psutil
-import copy
-import shutil
-import logging
-from logging.handlers import TimedRotatingFileHandler
-import subprocess
 import shlex
+import shutil
+import socket
 import sqlite3
+import subprocess
+import sys
+import time as time
+from collections import OrderedDict
+from datetime import datetime, timezone
+from logging.handlers import TimedRotatingFileHandler
 
 # Third-party imports
 import daemon
 import lockfile
-from shapely.geometry import Point
+import psutil
 from configobj import ConfigObj
-from validate import Validator
-from shapely.geometry import Polygon
-from impactutils.rupture.origin import write_event_file
-from impactutils.rupture import constants
+from esi_utils_rupture import constants
+from esi_utils_rupture.origin import write_event_file
+from shakemap.utils.amps import AmplitudeHandler
 
 # Local imports
-from shakemap.utils.config import get_config_paths, get_configspec, config_error
-from shakemap.utils.amps import AmplitudeHandler
+from shakemap.utils.config import config_error, get_config_paths, get_configspec
+from shapely.geometry import Point, Polygon
+from validate import Validator
 
 MAX_SIZE = 4096
 

@@ -1,15 +1,13 @@
 # stdlib imports
-import argparse
-import inspect
+import logging
 import os.path
 import shutil
-import logging
 
 # third party imports
-from impactutils.transfer.pdlsender import PDLSender
+from esi_utils_transfer.pdlsender import PDLSender
 
 # local imports
-from .transfer_base import TransferBaseModule
+from shakemap.coremods.transfer_base import TransferBaseModule
 
 
 class PDLTransfer(TransferBaseModule):

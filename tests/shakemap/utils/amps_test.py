@@ -1,16 +1,18 @@
 #!/usr/bin/env python
 
+# stdlib imports
 import os.path
-from datetime import datetime, timezone
 import shutil
 import time
+from datetime import datetime, timezone
 
+# third party imports
 import numpy as np
+from esi_utils_rupture import constants
 
-from impactutils.rupture import constants
-
-from shakemap.utils.config import get_config_paths
+# local imports
 from shakemap.utils.amps import AmplitudeHandler, timestr_to_timestamp
+from shakemap.utils.config import get_config_paths
 
 
 def test_amps():

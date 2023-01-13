@@ -1,15 +1,19 @@
 #!/usr/bin/env python
 
+# stdlib imports
 import os
 import os.path
 
+# third party imports
 import numpy as np
 
-from shakemap.utils.config import get_config_paths
-from shakemap.coremods.model import ModelModule
+# local imports
+from esi_utils_io.smcontainers import ShakeMapOutputContainer
 from shakemap.coremods.assemble import AssembleModule
+from shakemap.coremods.model import ModelModule
 from shakemap.coremods.plotregr import PlotRegr
-from impactutils.io.smcontainers import ShakeMapOutputContainer
+from shakemap.utils.config import get_config_paths
+
 from common import clear_files, set_files
 
 ########################################################################

@@ -1,42 +1,37 @@
 # stdlib imports
 import argparse
-import inspect
-import os.path
-
-# from multiprocessing import Pool
 import concurrent.futures as cf
 import copy
+import inspect
 import json
+import os.path
 
 # third party
-from configobj import ConfigObj
-from mapio.geodict import GeoDict
-from mapio.grid2d import Grid2D
-import numpy as np
-import matplotlib
-import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
 import cartopy.feature as cfeature
+import matplotlib
+import matplotlib.pyplot as plt
+import numpy as np
 from cartopy.feature import ShapelyFeature
 from cartopy.io.shapereader import Reader
+from configobj import ConfigObj
+from esi_utils_geo.city import Cities
+from esi_utils_io.smcontainers import ShakeMapOutputContainer
+from mapio.geodict import GeoDict
+from mapio.grid2d import Grid2D
 
 # local imports
-# from mapio.gmt import GMTGrid
-from impactutils.io.smcontainers import ShakeMapOutputContainer
-from impactutils.mapping.city import Cities
-
-
+from shakelib.utils.imt_string import oq_to_file
+from shakemap.coremods.base import Contents, CoreModule
+from shakemap.mapping.mapmaker import draw_uncertainty_map
 from shakemap.utils.config import (
+    check_extra_values,
+    config_error,
     get_config_paths,
     get_configspec,
     get_custom_validator,
-    config_error,
-    check_extra_values,
     get_data_path,
 )
-from .base import CoreModule, Contents
-from shakemap.mapping.mapmaker import draw_uncertainty_map
-from shakelib.utils.imt_string import oq_to_file
 
 WATERCOLOR = "#7AA1DA"
 

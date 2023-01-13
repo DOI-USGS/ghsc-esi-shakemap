@@ -1,9 +1,9 @@
 # stdlib imports
+import logging
 import re
 
 # third party imports
 import numpy as np
-import logging
 from strec.subtype import SubductionSelector
 
 
@@ -229,7 +229,7 @@ def get_region_probs(eid, depth, strec_results, config):
     region_mapping = {
         "scr": "DistanceToStable",
         "acr": "DistanceToActive",
-        "volcanic": "DistanceToVolcanic",
+        "volcanic": "DistanceToHotSpot",
         "subduction": "DistanceToSubduction",
     }
     layer_probs = {}

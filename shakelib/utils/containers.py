@@ -3,13 +3,13 @@
 # stdlib imports
 
 # third party imports
-from impactutils.io.smcontainers import ShakeMapContainerBase
-from impactutils.rupture.factory import (
-    rupture_from_dict,
+from esi_utils_io.smcontainers import ShakeMapContainerBase
+from esi_utils_rupture.factory import (
     get_rupture,
+    rupture_from_dict,
     rupture_from_dict_and_origin,
 )
-from impactutils.rupture.origin import Origin
+from esi_utils_rupture.origin import Origin
 
 # local imports
 from shakelib.station import StationList

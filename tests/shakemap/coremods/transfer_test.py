@@ -1,13 +1,14 @@
 #!/usr/bin/env python
 
-import sys
-import tempfile
+# stdlib imports
+import argparse
 import os.path
 import shutil
-import argparse
+import sys
+import tempfile
 
-# from shakemap.coremods.transfer import _transfer
-from impactutils.io.smcontainers import ShakeMapOutputContainer
+# third party imports
+from esi_utils_io.smcontainers import ShakeMapOutputContainer
 
 
 def dummy_pdl_test(java, jarfile, keyfile, configfile):

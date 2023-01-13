@@ -1,18 +1,22 @@
 #!/usr/bin/env python
+
+# stdlib imports
 import os
 import os.path
 
+# third party imports
 import numpy as np
+from esi_utils_io.smcontainers import ShakeMapOutputContainer
 
-from shakemap.utils.config import get_config_paths
-from shakemap.coremods.model import ModelModule
+# local imports
 from shakemap.coremods.assemble import AssembleModule
-from shakemap.coremods.xtestplot import XTestPlot
-from shakemap.coremods.xtestplot_spectra import XTestPlotSpectra
-from shakemap.coremods.xtestimage import XTestImage
-from shakemap.coremods.xtestplot_multi import XTestPlotMulti
+from shakemap.coremods.model import ModelModule
 from shakemap.coremods.plotregr import PlotRegr
-from impactutils.io.smcontainers import ShakeMapOutputContainer
+from shakemap.coremods.xtestimage import XTestImage
+from shakemap.coremods.xtestplot import XTestPlot
+from shakemap.coremods.xtestplot_multi import XTestPlotMulti
+from shakemap.coremods.xtestplot_spectra import XTestPlotSpectra
+from shakemap.utils.config import get_config_paths
 
 ########################################################################
 # Test the nullgmpe and the dummy correlation function as well as
@@ -29,16 +33,16 @@ se = np.array([0.0, 0.75, 1.5, 3.0, 6.0])
 sigma = 0.8
 tau = 0.6
 # New-style bias and MVN
-s_w2w2_inv = 1.0 / (sigma ** 2 + se ** 2)
+s_w2w2_inv = 1.0 / (sigma**2 + se**2)
 den = 1.0 / (1.0 + tau * s_w2w2_inv * tau)
 num = tau * s_w2w2_inv * (1.0) * den
 u_dB = tau * num
-sigma_dW = np.sqrt(sigma ** 2 + tau ** 2 * den)
-u_z = 0 + u_dB + sigma ** 2 * s_w2w2_inv * (1 - u_dB)
+sigma_dW = np.sqrt(sigma**2 + tau**2 * den)
+u_z = 0 + u_dB + sigma**2 * s_w2w2_inv * (1 - u_dB)
 s_z = np.sqrt(
-    sigma ** 2
-    - sigma ** 2 * s_w2w2_inv * sigma ** 2
-    + (tau - sigma ** 2 * s_w2w2_inv * tau) ** 2 * den
+    sigma**2
+    - sigma**2 * s_w2w2_inv * sigma**2
+    + (tau - sigma**2 * s_w2w2_inv * tau) ** 2 * den
 )
 
 # omega = np.sqrt(sigma**2 / (sigma**2 + se**2))

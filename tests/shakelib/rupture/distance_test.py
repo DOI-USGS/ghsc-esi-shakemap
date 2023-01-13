@@ -4,22 +4,21 @@
 import os
 import os.path
 import sys
+import time
 
 # third party imports
-from openquake.hazardlib.gsim.abrahamson_2014 import AbrahamsonEtAl2014
-from openquake.hazardlib.gsim.berge_thierry_2003 import BergeThierryEtAl2003SIGMA
 import numpy as np
 import pytest
-import time
-from impactutils.rupture.distance import Distance, get_distance
-from impactutils.rupture.origin import Origin
-from impactutils.rupture.point_rupture import PointRupture
-from impactutils.rupture.quad_rupture import QuadRupture
-from impactutils.time.ancient_time import HistoricTime
+from esi_utils_rupture.distance import Distance, get_distance
+from esi_utils_rupture.origin import Origin
+from esi_utils_rupture.point_rupture import PointRupture
+from esi_utils_rupture.quad_rupture import QuadRupture
+from esi_utils_time.ancient_time import HistoricTime
+from openquake.hazardlib.gsim.abrahamson_2014 import AbrahamsonEtAl2014
+from openquake.hazardlib.gsim.berge_thierry_2003 import BergeThierryEtAl2003SIGMA
 
 # local imports
 from shakelib.sites import Sites
-
 
 do_tests = True
 

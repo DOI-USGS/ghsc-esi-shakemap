@@ -1,14 +1,12 @@
 # stdlib imports
-import os.path
 import glob
-import logging
+import os.path
 
 # third party imports
+from esi_utils_io.smcontainers import ShakeMapOutputContainer
 
 # local imports
-from .base import CoreModule
-from shakemap.utils.logging import get_logging_config
-from impactutils.io.smcontainers import ShakeMapOutputContainer
+from shakemap.coremods.base import CoreModule
 from shakemap.utils.config import get_config_paths
 
 

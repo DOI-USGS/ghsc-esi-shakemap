@@ -1,32 +1,32 @@
 # stdlib imports
-import os.path
-import zipfile
-import tempfile
-from shutil import copyfile
 import concurrent.futures as cf
+import os.path
+import tempfile
+import zipfile
 from collections import OrderedDict
 from functools import partial
+from shutil import copyfile
 
 # third party imports
 import fiona
-from impactutils.io.smcontainers import ShakeMapOutputContainer
 import numpy as np
 from configobj import ConfigObj
+from esi_utils_io.smcontainers import ShakeMapOutputContainer
 from openquake.hazardlib import imt as OQIMT
 
 # local imports
-from .base import CoreModule, Contents
+from shakelib.plotting.contour import contour
+from shakelib.utils.imt_string import oq_to_file
+from shakemap.c.pcontour import pcontour
+from shakemap.coremods.base import Contents, CoreModule
 from shakemap.utils.config import (
-    get_data_path,
+    config_error,
     get_config_paths,
     get_configspec,
     get_custom_validator,
-    config_error,
+    get_data_path,
 )
 from shakemap.utils.utils import get_object_from_config
-from shakelib.plotting.contour import contour
-from shakemap.c.pcontour import pcontour
-from shakelib.utils.imt_string import oq_to_file
 
 
 class ShapeModule(CoreModule):

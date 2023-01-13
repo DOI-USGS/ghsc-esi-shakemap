@@ -1,22 +1,50 @@
 """
 Parse STREC output and create/select a GMPE set for an event.
 """
+
+
 # stdlib imports
-import os.path
-import shutil
-from collections import OrderedDict
-import textwrap
 import json
+import logging
+import os.path
+import pathlib
+import shutil
+import textwrap
+from collections import OrderedDict
+
+# local imports
+import shakemap.utils.config as cfg
 
 # third party imports
 from configobj import ConfigObj
-from impactutils.rupture.origin import Origin
-
-# local imports
-from .base import CoreModule
-import shakemap.utils.config as cfg
+from esi_utils_io.cmd import get_command_output
+from esi_utils_rupture.origin import Origin
+from shakemap.coremods.base import CoreModule
+from shakemap.utils.layers import update_config_regions, validate_config
 from shakemap.utils.probs import get_weights
-from shakemap.utils.layers import validate_config, update_config_regions
+from strec.utils import get_config as strec_get_config
+
+STREC_URL = "https://code.usgs.gov/ghsc/esi/strec#table-of-contents"
+
+
+def _setup_strec():
+    try:
+        _ = strec_get_config()
+        logging.info("STREC is configured.")
+        return
+    except Exception:
+        logging.info("Could not find existing config file. Creating.")
+    # first determine the default strec data directory
+    datafolder = pathlib.Path.home() / ".strec" / "data"
+    if not datafolder.exists():
+        datafolder.mkdir(parents=True)
+    cmd = f"strec_cfg update --datafolder {datafolder} --slab --gcmt"
+    logging.info(f"Configuring STREC {STREC_URL}...")
+    logging.info(f"Running \n{cmd}...")
+    res, stdout, stderr = get_command_output(cmd)
+    if not res:
+        msg = f"Failed to configure STREC with errors: \n{stdout}\n{stderr}"
+        raise Exception(msg)
 
 
 class SelectModule(CoreModule):
@@ -43,6 +71,8 @@ class SelectModule(CoreModule):
             ValidateError -- problems with the configuration file
             RuntimeError -- various problems matching the event to a gmpe set
         """
+        # setup STREC automatically for users if it isn't already configured
+        _setup_strec()
 
         # ---------------------------------------------------------------------
         # Get the install and data paths and verify that the even directory

@@ -1,36 +1,38 @@
 #!/usr/bin/env python
 
+# stdlib imports
+import glob
+import json
 import os
 import os.path
+import subprocess
 import tempfile
 import zipfile
-import json
-import glob
-import subprocess
 
+# third party imports
 import numpy as np
+import pytest
+from esi_utils_io.smcontainers import ShakeMapOutputContainer
+from mapio.shake import ShakeGrid
 from osgeo import gdal
 from osgeo.gdalconst import GA_ReadOnly
+from shakelib.utils.imt_string import oq_to_file
 
-import pytest
-
-from shakemap.utils.config import get_config_paths
-from shakemap.coremods.model import ModelModule
+# local imports
 from shakemap.coremods.assemble import AssembleModule
-from shakemap.coremods.history import HistoryModule
 from shakemap.coremods.contour import ContourModule
+from shakemap.coremods.gridxml import GridXMLModule, _oq_to_gridxml
+from shakemap.coremods.history import HistoryModule
 from shakemap.coremods.info import InfoModule
+from shakemap.coremods.kml import KMLModule
+from shakemap.coremods.mapping import MappingModule
+from shakemap.coremods.model import ModelModule
+from shakemap.coremods.plotregr import PlotRegr
 from shakemap.coremods.raster import RasterModule
 from shakemap.coremods.rupture import RuptureModule
-from shakemap.coremods.stations import StationModule
-from shakemap.coremods.mapping import MappingModule
-from shakemap.coremods.plotregr import PlotRegr
-from shakemap.coremods.kml import KMLModule
-from shakemap.coremods.gridxml import GridXMLModule, _oq_to_gridxml
 from shakemap.coremods.shape import ShapeModule
-from impactutils.io.smcontainers import ShakeMapOutputContainer
-from shakelib.utils.imt_string import oq_to_file
-from mapio.shake import ShakeGrid
+from shakemap.coremods.stations import StationModule
+from shakemap.utils.config import get_config_paths
 
 
 #

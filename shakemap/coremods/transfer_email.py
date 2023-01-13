@@ -1,15 +1,14 @@
 # stdlib imports
+import logging
 import os.path
 from datetime import datetime
-import shutil
-import logging
 
 # third party imports
-from impactutils.transfer.emailsender import EmailSender
 import configobj
+from esi_utils_transfer.emailsender import EmailSender
 
 # local imports
-from .transfer_base import TransferBaseModule
+from shakemap.coremods.transfer_base import TransferBaseModule
 from shakemap.utils.macros import get_macros
 
 

@@ -1,26 +1,25 @@
 # stdlib
-import os.path
 import concurrent.futures as cf
 import json
+import os.path
 
-# third party
-from configobj import ConfigObj
 import matplotlib.pyplot as plt
 import numpy as np
 
-# neic imports
-from impactutils.io.smcontainers import ShakeMapOutputContainer
+# third party
+from configobj import ConfigObj
+from esi_utils_io.smcontainers import ShakeMapOutputContainer
 from openquake.hazardlib import imt
 
 # local imports
+from shakelib.utils.imt_string import oq_to_file
+from shakemap.coremods.base import Contents, CoreModule
 from shakemap.utils.config import (
+    config_error,
     get_config_paths,
     get_configspec,
     get_custom_validator,
-    config_error,
 )
-from .base import CoreModule, Contents
-from shakelib.utils.imt_string import oq_to_file
 
 
 class PlotRegr(CoreModule):

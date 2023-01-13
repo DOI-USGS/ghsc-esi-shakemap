@@ -1,29 +1,31 @@
 # stdlib imports
 import os
 import os.path
-import zipfile
-import shutil
 import re
+import shutil
+import zipfile
+
+import cartopy.io.shapereader as shpreader
+import fiona
+import numpy as np
+import simplekml as skml
 
 # third party imports
-from PIL import Image
+from esi_utils_colors.cpalette import ColorPalette
+from esi_utils_io.smcontainers import ShakeMapOutputContainer
 from lxml import etree
-import numpy as np
+from mapio.geodict import GeoDict
+from mapio.grid2d import Grid2D
+from PIL import Image
 from scipy.ndimage.filters import median_filter
-import simplekml as skml
-import fiona
-import cartopy.io.shapereader as shpreader
-from shapely.geometry import shape
 
 # local imports
-from mapio.geodict import GeoDict
-from impactutils.io.smcontainers import ShakeMapOutputContainer
-from .base import CoreModule, Contents
-from shakemap.utils.config import get_config_paths
 from shakelib.plotting.contour import contour
-from impactutils.colors.cpalette import ColorPalette
-from mapio.grid2d import Grid2D
 from shakemap.c.pcontour import pcontour
+from shakemap.utils.config import get_config_paths
+from shapely.geometry import shape
+
+from .base import Contents, CoreModule
 
 OVERLAY_IMG = "ii_overlay.png"
 OVERLAY_KML = "overlay.kml"

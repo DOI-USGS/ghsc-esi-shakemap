@@ -1,18 +1,21 @@
 #!/usr/bin/env python
 
-import os.path
-from tempfile import mkdtemp
-import shutil
+# stdlib imports
 import copy
+import os.path
+import shutil
+from tempfile import mkdtemp
 
-from impactutils.io.smcontainers import ShakeMapOutputContainer
-from impactutils.mapping.city import Cities
-from shakemap.mapping.mapmaker import draw_map
-from shakemap.coremods.mapping import get_text_strings
-from shakemap.utils.config import get_data_path
-
-from mapio.gmt import GMTGrid
+# third party imports
+from esi_utils_geo.city import Cities
+from esi_utils_io.smcontainers import ShakeMapOutputContainer
 from mapio.geodict import GeoDict
+from mapio.gmt import GMTGrid
+
+# local imports
+from shakemap.coremods.mapping import get_text_strings
+from shakemap.mapping.mapmaker import draw_map
+from shakemap.utils.config import get_data_path
 
 
 def test_mapmaker_intensity():
