@@ -165,7 +165,7 @@ CSeg *get_outer_boundry_polygon(void);
 void fixval(int i, int j, double *g);
 double epps(void);
 void set_depressions(void);
-int is_contained(CSeg *out, CSeg *in, CPoint *cp);
+int is_contained(CSeg *out, CPoint *cp);
 int is_depression(CSeg *out);
 void set_xyminmax(CSeg *s);
 void add_contour(double cval);
@@ -722,7 +722,7 @@ CSeg *get_outer_boundry_polygon() {
 void fixval(int i, int j, double *g) {
 
   int cnt = 0;
-  int val = 0;
+  double val = 0;
   double t;
 
   if( i == 0 ) {
@@ -857,7 +857,7 @@ void set_xyminmax(CSeg *s) {
   return;
 }
 
-int is_contained(CSeg *out, CSeg *in, CPoint *cp) {
+int is_contained(CSeg *out, CPoint *cp) {
 
   CPoint *p1, *p2;
   int inside = 0;
@@ -887,7 +887,6 @@ int is_contained(CSeg *out, CSeg *in, CPoint *cp) {
         break;
       }
       p1 = out->first;
-      p2 = out->last;
     }
   }
   if( !cp )
@@ -1351,7 +1350,7 @@ void nest_polygons(void) {
       for( t = clist->closed; t; t = t->next ) {
         if( t == s )
           continue;
-        if( is_contained(t, s, s->first) )
+        if( is_contained(t, s->first) )
           s->nesting++;
       }
     }
@@ -1404,7 +1403,7 @@ void nest_polygons(void) {
            */
           if( best >= t->nesting )
             continue;
-          if( is_contained(t, s, s->first) ) {
+          if( is_contained(t, s->first) ) {
             best = t->nesting;
             s->tmp_hole = t;
           }
