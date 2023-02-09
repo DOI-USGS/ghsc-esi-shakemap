@@ -7,13 +7,17 @@ from urllib.request import urlopen
 DETAIL_TEMPLATE = (
     "https://earthquake.usgs.gov/fdsnws/event/1/query?eventid=[EVENTID]&format=geojson"
 )
+SCENARIO_TEMPLATE = "https://earthquake.usgs.gov/fdsnws/scenario/1/query?format=geojson&eventid=[EVENTID]"
 
 
-def get_detail_json(eventid):
+def get_detail_json(eventid, scenario=False):
     """
     Return the detailed JSON dictionary for a ComCat event ID.
     """
-    url = DETAIL_TEMPLATE.replace("[EVENTID]", eventid)
+    template = DETAIL_TEMPLATE
+    if scenario:
+        template = SCENARIO_TEMPLATE
+    url = template.replace("[EVENTID]", eventid)
     with urlopen(url, timeout=60) as fh:
         data = fh.read().decode("utf8")
     jdict = json.loads(data)
