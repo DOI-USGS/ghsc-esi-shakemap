@@ -4300,4 +4300,62 @@ interactions:
     status:
       code: 200
       message: OK
+- request:
+    body: null
+    headers:
+      Connection:
+      - close
+      Host:
+      - earthquake.usgs.gov
+      User-Agent:
+      - Python-urllib/3.9
+    method: GET
+    uri: https://earthquake.usgs.gov/earthquakes/feed/v1.0/detail/ci14607652.geojson
+  response:
+    body:
+      string: ''
+    headers:
+      Access-Control-Allow-Headers:
+      - accept,origin,authorization,content-type
+      Access-Control-Allow-Methods:
+      - '*'
+      Access-Control-Allow-Origin:
+      - '*'
+      Cache-Control:
+      - public, max-age=60
+      Connection:
+      - close
+      Content-Length:
+      - '0'
+      Content-Type:
+      - text/html; charset=UTF-8
+      Date:
+      - Tue, 28 Feb 2023 00:03:43 GMT
+      Expires:
+      - Tue, 28 Feb 2023 00:04:43 GMT
+      Last-Modified:
+      - Tue, 28 Feb 2023 00:03:43 GMT
+      Location:
+      - /fdsnws/event/1/query?eventid=ci14607652&format=geojson
+      Server:
+      - Apache
+      Strict-Transport-Security:
+      - max-age=31536000
+      Via:
+      - 1.1 f67d20cc5e893094f1f2660dce32bf4a.cloudfront.net (CloudFront)
+      X-Amz-Cf-Id:
+      - MJ6OfyGYNeE7h_SnEzP3VG_k39TYXbvSNLMIqAgpqAZxFsYBFiwstQ==
+      X-Amz-Cf-Pop:
+      - IAD55-P5
+      X-Cache:
+      - Miss from cloudfront
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - '1'
+    status:
+      code: 302
+      message: Moved Temporarily
 version: 1
