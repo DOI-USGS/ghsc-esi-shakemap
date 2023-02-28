@@ -9,6 +9,64 @@ interactions:
       User-Agent:
       - Python-urllib/3.9
     method: GET
+    uri: https://earthquake.usgs.gov/earthquakes/feed/v1.0/detail/ci14745580.geojson
+  response:
+    body:
+      string: ''
+    headers:
+      Access-Control-Allow-Headers:
+      - accept,origin,authorization,content-type
+      Access-Control-Allow-Methods:
+      - '*'
+      Access-Control-Allow-Origin:
+      - '*'
+      Cache-Control:
+      - public, max-age=60
+      Connection:
+      - close
+      Content-Length:
+      - '0'
+      Content-Type:
+      - text/html; charset=UTF-8
+      Date:
+      - Tue, 28 Feb 2023 14:36:13 GMT
+      Expires:
+      - Tue, 28 Feb 2023 14:37:13 GMT
+      Last-Modified:
+      - Tue, 28 Feb 2023 14:36:13 GMT
+      Location:
+      - /fdsnws/event/1/query?eventid=ci14745580&format=geojson
+      Server:
+      - Apache
+      Strict-Transport-Security:
+      - max-age=31536000
+      Via:
+      - 1.1 64544648f8289d0bd61ef02997afb698.cloudfront.net (CloudFront)
+      X-Amz-Cf-Id:
+      - HjqrV8wPjX5XEeTgQHLzYf4iO4rxxShfQz0bwjG8lGV5Z8UeYvaY3A==
+      X-Amz-Cf-Pop:
+      - DEN52-P3
+      X-Cache:
+      - Miss from cloudfront
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - '1'
+    status:
+      code: 302
+      message: Moved Temporarily
+- request:
+    body: null
+    headers:
+      Connection:
+      - close
+      Host:
+      - earthquake.usgs.gov
+      User-Agent:
+      - Python-urllib/3.9
+    method: GET
     uri: https://earthquake.usgs.gov/fdsnws/event/1/query?eventid=ci14745580&format=geojson
   response:
     body:
@@ -92,11 +150,11 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Mon, 05 Dec 2022 22:03:36 GMT
+      - Tue, 28 Feb 2023 14:36:19 GMT
       Expires:
-      - Mon, 05 Dec 2022 22:04:36 GMT
+      - Tue, 28 Feb 2023 14:37:18 GMT
       Last-Modified:
-      - Mon, 05 Dec 2022 22:03:36 GMT
+      - Tue, 28 Feb 2023 14:36:18 GMT
       Server:
       - nginx
       Strict-Transport-Security:
@@ -106,11 +164,11 @@ interactions:
       Vary:
       - Accept-Encoding
       Via:
-      - 1.1 c396de17c1b5d58233088e40dd170cf4.cloudfront.net (CloudFront)
+      - 1.1 a0b647da77edd97cca88fb4c4b1a9d08.cloudfront.net (CloudFront)
       X-Amz-Cf-Id:
-      - TZBNyWQq0mmATitxjcc4VLjrblF7rKpGRUsSMkShLw0QcLUhjLO2Xw==
+      - tReZyn_t3vlhlO3hGVyqUzR-Hk6T4y41BXrr2Pc4ZvTTp9NPdLX-ZQ==
       X-Amz-Cf-Pop:
-      - IAD66-C1
+      - DEN52-P3
       X-Cache:
       - Miss from cloudfront
       X-Content-Type-Options:
@@ -2443,11 +2501,11 @@ interactions:
       Content-Type:
       - application/octet-stream
       Date:
-      - Mon, 05 Dec 2022 22:03:37 GMT
+      - Tue, 28 Feb 2023 14:36:24 GMT
       ETag:
       - '"1ca113907aae2f955cb30ca20ba5b251"'
       Expires:
-      - Thu, 02 Dec 2032 22:03:37 GMT
+      - Fri, 25 Feb 2033 14:36:24 GMT
       Last-Modified:
       - Sat, 06 Aug 2022 03:17:43 GMT
       Server:
@@ -2455,11 +2513,11 @@ interactions:
       Strict-Transport-Security:
       - max-age=31536000; includeSubDomains; preload
       Via:
-      - 1.1 6cdec19f98848143f7f7c8c92c568d02.cloudfront.net (CloudFront)
+      - 1.1 e5778a61da2e928608d7fdc9242d1f8e.cloudfront.net (CloudFront)
       X-Amz-Cf-Id:
-      - 7cVAaSY3rINhknZdhvgLwB0n6yjZXq6m4Tbtq0qcpj2csdef0aJvUA==
+      - ik9wvhWjChQdGMlKUnDx6ErTBW1Us5ngYrvk1gLFr29kSnwiIbJC4g==
       X-Amz-Cf-Pop:
-      - IAD66-C1
+      - DEN52-P3
       X-Cache:
       - Miss from cloudfront
       X-Content-Type-Options:

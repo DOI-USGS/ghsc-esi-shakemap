@@ -5,9 +5,12 @@ from io import StringIO
 from urllib.request import urlopen
 
 DETAIL_TEMPLATE = (
-    "https://earthquake.usgs.gov/fdsnws/event/1/query?eventid=[EVENTID]&format=geojson"
+    "https://earthquake.usgs.gov/earthquakes/feed/v1.0/detail/[EVENTID].geojson"
 )
-SCENARIO_TEMPLATE = "https://earthquake.usgs.gov/fdsnws/scenario/1/query?format=geojson&eventid=[EVENTID]"
+SCENARIO_TEMPLATE = (
+    "https://earthquake.usgs.gov/fdsnws/scenario/1/query?"
+    "format=geojson&eventid=[EVENTID]"
+)
 
 
 def get_detail_json(eventid, scenario=False):
