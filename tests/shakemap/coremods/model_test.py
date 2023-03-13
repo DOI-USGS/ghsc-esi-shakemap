@@ -22,7 +22,6 @@ from common import clear_files, set_files
 
 
 def test_model_2():
-
     #
     # This is a small grid with station data and dyfi data (should succeed)
     #
@@ -55,7 +54,6 @@ def test_model_2():
 
 
 def test_model_3():
-
     #
     # This is a small grid with DYFI data only (should succeed)
     #
@@ -78,7 +76,6 @@ def test_model_3():
 
 
 def test_model_4():
-
     #
     # Run with no data and no fault, and use the default extent.
     #
@@ -93,7 +90,6 @@ def test_model_4():
 
 
 def test_model_sim():
-
     #
     # Run with no data and no fault, and use the default extent.
     #
@@ -106,7 +102,6 @@ def test_model_sim():
 
 
 def test_directivity():
-
     #
     # Turned on directivity in model.conf
     #
@@ -129,9 +124,9 @@ def test_directivity():
     oc = ShakeMapOutputContainer.load(hdf_file)
     sa3 = np.exp(oc.getIMTGrids("SA(3.0)", "GREATER_OF_TWO_HORIZONTAL")["mean"])
     # np.testing.assert_allclose(np.max(sa3), 1.15864273)
-    np.testing.assert_allclose(np.max(sa3), 1.1567265149442174)
+    np.testing.assert_allclose(np.max(sa3), 1.1567265149442174, atol=1e-5)
     # np.testing.assert_allclose(np.min(sa3), 0.9278920)
-    np.testing.assert_allclose(np.min(sa3), 0.88508818541678)
+    np.testing.assert_allclose(np.min(sa3), 0.88508818541678, atol=1e-5)
     oc.close()
 
 

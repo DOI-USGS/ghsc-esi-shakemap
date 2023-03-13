@@ -3,15 +3,18 @@
 # stdlib modules
 import json
 import os.path
+import pathlib
 import pickle
+import sqlite3
 import sys
 import tempfile
 
 # third party modules
 import numpy as np
+import pandas as pd
 
 # local imports
-from shakelib.station import StationList
+from shakelib.station import TABLES, StationList
 
 homedir = os.path.dirname(os.path.abspath(__file__))  # where is this script?
 shakedir = os.path.abspath(os.path.join(homedir, "..", ".."))
@@ -25,7 +28,6 @@ SAVE = False
 
 
 def test_station():
-
     homedir = os.path.dirname(os.path.abspath(__file__))
 
     #
@@ -105,7 +107,6 @@ def test_station():
 
 
 def test_station2():
-
     #
     # Test the wenchuan data
     #
@@ -168,7 +169,6 @@ def test_station2():
 
 
 def test_station3():
-
     #
     # Exercise the geojson code.
     #
@@ -205,7 +205,6 @@ def test_station3():
 
 
 def test_station4():
-
     homedir = os.path.dirname(os.path.abspath(__file__))
 
     event = "northridge"
@@ -223,7 +222,6 @@ def test_station4():
 
 
 def test_station5():
-
     homedir = os.path.dirname(os.path.abspath(__file__))
 
     event = "Calexico"
@@ -250,7 +248,6 @@ def test_station5():
 
 
 def compare_dataframes(df1, df2):
-
     assert sorted(list(df1.keys())) == sorted(list(df2.keys()))
 
     idx1 = np.argsort(df1["id"])
@@ -258,9 +255,67 @@ def compare_dataframes(df1, df2):
 
     for key in df1.keys():
         if df1[key].dtype in [np.float32, np.float64]:
-            assert np.allclose(df1[key][idx1], df2[key][idx2], equal_nan=True)
+            np.testing.assert_allclose(df1[key][idx1], df2[key][idx2], equal_nan=True)
         else:
             assert (df1[key][idx1] == df2[key][idx2]).all()
+
+
+def test_packet():
+    datadir = pathlib.Path(__file__).parent / "station_data" / "elmonte"
+    db = sqlite3.connect(":memory:")
+    stations_list = StationList(db)
+    sta_set = set()
+    imt_set = set()
+    amp_set = set()
+    min_nresp = 1
+    shakemap_file = datadir / "ci38695658_groundmotions_dat.json"
+    stations, amps, _ = stations_list._parse_shakemap_json(
+        shakemap_file, min_nresp, sta_set, imt_set, amp_set
+    )
+    station_columns = [
+        "station_id",
+        "network",
+        "code",
+        "name",
+        "lat",
+        "lon",
+        "elev",
+        "vs30",
+        "stddev",
+        "instrumented",
+        "source",
+        "refid",
+    ]
+    amp_columns = [
+        "station_id",
+        "imt_type",
+        "channel",
+        "orientation",
+        "amplitude",
+        "stddev",
+        "flag",
+        "nresp",
+    ]
+    shakemap_stations_frame = pd.DataFrame(stations, columns=station_columns)
+    shakemap_amps_frame = pd.DataFrame(amps, columns=amp_columns)
+
+    sta_set = set()
+    imt_set = set()
+    amp_set = set()
+
+    packet_file = datadir / "ci38695658_groundmotion_packet.json"
+    stations, amps, _ = stations_list._parse_groundpacket_json(
+        packet_file, sta_set, imt_set, amp_set
+    )
+    packet_stations_frame = pd.DataFrame(stations, columns=station_columns)
+    packet_amps_frame = pd.DataFrame(amps, columns=amp_columns)
+    for idx, shake_group in shakemap_amps_frame.groupby(["station_id", "imt_type"]):
+        idx1 = packet_amps_frame["station_id"] == idx[0]
+        idx2 = packet_amps_frame["imt_type"] == idx[1]
+        packet_group = packet_amps_frame[(idx1) & (idx2)]
+        shake_vals = np.sort(shake_group["amplitude"].values)
+        packet_vals = np.sort(packet_group["amplitude"].values)
+        np.testing.assert_allclose(shake_vals, packet_vals, rtol=1e-2)
 
 
 if __name__ == "__main__":
@@ -269,3 +324,4 @@ if __name__ == "__main__":
     test_station3()
     test_station4()
     test_station5()
+    test_packet()

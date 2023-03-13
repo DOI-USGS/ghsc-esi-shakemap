@@ -6,6 +6,7 @@ esi-utils-textformat
 esi-utils-time
 esi-utils-transfer
 esi-utils-vectors
+gmpacket>=0.1.2
 mapio
 ps2ff
 usgs-strec>=2.2.3
