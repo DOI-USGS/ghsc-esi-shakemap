@@ -163,6 +163,7 @@ class AssembleModule(CoreModule):
         if os.path.isfile(os.path.join(datadir, "stationlist.xml")):
             datafiles.append(os.path.join(datadir, "stationlist.xml"))
         datafiles += sorted(glob.glob(os.path.join(datadir, "*_dat.json")))
+        datafiles += sorted(glob.glob(os.path.join(datadir, "*_packet.json")))
         if os.path.isfile(os.path.join(datadir, "stationlist.json")):
             datafiles.append(os.path.join(datadir, "stationlist.json"))
 

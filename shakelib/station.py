@@ -1,14 +1,17 @@
 # stdlib imports
+import copy
+import json
+import logging
+import re
 import sqlite3
 import xml.etree.ElementTree as ET
-import copy
 from collections import OrderedDict
-import re
-import logging
-import json
 
 # third party imports
 import numpy as np
+import pandas as pd
+from gmpacket.packet import GroundMotionPacket
+from scipy import constants
 
 # local imports
 
@@ -69,6 +72,64 @@ TABLES = OrderedDict(
 # These are the netid's that indicate MMI data
 #
 CIIM_TUPLE = ("dyfi", "mmi", "intensity", "ciim")
+NON_CHANNEL_COMPONENTS = ["ROTD50.0"]
+SUPPORTED_METRICS = ["PGA", "PGV", "SA"]
+ORIENTATIONS = {"1": "h", "2": "h", "Z": "v"}
+SUPPORTED_SA_PERIODS = [0.3, 1.0, 3.0]
+
+
+def convert_units(imt_type, input_units, amplitude):
+    if re.search(r"PGA|SA", imt_type) is not None:
+        # convert to ln(g)
+        if input_units in ["cm/s^2", "cm/s**2", "cm/s/s", "gals"]:
+            amplitude = np.log(amplitude / constants.g / 100)
+        elif input_units in ["m/s^2", "m/s**2", "m/s/s"]:
+            amplitude = np.log(amplitude / constants.g)
+        elif input_units == "g":
+            amplitude = np.log(amplitude)
+        elif input_units == "%g":
+            amplitude = np.log(amplitude / 100)
+        elif input_units in ["ln(g)"]:
+            pass
+        else:
+            raise ValueError(f"Unknown acceleration input units {input_units}")
+    elif imt_type == "PGV":
+        if input_units in ["cm/s", "cms"]:
+            amplitude = np.log(amplitude)
+        elif input_units in ["m/s"]:
+            amplitude = np.log(amplitude * 100)
+        elif input_units in ["ln(cm/s)"]:
+            pass
+        else:
+            raise ValueError(f"Unknown velocity input units {input_units}")
+    elif re.search(r"FAS", imt_type) is not None:
+        if input_units in ["cm/s", "cms"]:
+            amplitude = np.log(amplitude)
+        elif input_units in ["m/s"]:
+            amplitude = np.log(amplitude * 100)
+        elif input_units == "ln(cm/s)":
+            pass
+        else:
+            raise ValueError(f"Unknown FAS input units {input_units}")
+    elif re.search(r"DURATION", imt_type) is not None:
+        if input_units in ["s", "sec", "seconds"]:
+            amplitude = np.log(amplitude)
+        elif input_units in ["ln(s)", "ln(sec)", "ln(seconds)"]:
+            pass
+        else:
+            raise ValueError(f"Unknown DURATION input units {input_units}")
+    elif imt_type == "ARIAS":
+        if input_units in ["cm/s", "cms"]:
+            amplitude = np.log(amplitude / 100)
+        elif input_units in ["m/s"]:
+            amplitude = np.log(amplitude)
+        elif input_units in ["ln(m/s)"]:
+            pass
+        else:
+            raise ValueError(f"Unknown velocity input units {input_units}")
+    else:
+        raise ValueError(f"Unknown imt_type {imt_type}")
+    return amplitude
 
 
 class StationList(object):
@@ -225,6 +286,254 @@ class StationList(object):
         self._fixOrientations()
         return
 
+    def _parse_shakemap_json(self, jfile, min_nresp, sta_set, imt_set, amp_set):
+        with open(jfile, "r") as jfp:
+            stas = json.load(jfp)
+
+        if "type" not in stas:
+            logging.warn(f"{jfile} appears to contain no stations, skipping")
+            return ([], [], [])
+        if stas["type"] != "FeatureCollection":
+            logging.warn(f"{jfile} is not a ShakeMap JSON stationlist, skipping")
+            return ([], [], [])
+
+        # if present, insert reference stuff into the database
+        reference_rows = []
+        if "references" in stas:
+            for shortref, refdict in stas["references"].items():
+                longref = refdict["long_reference"]
+                description = refdict["description"]
+                reference_rows.append([shortref, longref, description])
+
+        station_rows = []
+        amp_rows = []
+        for feature in stas["features"]:
+            sta_id = feature["id"]
+            if sta_id in sta_set:
+                continue
+            else:
+                sta_set.add(sta_id)
+            lon = feature["geometry"]["coordinates"][0]
+            lat = feature["geometry"]["coordinates"][1]
+            netid = feature["properties"]["network"]
+            code = sta_id.replace(netid + ".", "")
+            network = feature["properties"]["network"]
+            name = feature["properties"].get("name", None)
+            elev = feature["properties"].get("elev", None)
+            vs30 = feature["properties"].get("vs30", None)
+            source = feature["properties"].get("source", None)
+            refid = feature["properties"].get("refid", None)
+            stddev = 0
+
+            # is this an intensity observation or an instrument?
+            instrumented = int(netid.lower() not in CIIM_TUPLE)
+
+            station_rows.append(
+                (
+                    sta_id,
+                    network,
+                    code,
+                    name,
+                    lat,
+                    lon,
+                    elev,
+                    vs30,
+                    stddev,
+                    instrumented,
+                    source,
+                    refid,
+                )
+            )
+
+            if not instrumented:
+                try:
+                    amplitude = float(feature["properties"].get("intensity", np.nan))
+                except (ValueError, TypeError):
+                    amplitude = np.nan
+                try:
+                    stddev = float(
+                        feature["properties"].get("intensity_stddev", np.nan)
+                    )
+                except (ValueError, TypeError):
+                    stddev = np.nan
+                try:
+                    nresp = int(feature["properties"].get("nresp", -1))
+                except (ValueError, TypeError):
+                    nresp = -1
+                if nresp >= 0 and nresp < min_nresp:
+                    continue
+                flag = feature["properties"]["intensity_flag"]
+                if not flag or flag == "":
+                    flag = "0"
+                amp_rows.append(
+                    [sta_id, "MMI", "mmi", "h", amplitude, stddev, flag, nresp]
+                )
+                imt_set.add("MMI")
+                continue
+
+            #
+            # Collect the channel names for this station to see if we
+            # can resolve the orientation of any of the channels ending
+            # with "1" or "2".
+            #
+            chan_names = []
+            for comp in feature["properties"]["channels"]:
+                chan_names.append(comp["name"])
+            # Some legacy data stupidly names the channel the same as the
+            # station name. If there is only one channel, and its name
+            # is the station name, we assume it's horizontal and move on.
+            if len(chan_names) == 1 and chan_names[0] == name:
+                orients = ["H"]
+            else:
+                orients = _getOrientationSet(chan_names)
+            #
+            # Now insert the amps into the database
+            #
+            for ic, comp in enumerate(feature["properties"]["channels"]):
+                original_channel = comp["name"]
+                orientation = orients[ic]
+                for amp in comp["amplitudes"]:
+                    imt_type = amp["name"].upper()
+                    imt_set.add(imt_type)
+                    amp_id = sta_id + "." + imt_type + "." + original_channel
+                    if amp_id in amp_set:
+                        continue
+                    amp_set.add(amp_id)
+                    amplitude = amp["value"]
+                    if "ln_sigma" in amp:
+                        stddev = amp["ln_sigma"]
+                    elif "sigma" in amp:
+                        stddev = amp["sigma"]
+                    else:
+                        stddev = 0
+                    flag = amp["flag"]
+                    units = amp["units"]
+                    if (
+                        amplitude == "null"
+                        or np.isnan(float(amplitude))
+                        or amplitude <= 0
+                    ):
+                        amplitude = "NULL"
+                        flag = "G"
+                    elif imt_type == "MMI":
+                        pass
+                    else:
+                        amplitude = convert_units(imt_type, units, amplitude)
+                    amp_rows.append(
+                        [
+                            sta_id,
+                            imt_type,
+                            original_channel,
+                            orientation,
+                            amplitude,
+                            stddev,
+                            flag,
+                            -1,
+                        ]
+                    )
+        return (station_rows, amp_rows, reference_rows)
+
+    def _parse_groundpacket_json(self, jsonfile, sta_set, imt_set, amp_set):
+        packet = GroundMotionPacket.load_from_json(jsonfile)
+        station_rows = []
+        amp_rows = []
+        reference_rows = []
+        for feature in packet.features:
+            network_code = feature.properties.network_code
+            station_code = feature.properties.station_code
+            station_id = f"{network_code}.{station_code}"
+            if station_id in sta_set:
+                continue
+            else:
+                sta_set.add(station_id)
+            station_name = feature.properties.name
+            station_lon, station_lat, station_elev = feature.geometry.coordinates
+            vs30 = None
+            station_rows.append(
+                (
+                    station_id,
+                    network_code,
+                    station_code,
+                    station_name,
+                    station_lat,
+                    station_lon,
+                    station_elev,
+                    vs30,
+                    0.0,
+                    1,
+                    None,
+                    None,
+                )
+            )
+            for stream in feature.properties.streams:
+                for trace in stream.traces:
+                    channel_code = trace.properties.channel_code
+                    location_code = trace.properties.location_code
+                    if not len(location_code.strip()):
+                        location_code = "--"
+                    if channel_code in NON_CHANNEL_COMPONENTS:
+                        continue
+
+                    orient = ORIENTATIONS[channel_code[-1]]
+                    orientation = _getOrientation(channel_code, orient)
+
+                    for metric in trace.metrics:
+                        imt_type = metric.properties.name
+                        if imt_type not in SUPPORTED_METRICS:
+                            continue
+
+                        stddev = 0.0
+                        if isinstance(metric.values, float):
+                            amplitude = metric.values
+                            amplitude = convert_units(
+                                imt_type, metric.properties.units, amplitude
+                            )
+                            flag = 0
+                            nresp = -1
+                            imt_set.add(imt_type)
+                            amp_rows.append(
+                                [
+                                    station_id,
+                                    imt_type,
+                                    f"{channel_code}",
+                                    orientation,
+                                    amplitude,
+                                    stddev,
+                                    flag,
+                                    nresp,
+                                ]
+                            )
+                        else:
+                            for idx, amplitude in enumerate(metric.values[0]):
+                                amplitude = convert_units(
+                                    imt_type, metric.properties.units, amplitude
+                                )
+                                period = metric.dimensions.axis_values[1][idx]
+                                if period not in SUPPORTED_SA_PERIODS:
+                                    continue
+                                imt_type = f"{metric.properties.name}({period:.1f})"
+                                imt_set.add(imt_type)
+                                amp_id = (
+                                    f"{network_code}.{station_code}.{imt_type}."
+                                    f"{location_code}.{channel_code}"
+                                )
+                                if amp_id in amp_set:
+                                    continue
+                                amp_set.add(amp_id)
+                                amp_rows.append(
+                                    [
+                                        station_id,
+                                        imt_type,
+                                        f"{channel_code}",
+                                        orientation,
+                                        amplitude,
+                                        stddev,
+                                        flag,
+                                        nresp,
+                                    ]
+                                )
+        return (station_rows, amp_rows, reference_rows)
+
     def _loadFromJSON(self, jsonfiles, min_nresp):
         """
         Create a StationList object by reading one or more ShakeMap JSON
@@ -254,168 +563,20 @@ class StationList(object):
         amp_set = set()
         station_rows = []
         amp_rows = []
+        ref_rows = []
         for jfile in jsonfiles:
-            jfp = open(jfile, "r")
-            stas = json.load(jfp)
-            jfp.close()
-            if "type" not in stas:
-                logging.warn(f"{jfile} appears to contain no stations, skipping")
-                continue
-            if stas["type"] != "FeatureCollection":
-                logging.warn(f"{jfile} is not a ShakeMap JSON stationlist, skipping")
-                continue
-
-            # if present, insert reference stuff into the database
-            if "references" in stas:
-                for shortref, refdict in stas["references"].items():
-                    longref = refdict["long_reference"]
-                    description = refdict["description"]
-                    query = (
-                        f"INSERT INTO reference "
-                        "(shortref, longref, description) VALUES "
-                        f'("{shortref}","{longref}","{description}")'
-                    )
-                    self.cursor.execute(query)
-                    self.db.commit()
-
-            for feature in stas["features"]:
-                sta_id = feature["id"]
-                if sta_id in sta_set:
-                    continue
-                else:
-                    sta_set.add(sta_id)
-                lon = feature["geometry"]["coordinates"][0]
-                lat = feature["geometry"]["coordinates"][1]
-                netid = feature["properties"]["network"]
-                code = sta_id.replace(netid + ".", "")
-                network = feature["properties"]["network"]
-                name = feature["properties"].get("name", None)
-                elev = feature["properties"].get("elev", None)
-                vs30 = feature["properties"].get("vs30", None)
-                source = feature["properties"].get("source", None)
-                refid = feature["properties"].get("refid", None)
-                stddev = 0
-
-                # is this an intensity observation or an instrument?
-                instrumented = int(netid.lower() not in CIIM_TUPLE)
-
-                station_rows.append(
-                    (
-                        sta_id,
-                        network,
-                        code,
-                        name,
-                        lat,
-                        lon,
-                        elev,
-                        vs30,
-                        stddev,
-                        instrumented,
-                        source,
-                        refid,
-                    )
+            try:
+                _ = GroundMotionPacket.load_from_json(jfile)
+                tstations, tamps, trefs = self._parse_groundpacket_json(
+                    jfile, sta_set, imt_set, amp_set
                 )
-
-                if not instrumented:
-                    try:
-                        amplitude = float(
-                            feature["properties"].get("intensity", np.nan)
-                        )
-                    except (ValueError, TypeError):
-                        amplitude = np.nan
-                    try:
-                        stddev = float(
-                            feature["properties"].get("intensity_stddev", np.nan)
-                        )
-                    except (ValueError, TypeError):
-                        stddev = np.nan
-                    try:
-                        nresp = int(feature["properties"].get("nresp", -1))
-                    except (ValueError, TypeError):
-                        nresp = -1
-                    if nresp >= 0 and nresp < min_nresp:
-                        continue
-                    flag = feature["properties"]["intensity_flag"]
-                    if not flag or flag == "":
-                        flag = "0"
-                    amp_rows.append(
-                        [sta_id, "MMI", "mmi", "h", amplitude, stddev, flag, nresp]
-                    )
-                    imt_set.add("MMI")
-                    continue
-
-                #
-                # Collect the channel names for this station to see if we
-                # can resolve the orientation of any of the channels ending
-                # with "1" or "2".
-                #
-                chan_names = []
-                for comp in feature["properties"]["channels"]:
-                    chan_names.append(comp["name"])
-                # Some legacy data stupidly names the channel the same as the
-                # station name. If there is only one channel, and its name
-                # is the station name, we assume it's horizontal and move on.
-                if len(chan_names) == 1 and chan_names[0] == name:
-                    orients = ["H"]
-                else:
-                    orients = _getOrientationSet(chan_names)
-                #
-                # Now insert the amps into the database
-                #
-                for ic, comp in enumerate(feature["properties"]["channels"]):
-                    original_channel = comp["name"]
-                    orientation = orients[ic]
-                    for amp in comp["amplitudes"]:
-                        imt_type = amp["name"].upper()
-                        imt_set.add(imt_type)
-                        amp_id = sta_id + "." + imt_type + "." + original_channel
-                        if amp_id in amp_set:
-                            continue
-                        amp_set.add(amp_id)
-                        amplitude = amp["value"]
-                        if "ln_sigma" in amp:
-                            stddev = amp["ln_sigma"]
-                        elif "sigma" in amp:
-                            stddev = amp["sigma"]
-                        else:
-                            stddev = 0
-                        flag = amp["flag"]
-                        units = amp["units"]
-                        if (
-                            amplitude == "null"
-                            or np.isnan(float(amplitude))
-                            or amplitude <= 0
-                        ):
-                            amplitude = "NULL"
-                            flag = "G"
-                        elif imt_type == "MMI":
-                            pass
-                        elif imt_type == "PGV":
-                            if units == "cm/s":
-                                amplitude = np.log(amplitude)
-                            elif units == "ln(cm/s)":
-                                pass
-                            else:
-                                raise ValueError(f"Unknown units {units} in input")
-                        else:
-                            if units == "%g":
-                                amplitude = np.log(amplitude / 100.0)
-                            elif units == "ln(g)":
-                                pass
-                            else:
-                                raise ValueError(f"Unknown units {units} in input")
-                        amp_rows.append(
-                            [
-                                sta_id,
-                                imt_type,
-                                original_channel,
-                                orientation,
-                                amplitude,
-                                stddev,
-                                flag,
-                                -1,
-                            ]
-                        )
+            except Exception:
+                tstations, tamps, trefs = self._parse_shakemap_json(
+                    jfile, min_nresp, sta_set, imt_set, amp_set
+                )
+            station_rows += tstations
+            amp_rows += tamps
+            ref_rows += trefs
 
         new_imts = imt_set - orig_imt_set
         if any(new_imts):
@@ -437,6 +598,7 @@ class StationList(object):
             amp_rows,
         )
         self.db.commit()
+
         self.cursor.executemany(
             "INSERT INTO station (id, network, code, name, lat, lon, "
             "elev, vs30, stddev, instrumented, source, refid) VALUES "
@@ -445,7 +607,11 @@ class StationList(object):
         )
         self.db.commit()
 
-        return
+        self.cursor.executemany(
+            "INSERT INTO reference (shortref, longref, description) VALUES "
+            "(?, ?, ?)",
+            ref_rows,
+        )
 
     def getGeoJson(self):
         jdict = {"type": "FeatureCollection", "features": []}

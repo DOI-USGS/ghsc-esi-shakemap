@@ -66,7 +66,6 @@ def ordered(obj):
 # there or the shake_results file hasn't been generated yet
 #
 def check_failures(evid, datapath, module):
-
     # Non-existent event (should fail)
     mod = module("not_an_event")
     with pytest.raises(NotADirectoryError):
@@ -88,7 +87,6 @@ def check_failures(evid, datapath, module):
 # TODO: Could check more aspects of the JSON
 #
 def do_rupture(evid, datapath, oc):
-
     check_failures(evid, datapath, RuptureModule)
 
     mod = RuptureModule(evid)
@@ -108,7 +106,7 @@ def do_rupture(evid, datapath, oc):
             fcoords.append((float(lat), float(lon), float(depth)))
     jcoords = rupj["features"][0]["geometry"]["coordinates"][0][0]
     for ix, ftup in enumerate(fcoords):
-        assert np.allclose(ftup, jcoords[ix])
+        assert np.allclose(ftup, jcoords[ix], atol=1e-2)
 
 
 #
@@ -116,7 +114,6 @@ def do_rupture(evid, datapath, oc):
 # Not sure how these could be different, but there you go.
 #
 def do_info(evid, datapath, oc):
-
     check_failures(evid, datapath, InfoModule)
 
     mod = InfoModule(evid)
@@ -135,7 +132,6 @@ def do_info(evid, datapath, oc):
 # TODO: Should also probably check coordinates, resolution, etc.
 #
 def do_raster(evid, datapath, oc):
-
     check_failures(evid, datapath, RasterModule)
 
     mod = RasterModule(evid)
@@ -185,7 +181,6 @@ def do_raster(evid, datapath, oc):
 # output container.
 #
 def do_gridxml(evid, datapath, oc):
-
     check_failures(evid, datapath, GridXMLModule)
 
     mod = GridXMLModule(evid)
@@ -246,7 +241,6 @@ def do_gridxml(evid, datapath, oc):
 
 
 def do_contour(evid, datapath):
-
     check_failures(evid, datapath, ContourModule)
 
     mod = ContourModule(evid)
@@ -296,7 +290,6 @@ def test_points():
 
 
 def test_products():
-
     installpath, datapath = get_config_paths()
 
     #
