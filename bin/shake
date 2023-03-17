@@ -1,28 +1,28 @@
 #!/usr/bin/env python
 
 # stdlib imports
-import os.path
 import argparse
-import sys
-import traceback
-import io
-import socket
-import pkgutil
-import inspect
 import importlib
-import time
-from collections import OrderedDict
-from configobj import ConfigObj
-from validate import Validator
+import inspect
+import io
+import os.path
+import pkgutil
 import shlex
+import socket
+import sys
+import time
+import traceback
+from collections import OrderedDict
 
 # local imports
 import shakemap
-from shakemap.utils.config import get_config_paths, get_configspec, config_error
-from shakemap.utils.logging import get_logger
+from configobj import ConfigObj
+from esi_utils_rupture.origin import read_event_file
+from shakemap.utils.config import config_error, get_config_paths, get_configspec
 from shakemap.utils.dependencies import CommandDatabase
 from shakemap.utils.exception import TerminateShakeMap
-from impactutils.rupture.origin import read_event_file
+from shakemap.utils.logging import get_logger
+from validate import Validator
 
 CANCEL_FILE = "CANCELED"
 

@@ -1,16 +1,16 @@
 #!/usr/bin/env python
 
 # stdlib imports
-import os.path
 import argparse
+import glob
+import os.path
 import shutil
 import sys
-import glob
 
-# third party imports
-from impactutils.io.cmd import get_command_output
 import numpy as np
 
+# third party imports
+from esi_utils_io.cmd import get_command_output
 
 CONFIG_DIR = ".shakemap"
 CONFIG_FILE = "profiles.conf"

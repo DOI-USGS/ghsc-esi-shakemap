@@ -1,17 +1,17 @@
 #!/usr/bin/env python
 
 # stdlib imports
-import shutil
 import argparse
 import os.path
+import shutil
 import sys
 from configparser import ConfigParser
 
+# third party imports
+from esi_utils_io.cmd import get_command_output
+
 # local imports
 from shakemap.utils.config import get_config_paths
-
-# third party imports
-from impactutils.io.cmd import get_command_output
 
 CONFIG = "sync.conf"
 EXCLUDES = ["backup*", "pdl", "products", "*.hdf"]
