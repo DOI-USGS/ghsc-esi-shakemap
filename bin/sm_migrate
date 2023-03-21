@@ -2,40 +2,39 @@
 
 # stdlib imports
 import argparse
-import os.path
-import sys
-import re
 import glob
-import tarfile
 import json
-from collections import OrderedDict
 import logging
+import os.path
+import re
+import sys
+import tarfile
+from collections import OrderedDict
+
+import numpy as np
 
 # third party imports
 from configobj import ConfigObj
-import numpy as np
+from esi_utils_rupture import constants
+from esi_utils_rupture.factory import (
+    get_rupture,
+    rupture_from_dict_and_origin,
+    text_to_json,
+)
+from esi_utils_rupture.origin import Origin, read_event_file, write_event_file
+from esi_utils_time.ancient_time import HistoricTime
+from shakelib.utils.utils import get_extent
 
 # local imports
 from shakemap.utils.config import (
+    config_error,
     get_config_paths,
     get_configspec,
     get_custom_validator,
-    config_error,
 )
-from shakemap.utils.utils import get_network_name, migrate_gmpe, set_gmpe
-
-# from shakemap.utils.amps import AmplitudeHandler
-from impactutils.time.ancient_time import HistoricTime
-from impactutils.rupture import constants
-from impactutils.rupture.origin import read_event_file, write_event_file, Origin
-from impactutils.rupture.factory import (
-    text_to_json,
-    rupture_from_dict_and_origin,
-    get_rupture,
-)
-from shakelib.utils.utils import get_extent
+from shakemap.utils.layers import update_config_regions, validate_config
 from shakemap.utils.probs import get_weights
-from shakemap.utils.layers import validate_config, update_config_regions
+from shakemap.utils.utils import get_network_name, migrate_gmpe, set_gmpe
 
 KM2SEC = 3600.0 / 111  # seconds per kilometer
 
@@ -398,7 +397,6 @@ def parse_info(
     migrate_conf=None,
     use_old_gmpe=False,
 ):
-
     install_path, data_path = get_config_paths()
     config = ConfigObj(os.path.join(install_path, "config", "select.conf"))
     global_data_path = os.path.join(os.path.expanduser("~"), "shakemap_data")

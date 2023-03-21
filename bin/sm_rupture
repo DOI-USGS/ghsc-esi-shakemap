@@ -7,13 +7,12 @@ length, ...).
 """
 
 import argparse
-import numpy as np
 import copy
 
-
-from impactutils.rupture.factory import get_rupture
-from impactutils.rupture.origin import Origin
-from impactutils.rupture.quad_rupture import QuadRupture
+import numpy as np
+from esi_utils_rupture.factory import get_rupture
+from esi_utils_rupture.origin import Origin
+from esi_utils_rupture.quad_rupture import QuadRupture
 
 
 # Lame method to detect integer using try block because

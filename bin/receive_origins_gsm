@@ -13,18 +13,19 @@
 import argparse
 import os.path
 import sys
-from datetime import datetime
 import time
+from datetime import datetime
+
+import shakemap.utils.queue as queue
+from esi_utils_comcat.query import GeoServe
+from esi_utils_geo.compass import get_compass_dir_azimuth
+from esi_utils_rupture import constants
 
 # third-party imports
-from libcomcat.search import get_event_by_id
-from impactutils.comcat.query import GeoServe
-from impactutils.mapping.compass import get_compass_dir_azimuth
-from impactutils.rupture import constants
+from shakemap.utils.comcat import get_detail_json
 
 # local imports
 from shakemap.utils.config import get_config_paths
-import shakemap.utils.queue as queue
 from shakemap.utils.logging import get_generic_logger
 from shakemap.utils.utils import get_network_name
 
@@ -123,7 +124,7 @@ def main(args):
     fails = 0
     while fails < 3:
         try:
-            detail = get_event_by_id(eventid)
+            _ = get_detail_json(eventid)
         except Exception as e:
             fails += 1
             logger.warn(f"Libcomcat error: {str(e)}")

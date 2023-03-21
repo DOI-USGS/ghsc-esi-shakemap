@@ -19,10 +19,9 @@ import numpy as np
 
 # third party imports
 from configobj import ConfigObj
-from impactutils.rupture import constants
-from impactutils.rupture.factory import get_rupture
-from impactutils.rupture.origin import Origin, write_event_file
-from impactutils.time.ancient_time import HistoricTime
+from esi_utils_rupture.factory import get_rupture
+from esi_utils_rupture.origin import Origin, write_event_file
+from esi_utils_time.ancient_time import HistoricTime
 from shakelib.station import StationList
 from shakemap.coremods.dyfi import _get_dyfi_dataframe
 
@@ -72,11 +71,10 @@ def validate_xml(xmlfile):
 def validate_json(jsonfile):
     try:
         with open(jsonfile, "rt") as fh:
-            jdata = json.load(fh)
+            _ = json.load(fh)
         return True
     except Exception:
         return False
-    return False
 
 
 def write_instrumented(data_file, event_dir):
@@ -226,7 +224,6 @@ def _get_event_dictionary(detail, source, scenario):
     time = datetime.datetime.fromtimestamp(detail["properties"]["time"] / 1000)
     if source is not None:
         try:
-
             edict = {
                 "id": eventid,
                 "netid": source,
