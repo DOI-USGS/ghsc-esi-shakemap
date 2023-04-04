@@ -9,7 +9,6 @@ from collections import OrderedDict
 
 # third party imports
 import numpy as np
-import pandas as pd
 from gmpacket.packet import GroundMotionPacket
 from scipy import constants
 
@@ -72,7 +71,7 @@ TABLES = OrderedDict(
 # These are the netid's that indicate MMI data
 #
 CIIM_TUPLE = ("dyfi", "mmi", "intensity", "ciim")
-NON_CHANNEL_COMPONENTS = ["ROTD50.0"]
+NON_CHANNEL_PATTERNS = ["ROTD", "GREATER", "ROTI"]
 SUPPORTED_METRICS = ["PGA", "PGV", "SA"]
 ORIENTATIONS = {"1": "h", "2": "h", "Z": "v"}
 SUPPORTED_SA_PERIODS = [0.3, 1.0, 3.0]
@@ -471,7 +470,12 @@ class StationList(object):
                     location_code = trace.properties.location_code
                     if not len(location_code.strip()):
                         location_code = "--"
-                    if channel_code in NON_CHANNEL_COMPONENTS:
+                    is_channel = True
+                    for pattern in NON_CHANNEL_PATTERNS:
+                        if re.search(pattern, channel_code) is not None:
+                            is_channel = False
+                            break
+                    if not is_channel:
                         continue
 
                     orient = ORIENTATIONS[channel_code[-1]]
