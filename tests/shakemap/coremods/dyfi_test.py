@@ -40,6 +40,15 @@ def test_geocoded():
     np.testing.assert_almost_equal(df["INTENSITY"].sum(), 2332.8)
     np.testing.assert_almost_equal(df["STDDEV"].sum(), 304.9591)
 
+    # test -keepstddev flag (keep DYFI rawfile stddev, don't recompute)
+    with vcr.use_cassette(tape_file2):
+        detail_json = get_detail_json(eventid)
+        df, msg = _get_dyfi_dataframe(detail_json, min_nresp=3, rerun_stddev=False)
+
+    np.testing.assert_almost_equal(df["INTENSITY"].sum(), 2332.8)
+    np.testing.assert_almost_equal(df["STDDEV"].sum(), 182.338)
+
+
 
 def test_dyfi():
     eventid = "nc72282711"
