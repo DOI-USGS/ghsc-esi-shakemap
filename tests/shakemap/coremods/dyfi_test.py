@@ -27,7 +27,7 @@ def test_geocoded():
         df, msg = _get_dyfi_dataframe(detail_json, min_nresp=3)
 
     np.testing.assert_almost_equal(df["INTENSITY"].sum(), 3563.1)
-    np.testing.assert_almost_equal(df["STDDEV"].sum(), 250.984)
+    np.testing.assert_almost_equal(df["STDDEV"].sum(), 420.5521)
 
     # next, test event with only geocoded (?) resolution text data
     eventid = "ci14745580"
@@ -38,7 +38,7 @@ def test_geocoded():
         df, msg = _get_dyfi_dataframe(detail_json, min_nresp=3)
 
     np.testing.assert_almost_equal(df["INTENSITY"].sum(), 2332.8)
-    np.testing.assert_almost_equal(df["STDDEV"].sum(), 182.338)
+    np.testing.assert_almost_equal(df["STDDEV"].sum(), 304.9591)
 
 
 def test_dyfi():
