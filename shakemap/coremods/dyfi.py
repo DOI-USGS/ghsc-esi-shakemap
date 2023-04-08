@@ -90,7 +90,7 @@ class DYFIModule(CoreModule):
         self.logger.info("Wrote %i DYFI records to %s" % (len(dataframe), xmlfile))
 
 
-def _get_dyfi_dataframe(detail_json, inputfile=None, min_nresp=MIN_RESPONSES):
+def _get_dyfi_dataframe(detail_json, inputfile=None, min_nresp=MIN_RESPONSES, rerun_stddev=True):
 
     if inputfile:
         with open(inputfile, "rb") as f:
@@ -102,11 +102,19 @@ def _get_dyfi_dataframe(detail_json, inputfile=None, min_nresp=MIN_RESPONSES):
         if df is None:
             msg = f"Could not read file {inputfile}"
 
+    elif isinstance(detail_json,str):
+        # This is a URL, send query to Comcat
+        detail_json=get_detail_json(detail_json)
+        df, msg = _parse_dyfi_detail(detail_json, min_nresp)
+
     else:
         df, msg = _parse_dyfi_detail(detail_json, min_nresp)
 
     if df is None:
         return None, msg
+
+    if rerun_stddev:
+        get_stddev(df) # redo stddev calculation
 
     df["netid"] = "DYFI"
     df["source"] = "USGS (Did You Feel It?)"
@@ -219,3 +227,18 @@ def _parse_geocoded_json(bytes_data, min_nresp):
         df = df[df["nresp"] >= min_nresp]
 
     return df
+
+
+def get_stddev(dataframe):
+    print(dataframe.columns)
+    nresp=dataframe['nresp']
+    dataframe['stddev']=stddev_function(nresp)    
+    return
+
+
+# From SM paper, then add 0.2 sigma
+def stddev_function(nresp):
+    stddev = np.exp(nresp * (-1/24.02)) * 0.25 + 0.09 + 0.2
+    stddev = np.round(stddev,4)
+    return stddev
+
