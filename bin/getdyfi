@@ -41,7 +41,9 @@ def get_parser():
     parser.add_argument("url_or_id", help="ComCat URL/ID of the event to process")
     parser.add_argument("--inputfile", help="Use file instead of loading from ComCat")
     parser.add_argument("--file", help="Download to Excel file specified")
-    parser.add_argument("--keepstddev", help="Don't recompute DYFI stddev", action='store_true')
+    parser.add_argument(
+        "--keepstddev", help="Don't recompute DYFI stddev", action="store_true"
+    )
     return parser
 
 
@@ -60,7 +62,7 @@ def main(args):
             print("Cannot use inputfile with ComCat URL")
             sys.exit(0)
 
-        dataframe, msg = _get_dyfi_dataframe(args.url_or_id,rerun_stddev=rerun_stddev)
+        dataframe, msg = _get_dyfi_dataframe(args.url_or_id, rerun_stddev=rerun_stddev)
 
         # get the eventid from the url
         parts = urlparse(args.url_or_id)
@@ -69,13 +71,15 @@ def main(args):
     # if not, check if inputfile provided
     elif args.inputfile:
         eventid = args.url_or_id
-        dataframe, msg = _get_dyfi_dataframe(None, args.inputfile,rerun_stddev=rerun_stddev)
+        dataframe, msg = _get_dyfi_dataframe(
+            None, args.inputfile, rerun_stddev=rerun_stddev
+        )
 
     # if not, load URL
     else:
         eventid = args.url_or_id
         detail_url = DETAIL_TEMPLATE.replace("[EID]", eventid)
-        dataframe, msg = _get_dyfi_dataframe(detail_url,rerun_stddev=rerun_stddev)
+        dataframe, msg = _get_dyfi_dataframe(detail_url, rerun_stddev=rerun_stddev)
 
     if dataframe is None:
         print(msg)
