@@ -152,7 +152,7 @@ def get_probs(origin, config):
         tensor_params = origin.moment
 
     strec_results = selector.getSubductionType(
-        lat, lon, depth, eid, tensor_params=tensor_params
+        lat, lon, depth, mag, eid, tensor_params=tensor_params
     )
 
     region_probs = get_region_probs(eid, depth, strec_results, config)

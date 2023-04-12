@@ -49,7 +49,12 @@ def get_parser():
     parser.add_argument(
         "--property-event-type",
         nargs="*",
-        help="Event type (earthquake, explosion, etc.)",
+        help="Event type ('earthquake', 'explosion', etc.)",
+    )
+    parser.add_argument(
+        "--property-review-status",
+        nargs="*",
+        help="Event review status ('automatic', 'reviewed')",
     )
 
     parser.add_argument("--preferred-eventid", help="Event ID (i.e., us2008abcd)")
@@ -171,6 +176,16 @@ def main(args):
                 % (args.preferred_eventid, detail["id"])
             )
             sys.exit(0)
+    #
+    # Only run events that have been reviewed by the network operator
+    # (this restriction is subject to change)
+    #
+    if args.property_review_status != "reviewed":
+        logger.info(
+            "Event id %s is not reviewed; (review status=%s)"
+            % (args.preferred_eventid, args.property_review_status)
+        )
+        sys.exit(0)
 
     # We've weeded out the messages we don't want, so construct an event
     # dictionary and send it to the queue
@@ -240,6 +255,13 @@ def main(args):
         action = "Event added"
     else:
         action = "Origin updated"
+
+    if args.property_review_status == "reviewed":
+        reviewed = "true"
+    elif args.property_review_status == "automatic":
+        reviewed = "false"
+    else:
+        reviewed = "unknown"
     event = {
         "id": args.preferred_eventid,
         "netid": args.preferred_eventsource,
@@ -252,6 +274,7 @@ def main(args):
         "locstring": location,
         "alt_eventids": args.eventids,
         "action": action,
+        "reviewed": reviewed
     }
     logger.info(f"Sending event {args.preferred_eventid} to queue.")
 

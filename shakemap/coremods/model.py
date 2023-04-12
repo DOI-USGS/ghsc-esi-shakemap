@@ -1347,7 +1347,7 @@ class ModelModule(CoreModule):
             self.ccf.getCorrelation(t1_22, t2_22, matrix22)
             sta_phi_flat = sta_phi.flatten()
             make_sigma_matrix(matrix22, sta_phi_flat, sta_phi_flat)
-            np.fill_diagonal(matrix22, np.diag(matrix22) + sta_sig_extra**2)
+            np.fill_diagonal(matrix22, np.diag(matrix22) + sta_sig_extra ** 2)
             cov_WD_WD_inv = np.linalg.pinv(matrix22)
             #
             # Hold on to some things we'll need later
@@ -1839,6 +1839,10 @@ class ModelModule(CoreModule):
             info[ip][ei]["event_type"] = "SCENARIO"
         else:
             info[ip][ei]["event_type"] = "ACTUAL"
+        if getattr(origin, "reviewed", None) is not None:
+            info[ip][ei]["origin_reviewed"] = origin.reviewed
+        else:
+            info[ip][ei]["origin_reviewed"] = "unknown"
 
         info[op] = {}
         info[op][gm] = {}
@@ -2137,7 +2141,7 @@ class ModelModule(CoreModule):
                 else:
                     mytau = sdf[key + "_tau"][six]
                 myphi = sdf[key + "_phi"][six]
-                mysigma = np.sqrt(mytau**2 + myphi**2)
+                mysigma = np.sqrt(mytau ** 2 + myphi ** 2)
                 mysigma_rock = sdf[key + "_sigma_rock"][six]
                 mysigma_soil = sdf[key + "_sigma_soil"][six]
                 imt_name = key.lower().replace("_pred", "")
@@ -2599,7 +2603,7 @@ class ModelModule(CoreModule):
             target_res = (
                 -(latspan + lonspan)
                 - np.sqrt(
-                    latspan**2 + lonspan**2 + 2 * latspan * lonspan * (2 * nmax - 1)
+                    latspan ** 2 + lonspan ** 2 + 2 * latspan * lonspan * (2 * nmax - 1)
                 )
             ) / (2 * (1 - nmax))
 
