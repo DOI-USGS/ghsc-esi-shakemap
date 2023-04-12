@@ -37,7 +37,6 @@ dependencies:
   - scipy
   - shapely
   - simplekml
-  - strec
   - versioneer
   - vcrpy
 
