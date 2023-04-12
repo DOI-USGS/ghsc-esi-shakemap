@@ -33,6 +33,7 @@ EVENT = OrderedDict(
         ("locstring", "TEXT"),
         ("repeats", "TEXT"),
         ("lastrun", "INTEGER"),
+        ("reviewed", "TEXT"),
     ]
 )
 
@@ -114,6 +115,15 @@ class AmplitudeHandler(object):
             self._cursor.execute("CREATE INDEX stacode_index ON " "station(code)")
             self._cursor.execute("CREATE INDEX stanet_index ON " "station(network)")
             self._cursor.execute("PRAGMA journal_mode = WAL")
+        #
+        # We've added a column for origin reviewed status in the event
+        # table, so let's make sure it's there for older databases.
+        #
+        columns = [i[1] for i in self._cursor.execute("PRAGMA table_info(EVENT)")]
+        if "reviewed" not in columns:
+            self._cursor.execute(
+                "ALTER TABLE EVENT ADD COLUMN reviewed TEXT DEFAULT 'unknown'"
+            )
 
     def _connect(self):
         self._connection = sqlite3.connect(self._dbfile, timeout=15)
@@ -154,6 +164,8 @@ class AmplitudeHandler(object):
                           - repeats: A list of repeat times (optional)
                           - lastrun: Timestamp of the last run of the event.
                                      (optional)
+                          - reviewed: "true" if origin was reviewed, "false" if not,
+                                "unknown" if not known (optional)
             update (bool): Update an existing event with new info (True) or
                            insert a new event (False)
 
@@ -192,6 +204,8 @@ class AmplitudeHandler(object):
             lastrun = event["lastrun"]
         else:
             lastrun = int(time.time())
+        if "reviewed" not in event:
+            event["reviewed"] = "unknown"
         self._cursor.execute(
             einsert,
             (
@@ -206,6 +220,7 @@ class AmplitudeHandler(object):
                 event["locstring"],
                 repeats,
                 lastrun,
+                event["reviewed"],
             ),
         )
 

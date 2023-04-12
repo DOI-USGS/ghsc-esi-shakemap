@@ -23,6 +23,7 @@ from configobj import ConfigObj
 from esi_utils_rupture import constants
 from esi_utils_rupture.origin import write_event_file
 from shakemap.utils.amps import AmplitudeHandler
+from shakemap.utils.config import get_data_path
 
 # Local imports
 from shakemap.utils.config import config_error, get_config_paths, get_configspec
@@ -247,6 +248,8 @@ class Queue(object):
                 event = self.ampHandler.getEvent(eventid)
                 # Update the XML because the DB may have newer information
                 self.writeEventXml(event)
+                if "reviewed" in event and event["reviewed"] == "true":
+                    self.writeRewiewedOriginTransferConf(event)
                 p = subprocess.Popen(command)
                 self.children[eventid] = {"popen": p, "start_time": time.time()}
 
@@ -499,6 +502,26 @@ class Queue(object):
 
         event["time"] = ttemp
 
+        return
+
+    def writeRewiewedOriginTransferConf(self, event):
+        """Copy transfer_reviewed_origin.conf to an event-specific transfer.conf.
+
+        Args:
+            event (dict): The event data structure.
+
+        Returns:
+            nothing: Nothing.
+        """
+        transfer_file = os.path.join(get_data_path(), "transfer_reviewed_origin.conf")
+        event_dir = os.path.join(self.data_path, event["id"], "current")
+        if not os.path.isdir(event_dir):
+            os.makedirs(event_dir)
+        event_file = os.path.join(event_dir, "transfer.conf")
+        # Don't overwrite the event-specific transfer.conf if it exists, because
+        # the operator may have customized it.
+        if os.path.isfile(event_file) is False:
+            shutil.copy(transfer_file, event_file)
         return
 
     def moveEventDirectory(self, oldid, newid):
@@ -844,7 +867,7 @@ class Queue(object):
     def runQueuedEvents(self):
         """If there is space, run events from the queue"""
         if len(self.children) >= self.config["max_subprocesses"]:
-            self.logger.info("Processing queue is full; waiting for open " "slots.")
+            self.logger.info("Processing queue is full; waiting for open slots.")
             return
         current_time = int(time.time())
         mtw = self.config["max_trigger_wait"]
@@ -897,6 +920,8 @@ class Queue(object):
             self.logger.info(f"Running event {eventid}")
             # Update the XML because the DB may have newer information
             self.writeEventXml(event)
+            if "reviewed" in event and event["reviewed"] == "true":
+                self.writeRewiewedOriginTransferConf(event)
             p = subprocess.Popen(command)
             self.children[eventid] = {"popen": p, "start_time": time.time()}
             self.eventQueue.dequeueEvent(eventid)
