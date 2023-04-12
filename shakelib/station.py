@@ -513,9 +513,10 @@ class StationList(object):
                                     imt_type, metric.properties.units, amplitude
                                 )
                                 period = metric.dimensions.axis_values[1][idx]
-                                if period not in SUPPORTED_SA_PERIODS:
-                                    continue
-                                imt_type = f"{metric.properties.name}({period:.1f})"
+                                if period >= 1:
+                                    imt_type = f"{metric.properties.name}({period:.1f})"
+                                else:
+                                    imt_type = f"{metric.properties.name}({period:g})"
                                 imt_set.add(imt_type)
                                 amp_id = (
                                     f"{network_code}.{station_code}.{imt_type}."
