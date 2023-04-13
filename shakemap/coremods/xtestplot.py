@@ -51,6 +51,8 @@ class XTestPlot(CoreModule):
         # Make plots
         #
         for myimt in imtlist:
+            if "_predictions" in myimt:
+                continue
             data = datadict[myimt]
             fig, axa = plt.subplots(2, sharex=True, figsize=(10, 8))
             plt.subplots_adjust(hspace=0.1)
