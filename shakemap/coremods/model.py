@@ -112,6 +112,8 @@ class ModelModule(CoreModule):
         self.sta_tau = {}
         self.sta_sig_extra = {}
         self.sta_rrups = {}
+        self.pred_out = {}
+        self.pred_out_sd = {}
         #
         # These are useful matrices that we compute in the bias function
         # that we can reuse in the MVN function
@@ -1459,6 +1461,9 @@ class ModelModule(CoreModule):
         pout_mean, pout_sd = self._gmas(
             gmpe, self.sx_out, self.dx_out, oqimt, self.apply_gafs
         )
+        if not self.do_grid:
+            self.pred_out[imtstr] = pout_mean
+            self.pred_out_sd[imtstr] = pout_sd[0]
 
         if self.use_simulations:
             if imtstr == "MMI":
@@ -2411,6 +2416,18 @@ class ModelModule(CoreModule):
                 std_metadata,
                 self.outphi[key].flatten(),
                 self.outtau[key].flatten(),
+            )
+            # Store the predictions
+            oc.setIMTArrays(
+                key + "_predictions",
+                component,
+                self.sx_out.lons.flatten(),
+                self.sx_out.lats.flatten(),
+                ascii_ids,
+                self.pred_out[key].flatten(),
+                mean_metadata,
+                self.pred_out_sd[key].flatten(),
+                std_metadata,
             )
 
     def _storeAttenuationData(self, oc):
