@@ -57,6 +57,8 @@ class XTestPlotMulti(CoreModule):
             datadict = {}
             imtlist = container.getIMTs("GREATER_OF_TWO_HORIZONTAL")
             for myimt in imtlist:
+                if "_predictions" in myimt:
+                    continue
                 datadict[myimt] = container.getIMTArrays(
                     myimt, "GREATER_OF_TWO_HORIZONTAL"
                 )
@@ -68,6 +70,8 @@ class XTestPlotMulti(CoreModule):
         #
         colors = ["k", "b", "g", "r", "c", "m"]
         for myimt in imtlist:
+            if "_predictions" in myimt:
+                continue
             fig, axa = plt.subplots(2, sharex=True, figsize=(10, 8))
             plt.subplots_adjust(hspace=0.1)
             for ix, dd in enumerate(datalist):

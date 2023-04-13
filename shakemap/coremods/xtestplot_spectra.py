@@ -48,6 +48,8 @@ class XTestPlotSpectra(CoreModule):
         for myimt in imtlist:
             if not myimt.startswith("SA("):
                 continue
+            if "_predictions" in myimt:
+                continue
             ddict = container.getIMTArrays(myimt, "GREATER_OF_TWO_HORIZONTAL")
             datalist.append(ddict["mean"][0])
             stddevlist.append(ddict["std"][0])
