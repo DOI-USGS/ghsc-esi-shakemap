@@ -283,6 +283,22 @@ class ModelModule(CoreModule):
         if self.rx.rake is None:
             self.rx.rake = 0
 
+        # ---------------------------------------------------------------------
+        # Add mechanism and tectonic regine to origin
+        # ---------------------------------------------------------------------
+        try:
+            strecdata = self.ic.getStrecJson()
+        except AttributeError:
+            pass
+        else:
+            strec_results = json.loads(strecdata)
+            self.rupture_obj._origin.mech = strec_results["FocalMechanism"]
+            self.rupture_obj._origin._tectonic_region = strec_results["TectonicRegion"]
+            self.rupture_obj._origin._slab_model_dip = strec_results["SlabModelDip"]
+            self.rupture_obj._origin._slab_model_strike = strec_results[
+                "SlabModelStrike"
+            ]
+
         #
         # Set up the coordinates for the attenuation curves
         #
@@ -1787,13 +1803,13 @@ class ModelModule(CoreModule):
         info[ip][ei]["depth"] = str(self.rx.hypo_depth)
         info[ip][ei]["event_id"] = self._eventid
 
-        # look for the presence of a strec_results file and read it in
-        _, data_path = get_config_paths()
-        datadir = os.path.join(data_path, self._eventid, "current")
-        strecfile = os.path.join(datadir, "strec_results.json")
-        if os.path.isfile(strecfile):
-            strec_results = json.load(open(strecfile, "rt"))
-            info[st] = strec_results
+        # look for the presence of a strec_results load them
+        try:
+            strecdata = self.ic.getStrecJson()
+        except AttributeError:
+            pass
+        else:
+            info[st] = json.loads(strecdata)
 
         # the following items are primarily useful for PDL
         origin = self.rupture_obj._origin

@@ -386,12 +386,12 @@ def main(args):
             if not has_dyfi:
                 print(
                     "Event %s has no ShakeMap product. "
-                    "Creating a basic ShakeMap." % detail.id
+                    "Creating a basic ShakeMap." % detail["id"]
                 )
             else:
                 print(
                     "Event %s has no ShakeMap product, but does have DYFI. "
-                    "Downloading that data." % detail.id
+                    "Downloading that data." % detail["id"]
                 )
                 dataframe, msg = _get_dyfi_dataframe(detail)
                 if dataframe is not None and len(dataframe):
