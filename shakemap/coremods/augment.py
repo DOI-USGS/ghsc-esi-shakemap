@@ -210,7 +210,14 @@ class AugmentModule(CoreModule):
         if (rupturefile and os.path.isfile(rupturefile)) or eventxml is not None:
             self.logger.debug("Updating rupture/origin information.")
             shake_data.updateRupture(eventxml=eventxml, rupturefile=rupturefile)
-
+        #
+        # Look for a strec_results.json file and replace the existing one if found
+        #
+        strecfile = os.path.join(datadir, "strec_results.json")
+        if os.path.isfile(strecfile):
+            with open(strecfile, "r") as sfp:
+                strec_data = sfp.read()
+            shake_data.setStrecJson(strec_data)
         #
         # Sort out the version history. We're working with an existing
         # HDF file, so: if we are the originator, just update the timestamp,

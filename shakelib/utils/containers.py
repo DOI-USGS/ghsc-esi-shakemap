@@ -120,6 +120,37 @@ class ShakeMapInputContainer(ShakeMapContainerBase):
         rupture = rupture_from_dict(rupture_dict)
         return rupture
 
+    def setStrecJson(self, strec):
+        """
+        Store STREC JSON string in container
+
+        Args:
+            strec (JSON): JSON string of STREC output.
+        Raises:
+            TypeError: If input object is not a string.
+        """
+        if "strec" in self.getStrings():
+            self.dropString([], "strec")
+        if not isinstance(strec, str):
+            fmt = "Input object is not a string."
+            raise TypeError(fmt)
+        self.setString([], "strec", strec)
+
+    def getStrecJson(self):
+        """
+        Retrieve STREC JSON from container.
+
+        Returns:
+            String: String of STREC JSON.
+        Raises:
+            AttributeError: If STREC JSON string has not been set in
+                the container.
+        """
+        if "strec" not in self.getStrings():
+            raise AttributeError("strec object not set in container.")
+        strec = self.getString([], "strec")
+        return strec
+
     def setStationList(self, stationlist):
         """
         Store StationList object in container.

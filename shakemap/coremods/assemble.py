@@ -113,7 +113,6 @@ class AssembleModule(CoreModule):
             sourcefile = None
         if not os.path.isfile(momentfile):
             momentfile = None
-
         #
         # Clear away results from previous runs
         #
@@ -256,6 +255,15 @@ class AssembleModule(CoreModule):
             datafiles=datafiles,
         )
         self.logger.debug(f"Created HDF5 input container in {shake_data.getFileName()}")
+        #
+        # Add any STREC data that is lying around
+        #
+        strecfile = os.path.join(datadir, "strec_results.json")
+        if os.path.isfile(strecfile):
+            with open(strecfile, "rt") as sfp:
+                strec_data = sfp.read()
+            shake_data.setStrecJson(strec_data)
+
         ah = AmplitudeHandler(install_path, data_path)
         event = ah.getEvent(self._eventid)
         if event is None:
