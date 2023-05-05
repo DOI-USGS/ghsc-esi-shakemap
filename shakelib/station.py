@@ -71,7 +71,7 @@ TABLES = OrderedDict(
 # These are the netid's that indicate MMI data
 #
 CIIM_TUPLE = ("dyfi", "mmi", "intensity", "ciim")
-NON_CHANNEL_PATTERNS = ["ROTD", "GREATER", "ROTI"]
+NON_CHANNEL_PATTERNS = ["GREATER"]
 SUPPORTED_METRICS = ["PGA", "PGV", "SA"]
 ORIENTATIONS = {"1": "h", "2": "h", "Z": "v"}
 SUPPORTED_SA_PERIODS = [0.3, 1.0, 3.0]
@@ -478,7 +478,11 @@ class StationList(object):
                     if not is_channel:
                         continue
 
-                    orient = ORIENTATIONS[channel_code[-1]]
+                    if channel_code.startswith("Rot"):
+                        channel_code = channel_code.lower()
+                        orient = "H"
+                    else:
+                        orient = ORIENTATIONS[channel_code[-1]]
                     orientation = _getOrientation(channel_code, orient)
 
                     for metric in trace.metrics:
@@ -571,7 +575,6 @@ class StationList(object):
         ref_rows = []
         for jfile in jsonfiles:
             try:
-                _ = GroundMotionPacket.load_from_json(jfile)
                 tstations, tamps, trefs = self._parse_groundpacket_json(
                     jfile, sta_set, imt_set, amp_set
                 )
@@ -939,7 +942,9 @@ class StationList(object):
         self.cursor.execute("SELECT imt_type FROM imt")
         return set([z[0] for z in self.cursor.fetchall()])
 
-    def getStationDictionary(self, instrumented=True, min_nresp=1):
+    def getStationDictionary(
+        self, component="GREATER_OF_TWO_HORIZONTAL", instrumented=True, min_nresp=1
+    ):
         """
         Return a dictionary of the instrumented or non-instrumented
         stations. The keys describe the parameter, the values are Numpy
@@ -968,6 +973,10 @@ class StationList(object):
                 Set to True if the dictionary is to contain the instrumented
                 stations, or to False if the dictionary is to contain the
                 non-instrumented (MMI) stations.
+            component (str):
+                Defines the component of the data returned. The default is
+                "GREATER_OF_TWO_HORIZONTAL". Other choices might be "RotD50",
+                "RotD100", etc. Invalid components will simply not return any IMTs.
             min_nresp (int):
                 The minimum number of DYFI responses required to make a valid
                 observation.
@@ -985,6 +994,7 @@ class StationList(object):
                 "getStationDictionary: the instrumented argument "
                 "must be of type bool"
             )
+        component = component.lower()
         columns = list(TABLES["station"].keys())
         dstr = ", ".join(columns)
         self.cursor.execute(
@@ -1018,8 +1028,11 @@ class StationList(object):
         # Get all of the unflagged amps with the proper orientation
         #
         self.cursor.execute(
-            "SELECT a.amp, i.imt_type, a.station_id, a.stddev, a.nresp  FROM "
-            'amp a, station s, imt i WHERE a.flag = "0" '
+            "SELECT "
+            "a.amp, i.imt_type, a.station_id, a.stddev, a.nresp, a.original_channel "
+            "FROM "
+            "amp a, station s, imt i "
+            'WHERE a.flag = "0" '
             "AND s.id = a.station_id "
             "AND a.imt_id = i.id "
             'AND s.instrumented = ? AND a.orientation NOT IN ("Z", "U") '
@@ -1037,18 +1050,43 @@ class StationList(object):
         #
         for this_row in amp_rows:
             #
+            # Throw out the components that don't fit the request
+            #
+            if component.startswith("rot") and component != this_row[5]:
+                continue
+            if (
+                component == "GREATER_OF_TWO_HORIZONTAL"
+                or component == "GEOMETRIC_MEAN"
+                or component == "ARITHMETIC_MEAN"
+            ) and this_row[5].startswith("rot"):
+                continue
+            #
             # Set the cell to the peak amp
             #
-            rowidx = id_dict[this_row[2]]
-            cval = df[this_row[1]][rowidx]
-            amp = this_row[0]
-            stddev = this_row[3]
-            nresp = this_row[4]
-            if np.isnan(cval) or (cval < amp):
-                df[this_row[1]][rowidx] = amp
-                df[this_row[1] + "_sd"][rowidx] = stddev
-                if instrumented is False:
-                    df[this_row[1] + "_nresp"][rowidx] = nresp
+            if component == "GREATER_OF_TWO_HORIZONTAL" or component.startswith("rot"):
+                rowidx = id_dict[this_row[2]]
+                cval = df[this_row[1]][rowidx]
+                amp = this_row[0]
+                stddev = this_row[3]
+                nresp = this_row[4]
+                if np.isnan(cval) or (cval < amp):
+                    df[this_row[1]][rowidx] = amp
+                    df[this_row[1] + "_sd"][rowidx] = stddev
+                    if instrumented is False:
+                        df[this_row[1] + "_nresp"][rowidx] = nresp
+            else:
+                rowidx = id_dict[this_row[2]]
+                cval = df[this_row[1]][rowidx]
+                amp = this_row[0]
+                stddev = this_row[3]
+                if np.isnan(cval):
+                    df[this_row[1]][rowidx] = amp
+                    df[this_row[1] + "_sd"][rowidx] = stddev
+                else:
+                    if component == "GEOMETRIC_MEAN":
+                        df[this_row[1]][rowidx] = np.sqrt(cval * amp)
+                    elif component == "ARITHMETIC_MEAN":
+                        df[this_row[1]][rowidx] = (cval + amp) / 2.0
 
         return df, myimts
 
@@ -1368,6 +1406,12 @@ def _getOrientation(orig_channel, orient):
         Character representing the channel orientation. One of 'N',
         'E', 'Z', 'H' (for horizontal), or 'U' (for unknown).
     """
+    #
+    # Default no-op
+    #
+    if orient == "H":
+        return "H"
+
     if not len(orig_channel.strip()):
         orientation = "U"  # default when we don't know anything about channel
         return orientation

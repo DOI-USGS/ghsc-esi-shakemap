@@ -188,6 +188,6 @@ class ComponentConverter(ABC):
             IMC: One of the OQ IMC types. Returns None if nothing matches.
         """
         for imc in IMC:
-            if imc.value == imcstring:
+            if imc.value.lower() == imcstring.lower():
                 return imc
         return None
