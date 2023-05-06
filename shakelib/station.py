@@ -479,10 +479,12 @@ class StationList(object):
                         continue
 
                     if channel_code.startswith("Rot"):
-                        channel_code = channel_code.lower()
                         orient = "H"
                     else:
-                        orient = ORIENTATIONS[channel_code[-1]]
+                        if channel_code[-1] in ORIENTATIONS:
+                            orient = ORIENTATIONS[channel_code[-1]]
+                        else:
+                            orient = None
                     orientation = _getOrientation(channel_code, orient)
 
                     for metric in trace.metrics:
@@ -994,7 +996,6 @@ class StationList(object):
                 "getStationDictionary: the instrumented argument "
                 "must be of type bool"
             )
-        component = component.lower()
         columns = list(TABLES["station"].keys())
         dstr = ", ".join(columns)
         self.cursor.execute(
@@ -1052,18 +1053,18 @@ class StationList(object):
             #
             # Throw out the components that don't fit the request
             #
-            if component.startswith("rot") and component != this_row[5]:
+            if component.startswith("Rot") and component != this_row[5]:
                 continue
             if (
                 component == "GREATER_OF_TWO_HORIZONTAL"
                 or component == "GEOMETRIC_MEAN"
                 or component == "ARITHMETIC_MEAN"
-            ) and this_row[5].startswith("rot"):
+            ) and this_row[5].startswith("Rot"):
                 continue
             #
             # Set the cell to the peak amp
             #
-            if component == "GREATER_OF_TWO_HORIZONTAL" or component.startswith("rot"):
+            if component == "GREATER_OF_TWO_HORIZONTAL" or component.startswith("Rot"):
                 rowidx = id_dict[this_row[2]]
                 cval = df[this_row[1]][rowidx]
                 amp = this_row[0]
