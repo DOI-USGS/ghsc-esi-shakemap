@@ -312,7 +312,8 @@ def test_packet():
     for idx, shake_group in shakemap_amps_frame.groupby(["station_id", "imt_type"]):
         idx1 = packet_amps_frame["station_id"] == idx[0]
         idx2 = packet_amps_frame["imt_type"] == idx[1]
-        packet_group = packet_amps_frame[(idx1) & (idx2)]
+        idx3 = packet_amps_frame["channel"] != "ROTD50.0"
+        packet_group = packet_amps_frame[(idx1) & (idx2) & (idx3)]
         shake_vals = np.sort(shake_group["amplitude"].values)
         packet_vals = np.sort(packet_group["amplitude"].values)
         np.testing.assert_allclose(shake_vals, packet_vals, rtol=1e-2)

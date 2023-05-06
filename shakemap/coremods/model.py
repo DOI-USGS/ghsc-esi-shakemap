@@ -799,13 +799,19 @@ class ModelModule(CoreModule):
             return
         if self.stations is None:
             return
-        for dfid, val in (("df1", True), ("df2", False)):
+        component = self.config["interp"]["component"]
+        for dfid, val, comp in (
+            ("df1", True, component),
+            ("df2", False, "GREATER_OF_TWO_HORIZONTAL"),
+        ):
             if dfid == "df1" and self.no_seismic:
                 continue
             if dfid == "df2" and self.no_macroseismic:
                 continue
             sdf, imts = self.stations.getStationDictionary(
-                instrumented=val, min_nresp=self.config["data"]["min_nresp"]
+                instrumented=val,
+                min_nresp=self.config["data"]["min_nresp"],
+                component=comp,
             )
             if sdf is not None:
                 df = DataFrame()
