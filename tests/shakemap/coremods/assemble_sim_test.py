@@ -12,7 +12,7 @@ def test_assemble_sim():
     homedir = os.path.dirname(os.path.abspath(__file__))
     cfgfile = os.path.join(homedir, "..", "..", "data", "simulation", "simulation.conf")
     specfile = os.path.join(
-        homedir, "..", "..", "..", "shakemap", "data", "simulationspec.conf"
+        homedir, "..", "..", "..", "src", "shakemap", "data", "simulationspec.conf"
     )
     simfile = os.path.join(homedir, "..", "..", "data", "simulation", "planet9.csv")
     cfgfile = os.path.abspath(cfgfile)

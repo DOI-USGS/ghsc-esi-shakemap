@@ -28,9 +28,6 @@ tests/data/install/data/event_queue.db
 tests/data/install/data/event_queue.db-shm
 tests/data/install/data/event_queue.db-wal
 *.pytest*
-shakemap/c/pcontour.c
-shakemap/c/clib.c
-shakemap/c/*.so
 strec_results.json
 test-output.xml
 **/default.profraw

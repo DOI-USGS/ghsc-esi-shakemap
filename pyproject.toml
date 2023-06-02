@@ -1,0 +1,126 @@
+[project]
+name = "shakemap"
+dynamic = ["version"]
+description = "USGS Near-Real-Time Ground Motion Mapping"
+authors = [
+    {name = "Bruce Worden", email = "cbworden@usgs.gov"},
+    {name = "Mike Hearne", email = "mhearne@usgs.gov"},
+    {name = "Eric Thompson", email = "emthompson@usgs.gov"},
+]
+license = {file = "LICENSE.md"}
+readme = "README.md"
+requires-python = ">=3.9,<3.10"
+
+dependencies = [
+    "esi-core>=1.0.1",
+    "esi-utils-cartopy@git+https://code.usgs.gov/ghsc/esi/esi-utils-cartopy",
+    "esi-utils-colors>1.0",
+    "esi-utils-comcat>=0.0.1",
+    "esi-utils-geo>=0.9.2",
+    "esi-utils-io>1.0",
+    "esi-utils-rupture>1.0",
+    "esi-utils-textformat>=1.0",
+    "esi-utils-time>=1.0",
+    "esi-utils-transfer>=0.1.0",
+    "esi-utils-vectors>=1.0",
+    "gmpacket>=0.1.2",
+    "mapio>=0.8.8",
+    "ps2ff>=1.5.2",
+    "usgs-strec>=2.2.3",
+    # "cartopy>=0.21",
+    "configobj>=5.0.8",
+    "cryptography>=37.0.4",
+    "defusedxml>=0.7.1",
+    "descartes>=1.1.0",
+    "docutils>=0.20.1",
+    "fiona>=1.9.4.post1",
+    "h5py>=3.8.0",
+    "lockfile>=0.12.2",
+    "matplotlib>=3.7.1",
+    # "numpy>=1.24.3",
+    "obspy>=1.4.0",
+    "openquake-engine>=3.16.3",
+    "pandas>=2.0.2",
+    "psutil>=5.9.5",
+    # "pyproj>=3.5.0",
+    "python-daemon>=3.0.1",
+    "pyzmq>=25.1.0",
+    "rasterio>=1.3.7",
+    "scikit-image>=0.20.0",
+    # "scipy>=1.8",
+    # "shapely>=2.0.1",
+    "simplekml>=1.3.6",
+]
+
+[project.optional-dependencies]
+dev = [
+    "build>=0.7.0",
+    "black>=21",
+    "flake8>=3.9",
+    "ipython>=8.13.2",
+]
+test = [
+    "pytest>=7.3.1",
+    "pytest-azurepipelines>=1.0.4",
+    "pytest-cov>=4.1.0",
+    "pytest-faulthandler>=2.0.1",
+    "vcrpy>=4.3.1",
+]
+doc = [
+    "sphinx>5.0.0",
+    "sphinx-autoapi>=2.1.0",
+]
+build = [
+    "build",
+    "twine",
+    "check-wheel-contents",
+]
+
+[project.scripts]
+associate_amps = "shakemap.bin.associate_amps:main"
+getdyfi = "shakemap.bin.getdyfi:main"
+recieve_amps = "shakemap.bin.receive_amps:main"
+receive_origins = "shakemap.bin.receive_origins:main"
+receive_origins_gsm = "shakemap.bin.receive_origins_gsm:main"
+run_verification = "shakemap.bin.run_verification:main"
+shake = "shakemap.bin.shake:main"
+sm_check = "shakemap.bin.sm_check:main"
+sm_compare = "shakemap.bin.sm_compare:main"
+sm_create = "shakemap.bin.sm_create:main"
+sm_migrate = "shakemap.bin.sm_migrate:main"
+sm_profile = "shakemap.bin.sm_profile:main"
+sm_queue = "shakemap.bin.sm_queue:main"
+sm_rupture = "shakemap.bin.sm_rupture:main"
+sm_batch = "shakemap.bin.sm_batch:main"
+sm_sync = "shakemap.bin.sm_sync:main"
+fix_netcdf = "shakemap.bin.fix_netcdf:main"
+
+[build-system]
+requires = [
+  "setuptools>=42",
+  "wheel",
+  "setuptools_scm[toml]>=3.4",
+  "numpy",
+]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["shakemap*", "shakelib*"]
+exclude = ["tests*"]
+
+[tool.setuptools.package-data]
+shakemap = [ 
+    "data/*",
+    "data/gis/*",
+    "data/layers/*",
+    "data/mapping/*",
+    "data/nga_east_tables/*",
+]
+shakelib = [
+    "utils/data/*",
+    "gmpe/nga_east_small_mag/*",
+]

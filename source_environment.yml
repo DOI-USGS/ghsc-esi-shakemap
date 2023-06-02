@@ -3,40 +3,8 @@ channels:
   - conda-forge
   - defaults
 dependencies:
-  - python=3.9
-  - c-compiler
-  - cartopy>=0.21
-  - configobj
-  - cryptography>=37.0.4
-  - cython
-  - defusedxml
-  - descartes
-  - docutils
-  - esi-utils-cartopy
-  - fiona
+  - python>=3.9,<3.10
+  - cartopy
   - gdal
-  - h5py
-  - ipython
-  - lockfile
-  - matplotlib-base>3.5
-  - numpy
-  - obspy
-  - openmp
-  - pandas
   - pip
-  - psutil
-  - pyproj
-  - pytest
-  - pytest-azurepipelines
-  - pytest-cov
-  - pytest-faulthandler
-  - python-daemon
-  - pyzmq
-  - rasterio
-  - scikit-image
-  - scipy
-  - shapely
-  - simplekml
-  - versioneer
-  - vcrpy
 

@@ -43,7 +43,7 @@ def test_shake():
 
     installdir, datadir = get_config_paths()
 
-    program = os.path.join(shakedir, "bin", "shake")
+    program = os.path.join(shakedir, "src", "shakemap", "bin", "shake.py")
     #
     # Run a bogus event
     #

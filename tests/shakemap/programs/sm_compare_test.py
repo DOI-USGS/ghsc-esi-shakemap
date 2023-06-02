@@ -13,7 +13,7 @@ shakedir = os.path.abspath(os.path.join(homedir, "..", "..", ".."))
 
 def test_sm_compare():
 
-    program = os.path.join(shakedir, "bin", "sm_compare")
+    program = os.path.join(shakedir, "src", "shakemap", "bin", "sm_compare.py")
 
     #
     # Run a real event

@@ -26,7 +26,7 @@ dummy = {
 }
 origin = Origin(dummy)
 
-program = os.path.join(shakedir, "bin", "sm_rupture")
+program = os.path.join(shakedir, "src", "shakemap", "bin", "sm_rupture.py")
 
 
 def test_rupture():

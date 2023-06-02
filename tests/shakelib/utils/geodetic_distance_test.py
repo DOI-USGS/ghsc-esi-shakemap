@@ -4,7 +4,7 @@
 import numpy as np
 
 # local imports
-from shakemap.c.clib import geodetic_distance_fast, geodetic_distance_haversine
+from esi_core.shakemap.clib import geodetic_distance_fast, geodetic_distance_haversine
 
 
 def test_distances():
