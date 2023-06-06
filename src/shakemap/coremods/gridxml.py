@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 # stdlib imports
 import logging
 import os.path
@@ -9,7 +10,6 @@ from datetime import datetime
 import numpy as np
 
 # local imports
-import shakemap
 from esi_utils_io.smcontainers import ShakeMapOutputContainer
 from esi_utils_rupture import constants
 from mapio.geodict import GeoDict
@@ -71,11 +71,15 @@ class GridXMLModule(CoreModule):
     targets = [r"products/grid\.xml", r"products/uncertainty\.xml"]
     dependencies = [("products/shake_result.hdf", True)]
 
-    def __init__(self, eventid):
+    def __init__(self, eventid, process="shakemap"):
         super(GridXMLModule, self).__init__(eventid)
-        self.contents = Contents("XML Grids", "gridxml", eventid)
+        if process == "shakemap":
+            self.process = "shakemap"
+            self.contents = Contents("XML Grids", "gridxml", eventid)
+        else:
+            self.process = process
 
-    def execute(self):
+    def execute(self, datafile=None):
         """Create grid.xml and uncertainty.xml files.
 
         Raises:
@@ -83,14 +87,17 @@ class GridXMLModule(CoreModule):
             FileNotFoundError: When the the shake_result HDF file does not
                 exist.
         """
-        logger = logging.getLogger(__name__)
-        install_path, data_path = get_config_paths()
-        datadir = os.path.join(data_path, self._eventid, "current", "products")
-        if not os.path.isdir(datadir):
-            raise NotADirectoryError(f"{datadir} is not a valid directory.")
-        datafile = os.path.join(datadir, "shake_result.hdf")
-        if not os.path.isfile(datafile):
-            raise FileNotFoundError(f"{datafile} does not exist.")
+        if self.process == "shakemap":
+            logger = logging.getLogger(__name__)
+            install_path, data_path = get_config_paths()
+            datadir = os.path.join(data_path, self._eventid, "current", "products")
+            if not os.path.isdir(datadir):
+                raise NotADirectoryError(f"{datadir} is not a valid directory.")
+            datafile = os.path.join(datadir, "shake_result.hdf")
+            if not os.path.isfile(datafile):
+                raise FileNotFoundError(f"{datafile} does not exist.")
+        elif datafile is None:
+            raise FileNotFoundError(f"datafile must be provided.")
 
         # Open the ShakeMapOutputContainer and extract the data
         container = ShakeMapOutputContainer.load(datafile)
@@ -189,7 +196,9 @@ class GridXMLModule(CoreModule):
                 shake_dict["shakemap_version"] = info["processing"][
                     "shakemap_versions"
                 ]["map_version"]
-                shake_dict["code_version"] = shakemap.__version__
+                shake_dict["code_version"] = info["processing"]["shakemap_versions"][
+                    "shakemap_revision"
+                ]
                 ptime = info["processing"]["shakemap_versions"]["process_time"]
                 try:
                     shake_dict["process_timestamp"] = datetime.strptime(
@@ -210,28 +219,37 @@ class GridXMLModule(CoreModule):
                     layers, geodict, event_dict, shake_dict, {}, field_keys=field_keys
                 )
                 if component == "GREATER_OF_TWO_HORIZONTAL":
-                    fname = os.path.join(datadir, f"{xml_type}.xml")
+                    fname = f"{xml_type}.xml"
                 else:
-                    fname = os.path.join(datadir, f"{xml_type}_{component}.xml")
-                logger.debug(f"Saving IMT grids to {fname}")
-                shake_grid.save(fname)  # TODO - set grid version number
-                cname = os.path.split(fname)[1]
+                    fname = f"{xml_type}_{component}.xml"
+                if self.process == "shakemap":
+                    fname = os.path.join(datadir, fname)
+                    logger.debug(f"Saving IMT grids to {fname}")
 
-                if xml_type == "grid":
-                    self.contents.addFile(
-                        "xmlGrids",
-                        "XML Grid",
-                        f"XML grid of {component} ground motions",
-                        cname,
-                        "text/xml",
-                    )
-                else:
-                    self.contents.addFile(
-                        "uncertaintyGrids",
-                        "Uncertainty Grid",
-                        f"XML grid of {component} uncertainties",
-                        cname,
-                        "text/xml",
-                    )
+                shake_grid.save(fname)  # TODO - set grid version number
+
+                if self.process == "shakemap":
+                    cname = os.path.split(fname)[1]
+                    if xml_type == "grid":
+                        self.contents.addFile(
+                            "xmlGrids",
+                            "XML Grid",
+                            f"XML grid of {component} ground motions",
+                            cname,
+                            "text/xml",
+                        )
+                    else:
+                        self.contents.addFile(
+                            "uncertaintyGrids",
+                            "Uncertainty Grid",
+                            f"XML grid of {component} uncertainties",
+                            cname,
+                            "text/xml",
+                        )
 
         container.close()
+
+
+if __name__ == "__main__":
+    mod = GridXMLModule("noid", process="main")
+    mod.execute(datafile="shake_result.hdf")

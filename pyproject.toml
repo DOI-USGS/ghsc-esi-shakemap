@@ -123,4 +123,5 @@ shakemap = [
 shakelib = [
     "utils/data/*",
     "gmpe/nga_east_small_mag/*",
+    "conversions/imc/data/*",
 ]
