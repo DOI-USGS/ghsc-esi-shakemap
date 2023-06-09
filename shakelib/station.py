@@ -1456,7 +1456,7 @@ def _getOrientationSet(chan_names):
     if len(chan_names) == 3:
         term_chars = [chan_names[0][-1], chan_names[1][-1], chan_names[2][-1]]
         if "1" in term_chars and "Z" in term_chars:
-            orientations = [(lambda x: "V" if x == "Z" else "H")(x) for x in term_chars]
+            orientations = [(lambda x: "Z" if x == "Z" else "H")(x) for x in term_chars]
             return orientations
     orientations = []
     for name in chan_names:
