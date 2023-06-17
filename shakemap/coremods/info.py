@@ -22,7 +22,6 @@ class InfoModule(CoreModule):
 
     def __init__(self, eventid):
         super(InfoModule, self).__init__(eventid)
-        self.contents = Contents(None, None, eventid)
 
     def execute(self):
         """
