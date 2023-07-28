@@ -42,9 +42,8 @@ stages:
     - export PATH="/home/usgs-user/.local/bin:$PATH"
     - echo ${PATH}
     - pwd
-    - source activate shakemap
+    - conda activate shakemap
     - strec_cfg update --datafolder /root/.strec/data --slab --gcmt
-    - pytest tests/shakelib/multigmpe_test.py
 
 # Create test job
 run tests and coverage:
