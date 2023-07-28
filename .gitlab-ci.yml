@@ -13,6 +13,21 @@ default:
   tags:
     - development
 
+# repository rules
+.fork: &fork
+  if: >
+    $CI_PROJECT_PATH != 'ghsc/esi/shakemap'
+    && $CI_COMMIT_BRANCH != $CI_DEFAULT_BRANCH
+  variables:
+    ENVIRONMENT: development
+
+.upstream: &upstream
+  if: >
+    $CI_PROJECT_PATH == 'ghsc/esi/shakemap'
+    && $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+  variables:
+    ENVIRONMENT: staging
+
 # For now, just set up a testing stagge to run PyTest
 stages:
   - test
