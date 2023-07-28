@@ -93,9 +93,7 @@ def test_exceptions():
         get_distance(
             dist_types,
             sctx.lats,
-            sctx.lons[
-                0:4,
-            ],
+            sctx.lons[0:4,],
             np.zeros_like(sctx.lons),
             rup,
         )
