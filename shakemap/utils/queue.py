@@ -66,8 +66,7 @@ def send_queue(command, data, port=9755):
 
 
 def str_to_seconds(tstring):
-    """Convert time strings to seconds. Strings can be of the
-    form:
+    """Convert time strings to seconds. Strings can be of the form:
         <int>   (ninutes)
         <int>m  (minutes)
         <int>h  (hours)
@@ -169,7 +168,6 @@ def get_config(install_path):
 
 class Queue(object):
     def __init__(self, pargs):
-
         current_time = int(time.time())
         self.MEMORY_UPDATE_TIME = current_time
         self.ASSOCIATE_UPDATE_TIME = current_time
@@ -211,7 +209,6 @@ class Queue(object):
                 sys.exit(-1)
 
     def queueMainLoop(self):
-
         context = daemon.DaemonContext(
             working_directory=self.data_path, pidfile=self.filelock
         )

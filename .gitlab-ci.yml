@@ -16,6 +16,8 @@ default:
 # For now, just set up a testing stagge to run PyTest
 stages:
   - test
+  - build
+  - docs
 
 # Create parallel pipeline and job version configuration
 .versions:
@@ -39,14 +41,15 @@ stages:
     - pytest tests/shakelib/multigmpe_test.py
 
 # Create test job
-Test Build:
+run tests and coverage:
   stage: test
   script:
     # Run build configuration script
     - !reference [.build_config, script]
 
     # Continue job script
-    - py.test --cov=. --cov-report=xml
+    - pytest -x --cov=shakemap --cov-report xml:coverage.xml --cov-report term --junitxml junit.xml
+    - coverage xml
 
   # Define test coverage and reporting
   coverage: '/(?i)total.*? (100(?:\.0+)?\%|[1-9]?\d(?:\.\d+)?\%)$/'
@@ -55,6 +58,31 @@ Test Build:
       coverage_report:
         coverage_format: cobertura
         path: coverage.xml
+      junit: junit.xml
+
+  rules:
+    - *fork
+    - *upstream
 
   # Run the jobs as parallel pipelines
   parallel: !reference [.versions, parallel]
+
+pages:
+  artifacts:
+    paths:
+      # The folder that contains the files to be exposed at the Page URL
+      - public
+  rules:
+    # This ensures that only merges to the default branch will trigger
+    # a pages deploy
+    - <<: *upstream
+      when: on_success
+
+  script:
+    # Run build configuration script
+    - !reference [.build_config, script]
+    - cd doc_source
+    - pip install -r requirements.txt
+    - cd ..
+    - sphinx-build doc_source/ public
+  stage: docs

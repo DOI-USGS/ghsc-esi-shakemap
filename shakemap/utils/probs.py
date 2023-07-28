@@ -422,15 +422,16 @@ def get_probability(x, x1, p1, x2, p2):
 
     The subsections and parameters below reflect a series of ramp functions
     we use to calculate various probabilities.
-    ::
-      p1  |----+
-          |     \
-          |      \
-          |       \
-      p2  |        +-------
-          |
-          +-----------------
-               x1  x2
+
+    
+    p1  |----+
+        |     \
+        |      \
+        |       \
+    p2  |        +-------
+        |
+        +-----------------
+             x1  x2
 
     Args:
         x (float): Quantity for which we want corresponding probability.

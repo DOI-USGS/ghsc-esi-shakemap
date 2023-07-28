@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>shakelib.utils.containers &#8212; ShakeMap Documentation  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b3523f8e" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css?v=bf65694e" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom.css?v=c83373f8" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=b3ba4146"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+    <link rel="icon" href="../_static/northridge_points.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="shakelib.utils.exception" href="shakelib.utils.exception.html" />
+    <link rel="prev" title="shakelib.utils" href="shakelib.utils.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="module-shakelib.utils.containers">
+<span id="shakelib-utils-containers"></span><h1>shakelib.utils.containers<a class="headerlink" href="#module-shakelib.utils.containers" title="Permalink to this heading">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="shakelib.utils.containers.ShakeMapInputContainer">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">shakelib.utils.containers.</span></span><span class="sig-name descname"><span class="pre">ShakeMapInputContainer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hdfobj</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/shakelib/utils/containers.html#ShakeMapInputContainer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#shakelib.utils.containers.ShakeMapInputContainer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ShakeMapContainerBase</span></code></p>
+<p>HDF container for Shakemap input data.</p>
+<dl class="simple">
+<dt>This class provides methods for getting and setting information on:</dt><dd><ul class="simple">
+<li><p>configuration</p></li>
+<li><p>event (lat,lon,depth,etc.)</p></li>
+<li><p>rupture</p></li>
+<li><p>station data (can also be updated)</p></li>
+<li><p>version history</p></li>
+</ul>
+</dd>
+</dl>
+<p>Instantiate an HDFContainer from an open h5py File Object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>hdfobj</strong> (<em>h5py</em>) – Open h5py File Object.</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="shakelib.utils.containers.ShakeMapInputContainer.createFromInput">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">createFromInput</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eventfile</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">version_history</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rupturefile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sourcefile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">momentfile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">datafiles</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/shakelib/utils/containers.html#ShakeMapInputContainer.createFromInput"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#shakelib.utils.containers.ShakeMapInputContainer.createFromInput" title="Permalink to this definition">¶</a></dt>
+<dd><p>Instantiate an InputContainer from ShakeMap input data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>filename</strong> (<a class="reference external" href="http://docs.python.org/3.5/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – Path to HDF5 file that will be created to
+encapsulate all input data.</p></li>
+<li><p><strong>config</strong> (<a class="reference external" href="http://docs.python.org/3.5/library/stdtypes.html#dict" title="(in Python v3.6)"><em>dict</em></a>) – Dictionary containing all configuration information
+necessary for ShakeMap ground motion and other calculations.</p></li>
+<li><p><strong>eventfile</strong> (<a class="reference external" href="http://docs.python.org/3.5/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – Path to ShakeMap event.xml file.</p></li>
+<li><p><strong>rupturefile</strong> (<a class="reference external" href="http://docs.python.org/3.5/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – Path to ShakeMap rupture text or JSON file.</p></li>
+<li><p><strong>sourcefile</strong> (<a class="reference external" href="http://docs.python.org/3.5/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – Path to ShakeMap source.txt file.</p></li>
+<li><p><strong>momentfile</strong> (<a class="reference external" href="http://docs.python.org/3.5/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – Path to ShakeMap moment.xml file.</p></li>
+<li><p><strong>datafiles</strong> (<a class="reference external" href="http://docs.python.org/3.5/library/stdtypes.html#list" title="(in Python v3.6)"><em>list</em></a>) – List of ShakeMap data (DYFI, strong motion)
+files.</p></li>
+<li><p><strong>version_history</strong> (<a class="reference external" href="http://docs.python.org/3.5/library/stdtypes.html#dict" title="(in Python v3.6)"><em>dict</em></a>) – Dictionary containing version history.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Instance of InputContainer.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>InputContainer</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="shakelib.utils.containers.ShakeMapInputContainer.setRupture">
+<span class="sig-name descname"><span class="pre">setRupture</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rupture</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/shakelib/utils/containers.html#ShakeMapInputContainer.setRupture"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#shakelib.utils.containers.ShakeMapInputContainer.setRupture" title="Permalink to this definition">¶</a></dt>
+<dd><p>Store Rupture object in container.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>rupture</strong> (<a class="reference external" href="http://docs.python.org/3.5/library/stdtypes.html#dict" title="(in Python v3.6)"><em>dict</em></a><em> or </em><em>Rupture</em>) – Rupture object (Point,Quad, or Edge)
+or dictionary representation of same.</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="http://docs.python.org/3.5/library/exceptions.html#TypeError" title="(in Python v3.6)"><strong>TypeError</strong></a> – If input object or dictionary does not
+    represent a Rupture object.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="shakelib.utils.containers.ShakeMapInputContainer.getRuptureObject">
+<span class="sig-name descname"><span class="pre">getRuptureObject</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/shakelib/utils/containers.html#ShakeMapInputContainer.getRuptureObject"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#shakelib.utils.containers.ShakeMapInputContainer.getRuptureObject" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve Rupture object from container.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Instance of (one of) a Point/Quad/EdgeRupture class.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Rupture</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="http://docs.python.org/3.5/library/exceptions.html#AttributeError" title="(in Python v3.6)"><strong>AttributeError</strong></a> – If rupture object has not been set in
+    the container.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="shakelib.utils.containers.ShakeMapInputContainer.setStrecJson">
+<span class="sig-name descname"><span class="pre">setStrecJson</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">strec</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/shakelib/utils/containers.html#ShakeMapInputContainer.setStrecJson"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#shakelib.utils.containers.ShakeMapInputContainer.setStrecJson" title="Permalink to this definition">¶</a></dt>
+<dd><p>Store STREC JSON string in container</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>strec</strong> (<em>JSON</em>) – JSON string of STREC output.</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="http://docs.python.org/3.5/library/exceptions.html#TypeError" title="(in Python v3.6)"><strong>TypeError</strong></a> – If input object is not a string.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="shakelib.utils.containers.ShakeMapInputContainer.getStrecJson">
+<span class="sig-name descname"><span class="pre">getStrecJson</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/shakelib/utils/containers.html#ShakeMapInputContainer.getStrecJson"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#shakelib.utils.containers.ShakeMapInputContainer.getStrecJson" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve STREC JSON from container.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>String of STREC JSON.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>String</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="http://docs.python.org/3.5/library/exceptions.html#AttributeError" title="(in Python v3.6)"><strong>AttributeError</strong></a> – If STREC JSON string has not been set in
+    the container.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="shakelib.utils.containers.ShakeMapInputContainer.setStationList">
+<span class="sig-name descname"><span class="pre">setStationList</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stationlist</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/shakelib/utils/containers.html#ShakeMapInputContainer.setStationList"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#shakelib.utils.containers.ShakeMapInputContainer.setStationList" title="Permalink to this definition">¶</a></dt>
+<dd><p>Store StationList object in container.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>stationlist</strong> (<a class="reference internal" href="shakelib.station.html#shakelib.station.StationList" title="shakelib.station.StationList"><em>StationList</em></a>) – StationList object.</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="http://docs.python.org/3.5/library/exceptions.html#TypeError" title="(in Python v3.6)"><strong>TypeError</strong></a> – If input object or dictionary is not a StationList
+    object.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="shakelib.utils.containers.ShakeMapInputContainer.getStationList">
+<span class="sig-name descname"><span class="pre">getStationList</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/shakelib/utils/containers.html#ShakeMapInputContainer.getStationList"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#shakelib.utils.containers.ShakeMapInputContainer.getStationList" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve StationList object from container.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>StationList object.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="shakelib.station.html#shakelib.station.StationList" title="shakelib.station.StationList">StationList</a></p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="http://docs.python.org/3.5/library/exceptions.html#AttributeError" title="(in Python v3.6)"><strong>AttributeError</strong></a> – If stationlist object has not been set in
+    the container.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="shakelib.utils.containers.ShakeMapInputContainer.setStationData">
+<span class="sig-name descname"><span class="pre">setStationData</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">datafiles</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/shakelib/utils/containers.html#ShakeMapInputContainer.setStationData"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#shakelib.utils.containers.ShakeMapInputContainer.setStationData" title="Permalink to this definition">¶</a></dt>
+<dd><p>Insert observed ground motion data into the container.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>datafiles</strong> (<a class="reference external" href="http://docs.python.org/3.5/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – Path to XML- or JSON-formatted files containing
+ground motion observations, (macroseismic or instrumented).</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="shakelib.utils.containers.ShakeMapInputContainer.addStationData">
+<span class="sig-name descname"><span class="pre">addStationData</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">datafiles</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/shakelib/utils/containers.html#ShakeMapInputContainer.addStationData"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#shakelib.utils.containers.ShakeMapInputContainer.addStationData" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add observed ground motion data into the container.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>datafiles</strong> (<em>sequence</em>) – Sequence of paths to XML- and/or
+JSON-formatted files containing ground motion observations,
+(macroseismic or instrumented).</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="shakelib.utils.containers.ShakeMapInputContainer.updateRupture">
+<span class="sig-name descname"><span class="pre">updateRupture</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">eventxml</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rupturefile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/shakelib/utils/containers.html#ShakeMapInputContainer.updateRupture"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#shakelib.utils.containers.ShakeMapInputContainer.updateRupture" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update rupture/origin information in container.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>eventxml</strong> (<a class="reference external" href="http://docs.python.org/3.5/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – Path to event.xml file.</p></li>
+<li><p><strong>rupturefile</strong> (<a class="reference external" href="http://docs.python.org/3.5/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – Path to rupture file (JSON or txt format).</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../index.html">
+    <img class="logo" src="../_static/northridge_thumbnail_light_16x9.png" alt="Logo"/>
+    
+    <h1 class="logo logo-name">ShakeMap Documentation</h1>
+    
+  </a>
+</p>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../manual4_0/index.html">ShakeMap 4.1 Manual</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../programs/programs.html">ShakeMap 4.1 Command Line Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../apidoc/shakemap.html">ShakeMap 4.1 API</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="shakelib.html">Shakelib API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="shakelib.conversions.html">shakelib.conversions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="shakelib.correlation.html">shakelib.correlation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="shakelib.directivity.html">shakelib.directivity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="shakelib.gmice.html">shakelib.gmice</a></li>
+<li class="toctree-l2"><a class="reference internal" href="shakelib.gmpe.html">shakelib.gmpe</a></li>
+<li class="toctree-l2"><a class="reference internal" href="shakelib.plotting.html">shakelib.plotting</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="shakelib.utils.html">shakelib.utils</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">shakelib.utils.containers</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#shakelib.utils.containers.ShakeMapInputContainer"><code class="docutils literal notranslate"><span class="pre">ShakeMapInputContainer</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#shakelib.utils.containers.ShakeMapInputContainer.createFromInput"><code class="docutils literal notranslate"><span class="pre">ShakeMapInputContainer.createFromInput()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="#shakelib.utils.containers.ShakeMapInputContainer.setRupture"><code class="docutils literal notranslate"><span class="pre">ShakeMapInputContainer.setRupture()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="#shakelib.utils.containers.ShakeMapInputContainer.getRuptureObject"><code class="docutils literal notranslate"><span class="pre">ShakeMapInputContainer.getRuptureObject()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="#shakelib.utils.containers.ShakeMapInputContainer.setStrecJson"><code class="docutils literal notranslate"><span class="pre">ShakeMapInputContainer.setStrecJson()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="#shakelib.utils.containers.ShakeMapInputContainer.getStrecJson"><code class="docutils literal notranslate"><span class="pre">ShakeMapInputContainer.getStrecJson()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="#shakelib.utils.containers.ShakeMapInputContainer.setStationList"><code class="docutils literal notranslate"><span class="pre">ShakeMapInputContainer.setStationList()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="#shakelib.utils.containers.ShakeMapInputContainer.getStationList"><code class="docutils literal notranslate"><span class="pre">ShakeMapInputContainer.getStationList()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="#shakelib.utils.containers.ShakeMapInputContainer.setStationData"><code class="docutils literal notranslate"><span class="pre">ShakeMapInputContainer.setStationData()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="#shakelib.utils.containers.ShakeMapInputContainer.addStationData"><code class="docutils literal notranslate"><span class="pre">ShakeMapInputContainer.addStationData()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="#shakelib.utils.containers.ShakeMapInputContainer.updateRupture"><code class="docutils literal notranslate"><span class="pre">ShakeMapInputContainer.updateRupture()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="shakelib.utils.exception.html">shakelib.utils.exception</a></li>
+<li class="toctree-l3"><a class="reference internal" href="shakelib.utils.imt_string.html">shakelib.utils.imt_string</a></li>
+<li class="toctree-l3"><a class="reference internal" href="shakelib.utils.utils.html">shakelib.utils.utils</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="shakelib.multigmpe.html">shakelib.multigmpe</a></li>
+<li class="toctree-l2"><a class="reference internal" href="shakelib.multiutils.html">shakelib.multiutils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="shakelib.sites.html">shakelib.sites</a></li>
+<li class="toctree-l2"><a class="reference internal" href="shakelib.station.html">shakelib.station</a></li>
+<li class="toctree-l2"><a class="reference internal" href="shakelib.virtualipe.html">shakelib.virtualipe</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../manual3_5/index.html">ShakeMap 3.5 Manual (Deprecated)</a></li>
+</ul>
+
+
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

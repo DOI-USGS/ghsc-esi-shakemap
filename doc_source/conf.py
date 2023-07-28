@@ -12,6 +12,7 @@
 # All configuration values have a default; values that are commented out
 # serve to show the default.
 
+from pathlib import Path
 import sys
 import os
 
@@ -22,6 +23,7 @@ import os
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 sys.path.insert(0, os.path.abspath("."))
+sys.path.insert(0, str(Path(__file__).parent / ".."))
 
 # -- General configuration ------------------------------------------------
 
@@ -45,6 +47,10 @@ extensions = [
     "sphinxarg.ext",
 ]
 
+numfig = True
+autoapi_dirs = ["../shakemap"]
+autoapi_add_toctree_entry = False
+
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ["_templates"]
 
@@ -58,8 +64,8 @@ source_suffix = ".rst"
 master_doc = "index"
 
 # General information about the project.
-project = u"ShakeMap Documentation"
-copyright = u"2017-2022, C. Bruce Worden, Eric Thompson, Mike Hearne, David Wald"
+project = "ShakeMap Documentation"
+copyright = "Unlicense"
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -242,8 +248,8 @@ latex_documents = [
     (
         "index",
         "ShakeMapManual.tex",
-        u"ShakeMap Manual",
-        u"C. Bruce Worden, David Wald",
+        "ShakeMap Manual",
+        "C. Bruce Worden, David Wald",
         "manual",
     ),
 ]
@@ -274,7 +280,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    ("index", "shakemapmanual", u"ShakeMap Manual", [u"C. Bruce Worden, David Wald"], 1)
+    ("index", "shakemapmanual", "ShakeMap Manual", ["C. Bruce Worden, David Wald"], 1)
 ]
 
 # If true, show URL addresses after external links.
@@ -290,8 +296,8 @@ texinfo_documents = [
     (
         "index",
         "ShakeMapManual",
-        u"ShakeMap Manual",
-        u"C. Bruce Worden, David Wald",
+        "ShakeMap Manual",
+        "C. Bruce Worden, David Wald",
         "ShakeMapManual",
         "One line description of project.",
         "Miscellaneous",
@@ -314,10 +320,10 @@ texinfo_documents = [
 # -- Options for Epub output ----------------------------------------------
 
 # Bibliographic Dublin Core info.
-epub_title = u"ShakeMap Manual"
-epub_author = u"C. Bruce Worden, David Wald"
-epub_publisher = u"C. Bruce Worden, David Wald"
-epub_copyright = u"2015, C. Bruce Worden, David Wald"
+epub_title = "ShakeMap Manual"
+epub_author = "C. Bruce Worden, David Wald"
+epub_publisher = "C. Bruce Worden, David Wald"
+epub_copyright = "2015, C. Bruce Worden, David Wald"
 
 # The basename for the epub file. It defaults to the project name.
 # epub_basename = u'ShakeMap Manual'

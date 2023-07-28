@@ -162,12 +162,9 @@ class AmplitudeHandler(object):
                           - mag: Earthquake magnitude.
                           - locstring: Location string (i.e. '2 mi SE of Reno')
                           - repeats: A list of repeat times (optional)
-                          - lastrun: Timestamp of the last run of the event.
-                                     (optional)
-                          - reviewed: "true" if origin was reviewed, "false" if not,
-                                "unknown" if not known (optional)
-            update (bool): Update an existing event with new info (True) or
-                           insert a new event (False)
+                          - lastrun: Timestamp of the last run of the event. (optional)
+                          - reviewed: "true" if origin was reviewed, "false" if not, "unknown" if not known (optional)
+            update (bool): Update an existing event with new info (True) or insert a new event (False)
 
         Returns:
             nothing: Nothing.
