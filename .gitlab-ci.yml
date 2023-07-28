@@ -1,12 +1,3 @@
-workflow:
-  # Name the pipeline
-  name: "Pipeline for branch: $CI_COMMIT_BRANCH , tag: $CI_COMMIT_TAG"
-
-  # Run the pipeline jobs under merge requests, or with a certain git tag
-  rules:
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
-    - if: $CI_COMMIT_TAG == "ci_tests"
-
 # Need to use Conda to build Shakemap, pull the Docker image
 default:
   image: ${DEVOPS_REGISTRY}usgs/conda:latest
