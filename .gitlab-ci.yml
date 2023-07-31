@@ -41,7 +41,8 @@ stages:
     - bash install.sh
     - export PATH="/home/usgs-user/.local/bin:$PATH"
     - echo ${PATH}
-    - source activate shakemap
+    - source ~/.bashrc
+    - conda activate shakemap
     - strec_cfg update --datafolder /root/.strec/data --slab --gcmt
 
 # Create test job
