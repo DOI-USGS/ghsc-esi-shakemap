@@ -41,7 +41,7 @@ stages:
     - bash install.sh
     - export PATH="/home/usgs-user/.local/bin:$PATH"
     - echo ${PATH}
-    - pwd
+    - conda init bash
     - conda activate shakemap
     - strec_cfg update --datafolder /root/.strec/data --slab --gcmt
 
