@@ -1,8 +1,17 @@
 # Need to use Conda to build Shakemap, pull the Docker image
 default:
-  image: ${DEVOPS_REGISTRY}usgs/conda:latest
+  image: ${DEVOPS_REGISTRY}usgs/python:3.9
   tags:
     - development
+
+  before_script:
+    - python --version
+    - export PATH="/home/usgs-user/.local/bin:$PATH"
+    - mini_conda_url=https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
+    - curl -L $mini_conda_url -o miniconda.sh
+    - bash miniconda.sh -f -b -p $HOME/miniconda
+    - . $HOME/miniconda/etc/profile.d/conda.sh
+    - conda install -c conda-forge -y tree make
 
 # repository rules
 .fork: &fork
@@ -34,14 +43,8 @@ stages:
 # Create reusable build configuration for referencing
 .build_config:
   script:
-    - source /etc/profile.d/conda.sh
     - conda init bash
-    - conda install git
-    - conda install python=${PYTHON_VERSION}
-    - bash install.sh
-    - export PATH="/home/usgs-user/.local/bin:$PATH"
-    - echo ${PATH}
-    - source ~/.bashrc
+    - bash install.sh -p ${PYTHON_VERSION}
     - conda activate shakemap
     - strec_cfg update --datafolder /root/.strec/data --slab --gcmt
 
