@@ -2,6 +2,12 @@ import os
 import shutil
 
 
+def copy(src, dst):
+    if os.path.isdir(dst):
+        dst = os.path.join(dst, os.path.basename(src))
+    shutil.copyfile(src, dst)
+
+
 def clear_files(event_path):
     files = [
         "boat_fault.txt",
@@ -23,6 +29,4 @@ def clear_files(event_path):
 
 def set_files(event_path, files):
     for src, dst in files.items():
-        shutil.copy(
-            os.path.join(event_path, "data", src), os.path.join(event_path, dst)
-        )
+        copy(os.path.join(event_path, "data", src), os.path.join(event_path, dst))
