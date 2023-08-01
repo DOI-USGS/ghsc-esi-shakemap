@@ -1,17 +1,17 @@
-workflow:
-  # Name the pipeline
-  name: "Pipeline for branch: $CI_COMMIT_BRANCH , tag: $CI_COMMIT_TAG"
-
-  # Run the pipeline jobs under merge requests, or with a certain git tag
-  rules:
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
-    - if: $CI_COMMIT_TAG == "ci_tests"
-
 # Need to use Conda to build Shakemap, pull the Docker image
 default:
-  image: ${DEVOPS_REGISTRY}usgs/conda:latest
+  image: ${DEVOPS_REGISTRY}usgs/python:3.9
   tags:
     - development
+
+  before_script:
+    - python --version
+    - export PATH="/home/usgs-user/.local/bin:$PATH"
+    - mini_conda_url=https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
+    - curl -L $mini_conda_url -o miniconda.sh
+    - bash miniconda.sh -f -b -p $HOME/miniconda
+    - . $HOME/miniconda/etc/profile.d/conda.sh
+    - conda install -c conda-forge -y tree make
 
 # repository rules
 .fork: &fork
@@ -43,17 +43,10 @@ stages:
 # Create reusable build configuration for referencing
 .build_config:
   script:
-    - source /etc/profile.d/conda.sh
     - conda init bash
-    - conda install git
-    - conda install python=${PYTHON_VERSION}
-    - bash install.sh
-    - export PATH="/home/usgs-user/.local/bin:$PATH"
-    - echo ${PATH}
-    - pwd
-    - source activate shakemap
-    - strec_cfg update --datafolder /root/.strec/data --slab --gcmt
-    - pytest tests/shakelib/multigmpe_test.py
+    - bash install.sh -p ${PYTHON_VERSION}
+    - conda activate shakemap
+    - strec_cfg update --datafolder $HOME/.strec/data --slab --gcmt
 
 # Create test job
 run tests and coverage:

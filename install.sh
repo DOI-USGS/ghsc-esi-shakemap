@@ -49,6 +49,9 @@ while getopts ":utp:n" options; do
         # Only use mambe when rebuilding the env files since it sometimes fails.
         install_pgm=mamba
         ;;
+    p)
+        PYVER=$OPTARG
+        ;;
     t)
         run_tests=true
         ;;
