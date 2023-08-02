@@ -12,7 +12,12 @@ the Github issues tab associated with this repository.
 
 # Documentation
 
-The ShakeMap documentation is located [here](https://ghsc.code-pages.usgs.gov/esi/shakemap/).
+The "quick start" guide, including installation instructions, is included in the wiki:
+ - https://code.usgs.gov/ghsc/esi/shakemap/-/wikis/home
+
+The ShakeMap documentation is located here:
+ - https://ghsc.code-pages.usgs.gov/esi/shakemap/
+
 
 # Mirrors
 
