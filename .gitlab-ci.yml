@@ -85,6 +85,8 @@ pages:
     # a pages deploy
     - <<: *upstream
       when: on_success
+  variables:
+    PYTHON_VERSION: "3.10"
 
   script:
     # Run build configuration script
