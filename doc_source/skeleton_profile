@@ -1,0 +1,5 @@
+profile = docs
+[profiles]
+[[docs]]
+data_path = /builds/ghsc/esi/shakemap/tests/data/eventdata
+install_path = /builds/ghsc/esi/shakemap/tests/data/install
