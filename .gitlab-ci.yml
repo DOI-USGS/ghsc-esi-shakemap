@@ -94,7 +94,7 @@ pages:
     - cd doc_source
     - pip install -r requirements.txt
     - cd ..
-    - mkdir .shakemap
-    - mv doc_source/skeleton_profile .shakemap/profiles.conf
+    - mkdir $HOME/.shakemap
+    - mv doc_source/skeleton_profile $HOME/.shakemap/profiles.conf
     - sphinx-build doc_source/ public
   stage: docs
