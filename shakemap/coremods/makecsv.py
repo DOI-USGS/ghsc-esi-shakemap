@@ -38,7 +38,7 @@ def get_row_col(geodict, lat, lon):
 
 
 def read_hdf_points(fileobj):
-    imclist = fileobj["arrays"]["imts"].keys()
+    imclist = list(fileobj["arrays"]["imts"].keys())
     arrays = fileobj["arrays"]["imts"][imclist[0]]
     val_columns = {}
     val_columns["id"] = [rowid.decode("utf8") for rowid in arrays["PGA"]["ids"][:]]
@@ -49,7 +49,7 @@ def read_hdf_points(fileobj):
         arrays = fileobj["arrays"]["imts"][imc]
         for imt, group in arrays.items():
             for stat, array in group.items():
-                if stat in ["ids", "lats", "lons"]:
+                if stat in ["ids", "lats", "lons", "tau", "phi"]:
                     continue
                 key = f"{imt}_{stat}"
                 val_columns[key] = array[:]
@@ -110,7 +110,7 @@ class MakeCSVModule(CoreModule):
     """
 
     command_name = "makecsv"
-    targets = []
+    targets = [""]
     dependencies = [("products/shake_result.hdf", True)]
 
     def __init__(self, eventid):
@@ -157,7 +157,7 @@ class MakeCSVModule(CoreModule):
         for imc, dataframe in dataframes.items():
             datadir = pathlib.Path(datadir)
             # figure out the filename
-            fname = f"{self.eventid}_{mode}"
+            fname = f"{self.eventid}_{mode}_{imc}"
             for flag, value in info["processing"]["model_flags"].items():
                 if value:
                     fname += f'_{flag.replace("_","")}'

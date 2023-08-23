@@ -80,6 +80,8 @@ def modify_points_dataframe(dataframe):
     else:
         dataframe["vs30"] = 0.0
     dataframe = dataframe.rename(mapping, axis="columns")
+    # make sure id column contains strings
+    dataframe["id"] = dataframe["id"].map(str)
     return dataframe
 
 

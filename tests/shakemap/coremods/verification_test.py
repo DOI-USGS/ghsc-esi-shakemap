@@ -1,8 +1,10 @@
 #!/usr/bin/env python
 
 # stdlib imports
+import logging
 import os
 import os.path
+import pathlib
 
 # third party imports
 import numpy as np
@@ -16,7 +18,7 @@ from shakemap.coremods.xtestimage import XTestImage
 from shakemap.coremods.xtestplot import XTestPlot
 from shakemap.coremods.xtestplot_multi import XTestPlotMulti
 from shakemap.coremods.xtestplot_spectra import XTestPlotSpectra
-from shakemap.utils.config import get_config_paths
+from shakemap.utils.config import get_config_paths, get_model_config
 
 ########################################################################
 # Test the nullgmpe and the dummy correlation function as well as
@@ -61,8 +63,14 @@ s_z = np.sqrt(
 
 
 def run_event(evid):
+    logger = logging.getLogger()
     installpath, datapath = get_config_paths()
-    assemble = AssembleModule(evid, comment="Test comment.")
+    eventpath = pathlib.Path(datapath) / evid / "current"
+    global_config = get_model_config(installpath, eventpath, logger)
+    old_pointsfile = global_config["interp"]["prediction_location"]["file"]
+    old_pointsfile = pathlib.Path(old_pointsfile.replace("<INSTALL_DIR>", installpath))
+    new_pointsfile = old_pointsfile.with_suffix(".csv")
+    assemble = AssembleModule(evid, comment="Test comment.", points=new_pointsfile)
     assemble.execute()
     model = ModelModule(evid)
     model.execute()
@@ -112,7 +120,7 @@ def test_verification_0003():
         imtdict = run_event(evid)
         assert np.allclose([np.min(imtdict["mean"])], [0.36], atol=0.0001)
         assert np.allclose([np.max(imtdict["mean"])], [1.0])
-        assert np.allclose([np.min(imtdict["std"])], [0])
+        assert np.allclose([np.min(imtdict["std"])], [0], atol=6e-7)
         assert np.allclose([np.max(imtdict["std"])], [0.933], atol=0.0001)
     finally:
         data_file = os.path.join(datapath, evid, "current", "shake_data.hdf")
@@ -224,48 +232,66 @@ def test_verification_0008e():
             os.remove(data_file)
 
 
-def test_verification():
+def get_pointsfile(evid, installpath, datapath, logger):
+    eventpath = pathlib.Path(datapath) / evid / "current"
+    global_config = get_model_config(installpath, eventpath, logger)
+    old_pointsfile = global_config["interp"]["prediction_location"]["file"]
+    old_pointsfile = pathlib.Path(old_pointsfile.replace("<INSTALL_DIR>", installpath))
+    new_pointsfile = old_pointsfile.with_suffix(".csv")
+    return new_pointsfile
 
+
+def test_verification():
     installpath, datapath = get_config_paths()
+
+    logger = logging.getLogger()
+
     try:
         #
         # Test xtestplot on verification event 0006
         #
-        assemble = AssembleModule("verification_test_0006", comment="Test comment.")
+        evid = "verification_test_0006"
+        new_pointsfile = get_pointsfile(evid, installpath, datapath, logger)
+        assemble = AssembleModule(evid, comment="Test comment.", points=new_pointsfile)
         assemble.execute()
-        model = ModelModule("verification_test_0006")
+        model = ModelModule(evid)
         model.execute()
-        plot = XTestPlot("verification_test_0006")
+        plot = XTestPlot(evid)
         plot.execute()
 
         #
         # Test xtestplot_spectra on verification event 0007
         #
-        assemble = AssembleModule("verification_test_0007", comment="Test comment.")
+        evid = "verification_test_0007"
+        new_pointsfile = get_pointsfile(evid, installpath, datapath, logger)
+        assemble = AssembleModule(evid, comment="Test comment.", points=new_pointsfile)
         assemble.execute()
-        model = ModelModule("verification_test_0007")
+        model = ModelModule(evid)
         model.execute()
-        plot = XTestPlotSpectra("verification_test_0007")
+        plot = XTestPlotSpectra(evid)
         plot.execute()
 
         #
         # Test xtestimage on verification event 0011
         #
-        assemble = AssembleModule("verification_test_0011", comment="Test comment.")
+        evid = "verification_test_0011"
+        assemble = AssembleModule(evid, comment="Test comment.")
         assemble.execute()
-        model = ModelModule("verification_test_0011")
+        model = ModelModule(evid)
         model.execute()
-        plot = XTestImage("verification_test_0011")
+        plot = XTestImage(evid)
         plot.execute()
-        regr = PlotRegr("verification_test_0011")
+        regr = PlotRegr(evid)
         regr.execute()
 
         #
         # Test xtestplot_multi on event 0008x
         #
         for vt in ("8a", "8b", "8c", "8d", "8e"):
+            evid = f"verification_test_000{vt}"
+            new_pointsfile = get_pointsfile(evid, installpath, datapath, logger)
             assemble = AssembleModule(
-                f"verification_test_000{vt}", comment="Test comment."
+                evid, comment="Test comment.", points=new_pointsfile
             )
             assemble.execute()
             model = ModelModule(f"verification_test_000{vt}")

@@ -5,6 +5,7 @@ import glob
 import json
 import os
 import os.path
+import pathlib
 import subprocess
 import tempfile
 import zipfile
@@ -273,9 +274,10 @@ def do_contour_command_line(evid, datapath):
 def test_points():
     installpath, datapath = get_config_paths()
 
-    # An event with points rather than grid (should raise exception)
+    # An event with points rather than grid (should raise exception with mapping)
     evid = "northridge_points"
-    assemble = AssembleModule(evid, comment="Test comment.")
+    points_file = pathlib.Path(datapath) / evid / "current" / "facilities.csv"
+    assemble = AssembleModule(evid, comment="Test comment.", points=points_file)
     assemble.execute()
     del assemble
     model = ModelModule(evid)

@@ -9,6 +9,7 @@ from collections import OrderedDict
 
 # third party imports
 import numpy as np
+import pandas as pd
 from gmpacket.packet import GroundMotionPacket
 from scipy import constants
 
@@ -478,7 +479,7 @@ class StationList(object):
                     if not is_channel:
                         continue
 
-                    if channel_code.startswith("Rot"):
+                    if channel_code.lower().startswith("rot"):
                         orient = "H"
                     else:
                         if channel_code[-1] in ORIENTATIONS:
@@ -1046,25 +1047,34 @@ class StationList(object):
         )
         amp_rows = self.cursor.fetchall()
 
+        # debugging
+        cols = ["amp", "imt", "station", "stddev", "nresp", "channel"]
+        mydf = pd.DataFrame(data=amp_rows, columns=cols)
+        # debugging
+
         #
         # Go through all the amps and put them into the data frame
         #
+        is_rot_component = component.lower().startswith("rot")
         for this_row in amp_rows:
             #
             # Throw out the components that don't fit the request
             #
-            if component.startswith("Rot") and component != this_row[5]:
+            is_rot_row = this_row[5].lower().startswith("rot")
+            if is_rot_component and not is_rot_row:
                 continue
-            if (
-                component == "GREATER_OF_TWO_HORIZONTAL"
-                or component == "GEOMETRIC_MEAN"
-                or component == "ARITHMETIC_MEAN"
-            ) and this_row[5].startswith("Rot"):
+            component_not_rotd = component in [
+                "GREATER_OF_TWO_HORIZONTAL",
+                "GEOMETRIC_MEAN",
+                "ARITHMETIC_MEAN",
+            ]
+            amp_is_rotd = this_row[5].lower().startswith("rot")
+            if component_not_rotd and amp_is_rotd:
                 continue
             #
             # Set the cell to the peak amp
             #
-            if component == "GREATER_OF_TWO_HORIZONTAL" or component.startswith("Rot"):
+            if component == "GREATER_OF_TWO_HORIZONTAL" or is_rot_component:
                 rowidx = id_dict[this_row[2]]
                 cval = df[this_row[1]][rowidx]
                 amp = this_row[0]

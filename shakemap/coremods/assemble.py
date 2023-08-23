@@ -66,13 +66,14 @@ class AssembleModule(CoreModule):
     ]
     configs = ["gmpe_sets.conf", "model.conf", "modules.conf"]
 
-    def __init__(self, eventid, comment=None):
+    def __init__(self, eventid, comment=None, points=None):
         """
         Instantiate a CoreModule class with an event ID.
         """
         super(AssembleModule, self).__init__(eventid)
         if comment is not None:
             self.comment = comment
+        self.points = points
 
     def execute(self):
         """

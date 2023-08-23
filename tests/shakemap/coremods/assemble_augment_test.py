@@ -4,12 +4,11 @@ import os
 import subprocess
 
 import pytest
-
-from shakemap.utils.config import get_config_paths
 from shakemap.coremods.assemble import AssembleModule
 from shakemap.coremods.augment import AugmentModule
-from common import clear_files, set_files
+from shakemap.utils.config import get_config_paths
 
+from common import clear_files, set_files
 
 ########################################################################
 # Test assemble and augment
@@ -17,7 +16,6 @@ from common import clear_files, set_files
 
 
 def test_assemble_augment():
-
     installpath, datapath = get_config_paths()
 
     # Process a non-existent event (should fail)
@@ -280,6 +278,10 @@ def test_assemble_augment_command_line():
     )
     if os.path.isfile(data_file):
         os.remove(data_file)
+
+
+def test_assemble_points():
+    installpath, datapath = get_config_paths()
 
 
 if __name__ == "__main__":

@@ -26,12 +26,12 @@ import openquake.hazardlib.const as oqconst
 import pandas as pd
 from esi_utils_io.smcontainers import ShakeMapOutputContainer
 from esi_utils_rupture import constants
-from esi_utils_rupture.distance import (Distance, get_distance,
-                                        get_distance_measures)
+from esi_utils_rupture.distance import Distance, get_distance, get_distance_measures
 from esi_utils_rupture.point_rupture import PointRupture
 from mapio.geodict import GeoDict
 from mapio.grid2d import Grid2D
 from openquake.hazardlib import imt
+
 # local imports
 from shakelib.directivity.rowshandel2013 import Rowshandel2013
 from shakelib.multigmpe import MultiGMPE
@@ -41,8 +41,7 @@ from shakelib.utils.imt_string import oq_to_file
 from shakelib.utils.utils import get_extent, thirty_sec_max, thirty_sec_min
 from shakelib.virtualipe import VirtualIPE
 from shakemap._version import get_versions
-from shakemap.c.clib import (geodetic_distance_fast, make_sd_array,
-                             make_sigma_matrix)
+from shakemap.c.clib import geodetic_distance_fast, make_sd_array, make_sigma_matrix
 from shakemap.coremods.base import Contents, CoreModule
 from shakemap.utils.config import get_config_paths
 from shakemap.utils.generic_amp import get_generic_amp_factors
@@ -668,7 +667,7 @@ class ModelModule(CoreModule):
             points_file = pathlib.Path(
                 self.config["interp"]["prediction_location"]["file"]
             )
-            dataframe = pd.read_csv(points_file)
+            dataframe = pd.read_csv(points_file, dtype={"id": str})
             self.lons = dataframe["lon"].to_numpy().reshape(1, -1)
             self.lats = dataframe["lat"].to_numpy().reshape(1, -1)
             self.idents = dataframe["id"].to_numpy()
