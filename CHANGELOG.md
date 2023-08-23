@@ -4,3 +4,5 @@
  - Fix vertical/horizontal orientation bug in station.py.
  - Modified to allow RotD50 as an input component type.
  - Added CHANGELOG.md
+ - Improved support for "points" mode ShakeMap runs - `assemble -p` change and `makecsv` module.
+ - Added optional persistence of version history in the sm_create command.
