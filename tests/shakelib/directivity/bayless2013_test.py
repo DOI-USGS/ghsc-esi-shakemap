@@ -1389,6 +1389,11 @@ def test_rv4():
             ],
         ]
     )
+    if not np.allclose(fd, fd_test, rtol=2e-4) or True:
+        for real, test in zip(fd.flatten(), fd_test.flatten()):
+            if not np.allclose(real, test, rtol=2e-4):
+                print(f">{float(real):.8f} {float(test):.8f}")
+            print(f"{float(real):.8f} {float(test):.8f}")
     np.testing.assert_allclose(fd, fd_test, rtol=2e-4)
 
 
