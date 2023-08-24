@@ -263,7 +263,7 @@ class Bayless2013(object):
     def __computeDS(self):
         debug = False
         if self._lon.shape == (11, 11):
-            debug = True
+            debug = False
         # d is the length of dipping rupture rupturing toward site;
         # Note: max[(Y*W),exp(0)] -- just apply a min of 1?
         self.__computeD(self.i)
