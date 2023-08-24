@@ -46,6 +46,9 @@ stages:
     - conda init bash
     - bash install.sh -p ${PYTHON_VERSION}
     - conda activate shakemap
+    - echo "***********************************************"
+    - pip list
+    - echo "***********************************************"
     - strec_cfg update --datafolder $HOME/.strec/data --slab --gcmt
 
 # Create test job
