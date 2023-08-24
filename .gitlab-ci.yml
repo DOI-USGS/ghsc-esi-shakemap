@@ -57,7 +57,9 @@ run tests and coverage:
   script:
     # Run build configuration script
     - !reference [.build_config, script]
-
+    - echo "##########################################"
+    - python tests/shakelib/directivity/bayless2013_test.py
+    - echo "##########################################"
     # Continue job script
     - pytest -x --cov=shakemap --cov-report xml:coverage.xml --cov-report term --junitxml junit.xml
     - coverage xml
