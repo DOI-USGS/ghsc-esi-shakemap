@@ -136,8 +136,11 @@ class Bayless2013(object):
             # Compute some genral stuff that is required for all mechanisms
             dtypes = ["rrup", "rx", "ry0"]
             dists = get_distance(dtypes, self._lat, self._lon, self._dep, self._rup)
-            self.__Rrup = np.reshape(dists["rrup"], self._lat.shape)
-            self.__Rx = np.reshape(dists["rx"], self._lat.shape)
+            self._Rrup = np.reshape(dists["rrup"], self._lat.shape)
+            print("****************")
+            print(self._Rrup)
+            print("****************")
+            self._Rx = np.reshape(dists["rx"], self._lat.shape)
             self.__Ry = np.reshape(dists["ry0"], self._lat.shape)
             # NOTE: use Rx and Ry to compute Az in 'computeAz'. It is probably
             #       possible to make this a lot faster by avoiding the
@@ -258,29 +261,44 @@ class Bayless2013(object):
                     self.phyp[i] = p2 + e21norm * (0.5 * mag)
 
     def __computeDS(self):
+        debug = False
+        if self._lon.shape == (11, 11):
+            debug = True
         # d is the length of dipping rupture rupturing toward site;
         # Note: max[(Y*W),exp(0)] -- just apply a min of 1?
         self.__computeD(self.i)
-
+        if debug:
+            print(f"DEBUG::ComputeDS: Rx = {self._Rx[5,5]}")
         # Geometric directivity predictor:
-        RxoverW = (self.__Rx / self._W[self.i]).clip(
+        RxoverW = (self._Rx / self._W[self.i]).clip(
             min=-np.pi / 2.0, max=2.0 * np.pi / 3.0
         )
+        if debug:
+            print(f"DEBUG::ComputeDS: RxoverW = {RxoverW[5,5]}")
         f_geom = np.log(self.d) * np.cos(RxoverW)
-
+        if debug:
+            print(f"DEBUG::ComputeDS: f_geom = {f_geom[5,5]}")
         # Distance taper
         T_CD = np.ones_like(self._lat)
+        if debug:
+            print(f"DEBUG::ComputeDS: Rrup = {self._Rrup[5,5]}")
         ix = tuple(
             [
-                (self.__Rrup / self._W[self.i] > 1.5)
-                & (self.__Rrup / self._W[self.i] < 2.0)
+                (self._Rrup / self._W[self.i] > 1.5)
+                & (self._Rrup / self._W[self.i] < 2.0)
             ]
         )
-        T_CD[ix] = 1.0 - (self.__Rrup[ix] / self._W[self.i] - 1.5) / 0.5
-        T_CD[self.__Rrup / self._W[self.i] >= 2.0] = 0.0
+        T_CD[ix] = 1.0 - (self._Rrup[ix] / self._W[self.i] - 1.5) / 0.5
+        T_CD[self._Rrup / self._W[self.i] >= 2.0] = 0.0
+        if debug:
+            print(f"DEBUG::ComputeDS: T_CD = {T_CD[5,5]}")
 
         # Azimuth taper
+        if debug:
+            print(f"DEBUG::ComputeDS: Az = {self.Az[5,5]}")
         T_Az = np.sin(np.abs(self.Az)) ** 2
+        if debug:
+            print(f"DEBUG::ComputeDS: T_Az = {T_Az[5,5]}")
 
         # Select Coefficients
         ix = tuple([self._T == self.__periods])
@@ -302,12 +320,12 @@ class Bayless2013(object):
         T_CD = np.ones_like(self._lat)
         ix = tuple(
             [
-                (self.__Rrup / self._L[self.i] > 0.5)
-                & (self.__Rrup / self._L[self.i] < 1.0)
+                (self._Rrup / self._L[self.i] > 0.5)
+                & (self._Rrup / self._L[self.i] < 1.0)
             ]
         )
-        T_CD[ix] = 1 - (self.__Rrup[ix] / self._L[self.i] - 0.5) / 0.5
-        T_CD[self.__Rrup / self._L[self.i] >= 1.0] = 0.0
+        T_CD[ix] = 1 - (self._Rrup[ix] / self._L[self.i] - 0.5) / 0.5
+        T_CD[self._Rrup / self._L[self.i] >= 1.0] = 0.0
 
         # Azimuth taper
         T_Az = 1.0
@@ -319,10 +337,10 @@ class Bayless2013(object):
         self._fd_SS = (C0 + C1 * f_geom) * T_CD * self._T_Mw * T_Az
 
     def __computeAz(self):
-        Az = np.ones_like(self.__Rx) * np.pi / 2.0
-        Az = Az * np.sign(self.__Rx)
+        Az = np.ones_like(self._Rx) * np.pi / 2.0
+        Az = Az * np.sign(self._Rx)
         ix = tuple([self.__Ry > 0.0])
-        Az[ix] = np.arctan(self.__Rx[ix] / self.__Ry[ix])
+        Az[ix] = np.arctan(self._Rx[ix] / self.__Ry[ix])
         self.Az = Az
 
     def __computeD(self, i):
