@@ -47,7 +47,7 @@ stages:
     - bash install.sh -p ${PYTHON_VERSION}
     - conda activate shakemap
     - echo "***********************************************"
-    - pip list
+    - conda list
     - echo "***********************************************"
     - strec_cfg update --datafolder $HOME/.strec/data --slab --gcmt
 
