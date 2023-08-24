@@ -337,10 +337,18 @@ class Bayless2013(object):
         self._fd_SS = (C0 + C1 * f_geom) * T_CD * self._T_Mw * T_Az
 
     def __computeAz(self):
+        debug = False
+        if self._lon.shape == (11, 11):
+            debug = True
         Az = np.ones_like(self._Rx) * np.pi / 2.0
+        if debug:
+            print(f"DEBUG::ComputeAz: Rx = {self._Rx[5,5]}")
+            print(f"DEBUG::ComputeAz: Ry = {self.__Ry[5,5]}")
+
         Az = Az * np.sign(self._Rx)
         ix = tuple([self.__Ry > 0.0])
         Az[ix] = np.arctan(self._Rx[ix] / self.__Ry[ix])
+        print(f"DEBUG::ComputeAz: Az = {Az[5,5]}")
         self.Az = Az
 
     def __computeD(self, i):
