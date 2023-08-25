@@ -10,6 +10,8 @@ import inspect
 import json
 import os
 import os.path
+import pathlib
+import re
 import shutil
 import time as time
 from datetime import date
@@ -21,6 +23,7 @@ import fiona
 import numpy as np
 import numpy.ma as ma
 import openquake.hazardlib.const as oqconst
+import pandas as pd
 from esi_utils_io.smcontainers import ShakeMapOutputContainer
 from esi_utils_rupture import constants
 from esi_utils_rupture.distance import Distance, get_distance, get_distance_measures
@@ -658,28 +661,18 @@ class ModelModule(CoreModule):
         ):
             #
             # FILE: Open the file and get the output points
+            # we've pre-processed this file to be a CSV with fixed columns
             #
             self.do_grid = False
-            in_sites = np.genfromtxt(
-                self.config["interp"]["prediction_location"]["file"],
-                autostrip=True,
-                unpack=True,
-                dtype=[np.double, np.double, np.double, "<U80"],
+            points_file = pathlib.Path(
+                self.config["interp"]["prediction_location"]["file"]
             )
-            if np.size(in_sites) == 0:
-                self.logger.info("Points file is empty; nothing to do")
-                return
-            elif np.size(in_sites) == 1:
-                lons, lats, vs30, idents = in_sites.item()
-                self.idents = [idents]
-            else:
-                try:
-                    lons, lats, vs30, self.idents = zip(*in_sites)
-                except Exception:
-                    lons, lats, vs30, self.idents = zip(in_sites)
-            self.lons = np.array(lons).reshape(1, -1)
-            self.lats = np.array(lats).reshape(1, -1)
-            self.vs30 = np.array(vs30).reshape(1, -1)
+            dataframe = pd.read_csv(points_file, dtype={"id": str})
+            self.lons = dataframe["lon"].to_numpy().reshape(1, -1)
+            self.lats = dataframe["lat"].to_numpy().reshape(1, -1)
+            self.idents = dataframe["id"].to_numpy()
+            self.vs30 = dataframe["vs30"].to_numpy().reshape(1, -1)
+
             self.depths = np.zeros_like(self.lats)
             self.W = thirty_sec_min(np.min(self.lons))
             self.E = thirty_sec_max(np.max(self.lons))
@@ -1371,7 +1364,7 @@ class ModelModule(CoreModule):
             self.ccf.getCorrelation(t1_22, t2_22, matrix22)
             sta_phi_flat = sta_phi.flatten()
             make_sigma_matrix(matrix22, sta_phi_flat, sta_phi_flat)
-            np.fill_diagonal(matrix22, np.diag(matrix22) + sta_sig_extra ** 2)
+            np.fill_diagonal(matrix22, np.diag(matrix22) + sta_sig_extra**2)
             cov_WD_WD_inv = np.linalg.pinv(matrix22)
             #
             # Hold on to some things we'll need later
@@ -1800,6 +1793,7 @@ class ModelModule(CoreModule):
         un = "uncertainty"
         pp = "processing"
         gmm = "ground_motion_modules"
+        mf = "model_flags"
         ms = "miscellaneous"
         sv = "shakemap_versions"
         sr = "site_response"
@@ -1980,6 +1974,10 @@ class ModelModule(CoreModule):
         info[pp][gmm]["directivity"] = {}
         info[pp][gmm]["directivity"]["module"] = "None"
         info[pp][gmm]["directivity"]["reference"] = ""
+        info[pp][mf] = {}
+        info[pp][mf]["no_macroseismic"] = self.no_macroseismic
+        info[pp][mf]["no_seismic"] = self.no_seismic
+        info[pp][mf]["no_rupture"] = self.no_rupture
         info[pp][ms] = {}
         info[pp][ms]["bias_max_dsigma"] = str(self.bias_max_dsigma)
         info[pp][ms]["bias_max_mag"] = str(self.bias_max_mag)
@@ -2168,7 +2166,7 @@ class ModelModule(CoreModule):
                 else:
                     mytau = sdf[key + "_tau"][six]
                 myphi = sdf[key + "_phi"][six]
-                mysigma = np.sqrt(mytau ** 2 + myphi ** 2)
+                mysigma = np.sqrt(mytau**2 + myphi**2)
                 mysigma_rock = sdf[key + "_sigma_rock"][six]
                 mysigma_soil = sdf[key + "_sigma_soil"][six]
                 imt_name = key.lower().replace("_pred", "")
@@ -2642,7 +2640,7 @@ class ModelModule(CoreModule):
             target_res = (
                 -(latspan + lonspan)
                 - np.sqrt(
-                    latspan ** 2 + lonspan ** 2 + 2 * latspan * lonspan * (2 * nmax - 1)
+                    latspan**2 + lonspan**2 + 2 * latspan * lonspan * (2 * nmax - 1)
                 )
             ) / (2 * (1 - nmax))
 

@@ -4,9 +4,10 @@ import re
 import string
 import time
 
+import numpy as np
+
 # third party imports
 import pandas as pd
-import numpy as np
 from lxml import etree
 from openpyxl import load_workbook, utils
 
@@ -39,6 +40,49 @@ OPTIONAL = [
     "DAMPING",
 ]
 FLOATRE = "[-+]?[0-9]*\.?[0-9]+"
+
+
+def generate_ids(data_length):
+    # number of digits in id string
+    width = int(np.ceil(np.log10(data_length)))
+    fmt = f"%0{width}d"
+    idvals = ["id" + fmt % idnum for idnum in range(1, data_length + 1)]
+    return idvals
+
+
+def modify_points_dataframe(dataframe):
+    """Modify a points dataframe for the assemble core module."""
+    columns = list(dataframe.columns)
+    regex_lat = re.compile("lat", re.IGNORECASE)
+    regex_lon = re.compile("lon", re.IGNORECASE)
+    regex_id = re.compile("id", re.IGNORECASE)
+    regex_vs30 = re.compile("vs30", re.IGNORECASE)
+    latcols = list(filter(regex_lat.match, columns))
+    loncols = list(filter(regex_lon.match, columns))
+    idcols = list(filter(regex_id.match, columns))
+    vscols = list(filter(regex_vs30.match, columns))
+    if not len(latcols) or not len(loncols):
+        msg = "Missing lat/lon columns in input points " f"file with columns: {columns}"
+        raise Exception(msg)
+    # change column names, save to csv format in current folder.
+    latcol = latcols[0]
+    loncol = loncols[0]
+    mapping = {latcol: "lat", loncol: "lon"}
+    if len(idcols):
+        idcol = idcols[0]
+        mapping[idcol] = "id"
+    else:
+        idvals = generate_ids(len(dataframe))
+        dataframe["id"] = idvals
+    if len(vscols):
+        vscol = vscols[0]
+        mapping[vscol] = "vs30"
+    else:
+        dataframe["vs30"] = 0.0
+    dataframe = dataframe.rename(mapping, axis="columns")
+    # make sure id column contains strings
+    dataframe["id"] = dataframe["id"].map(str)
+    return dataframe
 
 
 def dataframe_to_xml(df, xmlfile, reference=None):

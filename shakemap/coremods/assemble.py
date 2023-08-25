@@ -10,6 +10,7 @@ import glob
 import inspect
 import json
 import os.path
+import pathlib
 import re
 import shutil
 import sys
@@ -33,6 +34,7 @@ from shakemap.utils.config import (
     get_model_config,
     path_macro_sub,
 )
+from shakemap.utils.dataframe import modify_points_dataframe
 from validate import Validator
 
 LATLON_COLS = set(["LAT", "LON"])
@@ -64,13 +66,14 @@ class AssembleModule(CoreModule):
     ]
     configs = ["gmpe_sets.conf", "model.conf", "modules.conf"]
 
-    def __init__(self, eventid, comment=None):
+    def __init__(self, eventid, comment=None, points=None):
         """
         Instantiate a CoreModule class with an event ID.
         """
         super(AssembleModule, self).__init__(eventid)
         if comment is not None:
             self.comment = comment
+        self.points = points
 
     def execute(self):
         """
@@ -243,6 +246,18 @@ class AssembleModule(CoreModule):
 
         hdf_file = os.path.join(datadir, "shake_data.hdf")
 
+        # handle points input file
+        if self.points is not None:
+            self.points = pathlib.Path(self.points)
+            if self.points.suffix == ".xlsx":
+                dataframe = pd.read_excel(self.points)
+            else:
+                dataframe = pd.read_csv(self.points)
+            new_dataframe = modify_points_dataframe(dataframe)
+            new_points = os.path.join(datadir, "input_points.csv")
+            new_dataframe.to_csv(new_points, index=False)
+            config["interp"]["prediction_location"]["file"] = new_points
+
         self.logger.debug("Creating input container...")
         shake_data = ShakeMapInputContainer.createFromInput(
             hdf_file,
@@ -326,6 +341,21 @@ class AssembleModule(CoreModule):
             "has spaces, the string should be quoted (e.g., "
             '--comment "This is a comment.")',
         )
+        parser.add_argument(
+            "-p",
+            "--points",
+            help="Provide points data file to 'assemble' command. "
+            "Use of this option serves to switch ShakeMap into 'points mode', "
+            "meaning that the computations will be carried out on the input set "
+            "of latitudes and longitudes instead of a grid. The input file should "
+            "be an Excel spreadsheet or CSV file with column headers:\n"
+            " - lat (or any string beginning with 'lat' when lowercased) REQUIRED\n"
+            " - lon (or any string beginning with 'lon' when lowercased) REQUIRED\n"
+            " - id (or any string beginning with 'id' when lowercased) OPTIONAL\n"
+            " - vs30 (or any string beginning with 'vs30' when lowercased) OPTIONAL\n\n"
+            "lat/lon/vs30 values should be floating point values, id should be a string "
+            "unique for each row that describes the location.",
+        )
         #
         # This line should be in any modules that overrides this
         # one. It will collect up everything after the current
@@ -337,6 +367,7 @@ class AssembleModule(CoreModule):
         parser.add_argument("rem", nargs=argparse.REMAINDER, help=argparse.SUPPRESS)
         args = parser.parse_args(arglist)
         self.comment = args.comment
+        self.points = args.points
         return args.rem
 
 
