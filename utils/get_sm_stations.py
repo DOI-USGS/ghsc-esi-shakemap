@@ -9,7 +9,7 @@ from collections import OrderedDict
 import pandas as pd
 
 # local imports
-from shakemap.utils.comcat import get_bytes, get_detail_json
+from shakemap_modules.utils.comcat import get_bytes, get_detail_json
 
 
 def main():

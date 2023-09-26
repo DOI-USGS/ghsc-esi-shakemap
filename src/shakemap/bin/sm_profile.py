@@ -22,9 +22,9 @@ from tempfile import mkstemp
 import re
 
 # shakemap imports
-from shakemap.utils.config import get_data_path
-from shakemap.utils.config import check_profile_config
-from shakemap.utils.utils import query_yes_no
+from shakemap_modules.utils.config import get_data_path
+from shakemap_modules.utils.config import check_profile_config
+from shakemap_modules.utils.utils import query_yes_no
 
 
 def replace(file_path, pattern, subst):
@@ -234,11 +234,11 @@ def create(config, profile, accept, ppath, nogrids):
     # if any of these files are not present in the install config
     # directory, copy them from the repository into the install directory.
     for conf_name in conf_names:
-        config_file = os.path.join(shakeconfig_data_path, conf_name)
+        config_file = shakeconfig_data_path / conf_name
         if not os.path.isfile(os.path.join(config_path, conf_name)):
             shutil.copy(config_file, config_path)
 
-    layer_dir = os.path.join(shakeconfig_data_path, "layers")
+    layer_dir = shakeconfig_data_path / "layers"
     install_data_dir = os.path.join(install_path, "data")
     mapping_data_dir = os.path.join(install_data_dir, "mapping")
     generic_amps_dir = os.path.join(install_data_dir, "GenericAmpFactors")
@@ -257,8 +257,15 @@ def create(config, profile, accept, ppath, nogrids):
         os.mkdir(mapping_data_dir)
 
     # copy mapping data into data install directory
-    test_mapping_dir = os.path.join(
-        shakeconfig_data_path, "..", "..", "tests", "data", "install", "data", "mapping"
+    test_mapping_dir = (
+        shakeconfig_data_path
+        / ".."
+        / ".."
+        / "tests"
+        / "data"
+        / "install"
+        / "data"
+        / "mapping"
     )
     allfiles = glob.glob(os.path.join(test_mapping_dir, "*.*"))
     for fname in allfiles:

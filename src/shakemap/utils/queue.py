@@ -22,11 +22,15 @@ import psutil
 from configobj import ConfigObj
 from esi_utils_rupture import constants
 from esi_utils_rupture.origin import write_event_file
-from shakemap.utils.amps import AmplitudeHandler
-from shakemap.utils.config import get_data_path
+from shakemap_modules.utils.amps import AmplitudeHandler
+from shakemap_modules.utils.config import get_data_path
 
 # Local imports
-from shakemap.utils.config import config_error, get_config_paths, get_configspec
+from shakemap_modules.utils.config import (
+    config_error,
+    get_config_paths,
+    get_configspec,
+)
 from shapely.geometry import Point, Polygon
 from validate import Validator
 
@@ -159,7 +163,7 @@ def get_config(install_path):
     """
     config_file = os.path.join(install_path, "config", "queue.conf")
     configspec = get_configspec("queue")
-    config = ConfigObj(config_file, configspec=configspec)
+    config = ConfigObj(config_file, configspec=f"{configspec}")
     results = config.validate(Validator())
     if not isinstance(results, bool) or not results:
         config_error(config, results)
@@ -186,7 +190,7 @@ class Queue(object):
         #
         config_file = os.path.join(self.install_path, "config", "shake.conf")
         spec_file = get_configspec("shake")
-        shake_config = ConfigObj(config_file, configspec=spec_file)
+        shake_config = ConfigObj(config_file, configspec=f"{spec_file}")
         results = shake_config.validate(Validator())
         if not isinstance(results, bool) or not results:
             config_error(shake_config, results)
@@ -513,7 +517,7 @@ class Queue(object):
         Returns:
             nothing: Nothing.
         """
-        transfer_file = os.path.join(get_data_path(), "transfer_reviewed_origin.conf")
+        transfer_file = get_data_path() / "transfer_reviewed_origin.conf"
         event_dir = os.path.join(self.data_path, event["id"], "current")
         if not os.path.isdir(event_dir):
             os.makedirs(event_dir)
@@ -521,7 +525,7 @@ class Queue(object):
         # Don't overwrite the event-specific transfer.conf if it exists, because
         # the operator may have customized it.
         if os.path.isfile(event_file) is False:
-            shutil.copy(transfer_file, event_file)
+            shutil.copy(f"{transfer_file}", event_file)
         return
 
     def moveEventDirectory(self, oldid, newid):

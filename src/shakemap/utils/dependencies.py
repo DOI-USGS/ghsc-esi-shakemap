@@ -5,8 +5,7 @@ import glob
 import re
 import logging
 
-
-from shakemap.utils.config import get_config_paths
+from shakemap_modules.utils.config import get_config_paths
 
 
 def sha_sum(fname):

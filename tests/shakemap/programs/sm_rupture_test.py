@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 # stdlib imports
 import os
 import subprocess

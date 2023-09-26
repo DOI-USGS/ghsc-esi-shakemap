@@ -8,10 +8,10 @@ import sys
 from configparser import ConfigParser
 
 # third party imports
-from esi_utils_io.cmd import get_command_output
 
 # local imports
-from shakemap.utils.config import get_config_paths
+from esi_utils_io.cmd import get_command_output
+from shakemap_modules.utils.config import get_config_paths
 
 CONFIG = "sync.conf"
 EXCLUDES = ["backup*", "pdl", "products", "*.hdf"]

@@ -10,11 +10,13 @@ import re
 import sys
 import tarfile
 from collections import OrderedDict
+from configobj import ConfigObj
 
-import numpy as np
 
 # third party imports
-from configobj import ConfigObj
+import numpy as np
+
+# local imports
 from esi_utils_rupture import constants
 from esi_utils_rupture.factory import (
     get_rupture,
@@ -23,18 +25,16 @@ from esi_utils_rupture.factory import (
 )
 from esi_utils_rupture.origin import Origin, read_event_file, write_event_file
 from esi_utils_time.ancient_time import HistoricTime
-from shakelib.utils.utils import get_extent
-
-# local imports
-from shakemap.utils.config import (
+from esi_shakelib.modules.utils import get_extent
+from shakemap_modules.utils.config import (
     config_error,
     get_config_paths,
     get_configspec,
     get_custom_validator,
 )
-from shakemap.utils.layers import update_config_regions, validate_config
-from shakemap.utils.probs import get_weights
-from shakemap.utils.utils import get_network_name, migrate_gmpe, set_gmpe
+from shakemap_modules.utils.layers import update_config_regions, validate_config
+from shakemap_modules.utils.probs import get_weights
+from shakemap_modules.utils.utils import get_network_name, migrate_gmpe, set_gmpe
 
 KM2SEC = 3600.0 / 111  # seconds per kilometer
 

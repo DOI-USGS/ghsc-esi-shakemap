@@ -15,16 +15,20 @@ import traceback
 from collections import OrderedDict
 import importlib
 import importlib.metadata
+from configobj import ConfigObj
+from validate import Validator
 
 # local imports
 import shakemap
-from configobj import ConfigObj
 from esi_utils_rupture.origin import read_event_file
-from shakemap.utils.config import config_error, get_config_paths, get_configspec
 from shakemap.utils.dependencies import CommandDatabase
 from shakemap.utils.exception import TerminateShakeMap
-from shakemap.utils.logging import get_logger
-from validate import Validator
+from shakemap_modules.utils.config import (
+    config_error,
+    get_config_paths,
+    get_configspec,
+)
+from shakemap_modules.utils.logging import get_logger
 
 VERSION = importlib.metadata.version("shakemap")
 CANCEL_FILE = "CANCELED"
@@ -37,7 +41,7 @@ def _get_config():
     install_path, data_path = get_config_paths()
     config_file = os.path.join(install_path, "config", "shake.conf")
     spec_file = get_configspec("shake")
-    config = ConfigObj(config_file, configspec=spec_file)
+    config = ConfigObj(config_file, configspec=f"{spec_file}")
     results = config.validate(Validator())
     if not isinstance(results, bool) or not results:
         config_error(config, results)

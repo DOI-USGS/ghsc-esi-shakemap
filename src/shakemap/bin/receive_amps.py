@@ -7,9 +7,9 @@ import sys
 import glob
 
 # local imports
-from shakemap.utils.config import get_config_paths
-from shakemap.utils.amps import AmplitudeHandler
-from shakemap.utils.logging import get_generic_logger
+from shakemap_modules.utils.config import get_config_paths
+from shakemap_modules.utils.amps import AmplitudeHandler
+from shakemap_modules.utils.logging import get_generic_logger
 
 LOGFILE = "amps.log"
 

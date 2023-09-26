@@ -8,9 +8,9 @@ import sys
 import re
 
 # local imports
-from shakemap.utils.config import get_config_paths
-from shakemap.coremods.dyfi import _get_dyfi_dataframe
-from shakemap.utils.dataframe import dataframe_to_xml
+from shakemap_modules.utils.config import get_config_paths
+from shakemap_modules.coremods.dyfi import _get_dyfi_dataframe
+from shakemap_modules.utils.dataframe import dataframe_to_xml
 
 DETAIL_TEMPLATE = (
     "https://earthquake.usgs.gov/fdsnws/event/1/query?" "eventid=[EID]&format=geojson"

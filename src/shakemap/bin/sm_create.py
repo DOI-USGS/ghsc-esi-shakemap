@@ -14,29 +14,28 @@ import warnings
 from collections import OrderedDict
 from xml.sax import make_parser
 from xml.sax.handler import ContentHandler
-
-import numpy as np
+from configobj import ConfigObj
 
 # third party imports
-from configobj import ConfigObj
+import numpy as np
+
+# local imports
 from esi_utils_rupture.factory import get_rupture
 from esi_utils_rupture.origin import Origin, write_event_file
 from esi_utils_time.ancient_time import HistoricTime
-from shakelib.station import StationList
-from shakemap.coremods.dyfi import _get_dyfi_dataframe
-
-# local imports
-from shakemap.utils.comcat import get_bytes, get_detail_json
-from shakemap.utils.config import (
+from esi_shakelib.station import StationList
+from shakemap_modules.coremods.dyfi import _get_dyfi_dataframe
+from shakemap_modules.utils.comcat import get_bytes, get_detail_json
+from shakemap_modules.utils.config import (
     config_error,
     get_config_paths,
     get_configspec,
     get_custom_validator,
 )
-from shakemap.utils.dataframe import dataframe_to_xml
-from shakemap.utils.layers import update_config_regions, validate_config
-from shakemap.utils.probs import get_weights
-from shakemap.utils.utils import get_network_name, migrate_gmpe, set_gmpe
+from shakemap_modules.utils.dataframe import dataframe_to_xml
+from shakemap_modules.utils.layers import update_config_regions, validate_config
+from shakemap_modules.utils.probs import get_weights
+from shakemap_modules.utils.utils import get_network_name, migrate_gmpe, set_gmpe
 
 TIMEFMT2 = "%Y-%m-%dT%H:%M:%S"
 KM2SEC = 3600.0 / 111  # seconds per kilometer

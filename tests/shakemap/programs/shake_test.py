@@ -4,7 +4,7 @@ import os
 import subprocess
 import shutil
 
-from shakemap.utils.config import get_config_paths
+from shakemap_modules.utils.config import get_config_paths
 
 homedir = os.path.dirname(os.path.abspath(__file__))  # where is this script?
 shakedir = os.path.abspath(os.path.join(homedir, "..", "..", ".."))

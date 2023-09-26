@@ -16,18 +16,17 @@ import sys
 import time
 from datetime import datetime
 
+# third-party imports
+
+# local imports
 import shakemap.utils.queue as queue
 from esi_utils_comcat.query import GeoServe
 from esi_utils_geo.compass import get_compass_dir_azimuth
 from esi_utils_rupture import constants
-
-# third-party imports
-from shakemap.utils.comcat import get_detail_json
-
-# local imports
-from shakemap.utils.config import get_config_paths
-from shakemap.utils.logging import get_generic_logger
-from shakemap.utils.utils import get_network_name
+from shakemap_modules.utils.comcat import get_detail_json
+from shakemap_modules.utils.config import get_config_paths
+from shakemap_modules.utils.logging import get_generic_logger
+from shakemap_modules.utils.utils import get_network_name
 
 LOGFILE = "origins.log"
 

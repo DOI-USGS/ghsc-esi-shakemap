@@ -5,7 +5,7 @@ import os.path
 import argparse
 
 # local imports
-from shakemap.utils.config import check_all_configs, get_config_paths
+from shakemap_modules.utils.config import check_all_configs, get_config_paths
 
 
 TAB = "  "
