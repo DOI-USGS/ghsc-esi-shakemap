@@ -229,7 +229,7 @@ def get_region_probs(eid, depth, strec_results, config):
     region_mapping = {
         "scr": "DistanceToStable",
         "acr": "DistanceToActive",
-        "volcanic": "DistanceToHotSpot",
+        "volcanic": "DistanceToVolcanic",
         "subduction": "DistanceToSubduction",
     }
     layer_probs = {}
