@@ -48,11 +48,11 @@ def set_sites_depth_parameters(sites, gmpe):
 
     if (
         gmpe == "[AbrahamsonEtAl2014]"
-        or gmpe == "[AbrahamsonEtAl2014]\nregion = 'TWN'"
-        or gmpe == "[AbrahamsonEtAl2014]\nregion = 'CHN'"
+        or gmpe == '[AbrahamsonEtAl2014]\nregion = "TWN"'
+        or gmpe == '[AbrahamsonEtAl2014]\nregion = "CHN"'
     ):
         sites.z1pt0 = sites.z1pt0_ask14_cal
-    if gmpe == "[AbrahamsonEtAl2014]\nregion = 'JPN'":
+    if gmpe == '[AbrahamsonEtAl2014]\nregion = "JPN"':
         sites.z1pt0 = sites.z1pt0_ask14_jpn
     if gmpe == "[ChiouYoungs2014]" or isinstance(gmpe, BooreEtAl2014):
         sites.z1pt0 = sites.z1pt0_cy14_cal
@@ -109,7 +109,6 @@ def stuff_context(sites, rup, dists):
 
 
 def get_gmpe_from_name(name, conf):
-
     # Only import the NullGMPE when we're testing
     # We'll want to import any other GMPEs we add at the top of this module
     # so that gsim() picks them up; anything in OQ is already included
@@ -219,7 +218,6 @@ class MultiGMPE(GMPE):
     def __get_mean_and_stddevs__(
         self, sites, rup, dists, imt, stddev_types, large_dist=False
     ):
-
         # ---------------------------------------------------------------------
         # Sort out which set of weights to use
         # ---------------------------------------------------------------------
