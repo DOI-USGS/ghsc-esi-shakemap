@@ -7,6 +7,7 @@ Submodules
    :maxdepth: 12
 
    shakemap.utils.amps
+   shakemap.utils.comcat
    shakemap.utils.config
    shakemap.utils.dataframe
    shakemap.utils.dependencies
