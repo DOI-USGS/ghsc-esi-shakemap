@@ -2,6 +2,47 @@
     {
         "name": "shakemap",
         "description": "Near-real-time maps of ground motion and shaking intensity",
+        "version": "v4.2",
+        "status": "Development",
+        "organization": "U.S. Geological Survey",
+        "vcs": "git",
+        "repositoryURL": "https://code.usgs.gov/ghsc/esi/shakemap.git",
+        "homepageURL": "https://code.usgs.gov/ghsc/esi/shakemap",
+        "downloadURL": "https://code.usgs.gov/ghsc/esi/shakemap/-/archive/v4.2/shakemap-v4.2.zip",
+        "disclaimerURL": "https://code.usgs.gov/ghsc/esi/shakemap/-/raw/v4.2/DISCLAIMER.md",
+        "permissions": {
+            "licenses": [
+                {
+                    "name": "Public Domain, CC0-1.0",
+                    "URL": "https://code.usgs.gov/ghsc/esi/shakemap/-/raw/v4.2/LICENSE.md"
+                }
+            ],
+            "usageType": "openSource",
+            "exemptionText": null
+        },
+        "laborHours": 1,
+        "languages": [
+            "python",
+            "c"
+        ],
+        "tags": [
+            "earthquake",
+            "shakemap",
+            "impact",
+            "strong motion",
+            "ground motion"
+        ],
+        "contact": {
+            "name": "C. Bruce Worden",
+            "email": "cbworden@contractor.usgs.gov"
+        },
+        "date": {
+            "metadataLastUpdated": "2023-11-13"
+        }
+    },
+    {
+        "name": "shakemap",
+        "description": "Near-real-time maps of ground motion and shaking intensity",
         "version": "v4.1.5",
         "status": "Development",
         "organization": "U.S. Geological Survey",
