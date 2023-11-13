@@ -14,7 +14,7 @@ def pytest_configure(config):
     # This tells get_config_paths() (shakemap.utils.config) to
     # return paths into the testing part of the repo
     #
-    os.environ["CALLED_FROM_PYTEST"] = "True"
+    os.environ["CALLED_FROM_PYTEST"] = os.path.dirname(__file__)
 
 
 def pytest_unconfigure(config):
