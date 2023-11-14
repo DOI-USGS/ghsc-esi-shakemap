@@ -224,35 +224,17 @@ if [ -d bin/__pycache__ ]; then
     rm -rf bin/__pycache__
 fi
 
-echo "#############Installing pip dependencies##############"
-pip install -r requirements.txt 
-if [ $? -ne 0 ]; then
-    echo "Installation of pip requirements failed."
-    exit 1
-fi
-pip install --upgrade --no-dependencies git+https://github.com/gem/oq-engine
-# pip install --upgrade --no-dependencies https://github.com/gem/oq-engine/archive/engine-3.12.zip
-
-# Touch the C code to make sure it gets re-compiled
-echo "Installing ${VENV}..."
-touch shakemap/c/*.pyx
-touch shakemap/c/contour.c
-
-# Install this package
-echo "#############Installing shakemap code##############"
-pip install --no-deps -e .
-
-# now if the user has explicitly asked to run tests OR they're doing an update
-if  $run_tests; then
-    echo "Running tests..."
-    py.test --cov=.
-    if [ $? -eq 0 ]; then
-        if [ "${create_deploy_yaml}" == "true" ]; then
-            conda list --explicit  > "${output_txt_file}"
-            echo "Updated dependency file for your platform: ${output_txt_file}."
-        fi
-    else
-        echo "Tests failed. Please resolve these issues then trying re-installing."
+if $developer; then
+    echo "############# Installing shakemap with developer tools ##############"
+    if ! pip install -e '.[dev,test,doc]' ; then
+        echo "Installation of shakemap failed."
+        exit 1
+    fi
+else
+    echo "############# Installing shakemap ##############"
+    if ! pip install . ; then
+        echo "Installation of shakemap failed."
+        exit 1
     fi
 fi
 

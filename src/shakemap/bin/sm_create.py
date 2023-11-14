@@ -275,7 +275,7 @@ def main():
 
     # get the global config for migrate.conf
     migrate_file = os.path.join(install_path, "config", "migrate.conf")
-    spec_file = get_configspec("migrate")
+    spec_file = get_configspec("migrate").as_posix()
     validator = get_custom_validator()
     migrate_conf = ConfigObj(migrate_file, configspec=spec_file)
     results = migrate_conf.validate(validator)

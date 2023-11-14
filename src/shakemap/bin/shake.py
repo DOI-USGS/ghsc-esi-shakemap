@@ -55,7 +55,7 @@ def _get_command_classes(config):
 
     Returns:
         dict: Dictionary of classname:class where each class
-            is a subclass of shakemap.coremods.base.CoreModule.
+            is a subclass of shakemap_modules.coremods.base.CoreModule.
     """
     coremods = {}
     for modname in config["coremods"]:
