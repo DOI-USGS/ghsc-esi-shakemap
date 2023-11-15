@@ -21,6 +21,14 @@ default:
   variables:
     ENVIRONMENT: development
 
+# Temporary rule for upstream development branch
+.dev: &dev
+  if: >
+    $CI_PROJECT_PATH == 'ghsc/esi/shakemap'
+    && $CI_COMMIT_BRANCH == 'v4.2_rc'
+  variables:
+    ENVIRONMENT: development
+
 .upstream: &upstream
   if: >
     $CI_PROJECT_PATH == 'ghsc/esi/shakemap'
