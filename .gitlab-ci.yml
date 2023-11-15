@@ -46,7 +46,7 @@ stages:
 .versions:
   parallel:
     matrix:
-      - PYTHON_VERSION: ["3.9", "3.10"]
+      - PYTHON_VERSION: ["3.9"]
 
 # Create reusable build configuration for referencing
 .build_config:
