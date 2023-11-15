@@ -21,6 +21,14 @@ default:
   variables:
     ENVIRONMENT: development
 
+# Temporary rule for upstream development branch
+.dev: &dev
+  if: >
+    $CI_PROJECT_PATH == 'ghsc/esi/shakemap'
+    && $CI_COMMIT_BRANCH == 'v4.2_rc'
+  variables:
+    ENVIRONMENT: development
+
 .upstream: &upstream
   if: >
     $CI_PROJECT_PATH == 'ghsc/esi/shakemap'
@@ -59,7 +67,7 @@ run tests and coverage:
     - !reference [.build_config, script]
     # Continue job script
     - pytest -x --cov=shakemap --cov-report xml:coverage.xml --cov-report term --junitxml junit.xml
-    - coverage xml
+    # - coverage xml
 
   # Define test coverage and reporting
   coverage: '/(?i)total.*? (100(?:\.0+)?\%|[1-9]?\d(?:\.\d+)?\%)$/'
@@ -72,6 +80,7 @@ run tests and coverage:
 
   rules:
     - *fork
+    - *dev
     - *upstream
 
   # Run the jobs as parallel pipelines
