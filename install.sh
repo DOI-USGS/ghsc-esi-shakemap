@@ -17,12 +17,10 @@ if [ "$unamestr" == 'Linux' ]; then
     prof=~/.bashrc
     mini_conda_url=https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
     matplotlibdir=~/.config/matplotlib
-    output_txt_file=deployment_linux.txt
 elif [ "$unamestr" == 'FreeBSD' ] || [ "$unamestr" == 'Darwin' ]; then
     prof=~/.bash_profile
     mini_conda_url=https://repo.continuum.io/miniconda/Miniconda3-latest-MacOSX-x86_64.sh
     matplotlibdir=~/.matplotlib
-    output_txt_file=deployment_macos.txt
 else
     echo "Unsupported environment. Exiting."
     exit
@@ -34,21 +32,12 @@ source $prof
 
 # Parse the command line arguments passed in by the user
 PYVER=$DEFAULT_PYVER
-create_deploy_yaml=false
 run_tests=false
-input_txt_file=$output_txt_file
-input_yaml_file=""
+input_yaml_file=source_environment.yml
 # Default is to use conda to install since mamba fails on some systems
 install_pgm=conda
 while getopts ":utp:n" options; do
     case "${options}" in                    # 
-    u)                                    # If the option is u,
-        input_yaml_file=source_environment.yml
-        create_deploy_yaml=true
-        run_tests=true
-        # Only use mambe when rebuilding the env files since it sometimes fails.
-        install_pgm=mamba
-        ;;
     p)
         PYVER=$OPTARG
         ;;
@@ -65,7 +54,6 @@ while getopts ":utp:n" options; do
 done
 
 echo "YAML file to use as input: ${input_yaml_file}"
-echo "Variable to indicate deployment: ${create_deploy_yaml}"
 echo "Using python version ${PYVER}"
 
 # Name of virtual environment, pull from yml file
@@ -140,7 +128,6 @@ else
 fi
 
 
-
 # Update the conda tool
 CVNUM=`conda -V | cut -f2 -d' '`
 LATEST=`conda search conda | tail -1 | tr -s ' ' | cut -f2 -d" "`
@@ -176,29 +163,12 @@ fi
 conda remove -y -n $VENV --all
 conda clean -y --all
 
-if [ ${install_pgm} == 'mamba' ]; then
-    # install mamba in *base* environment as it makes solving MUCH faster
-    which mamba
-    if [ $? -eq 0 ]; then
-        echo "Mamba already installed, skipping."
-    else
-        echo "Installing mamba in base environment..."
-        conda install mamba -n base -c conda-forge --strict-channel-priority -y
-    fi
-fi
-
 # Install the virtual environment
-echo "Creating the $VENV virtual environment:"
-if [ -z "${input_yaml_file}" ]; then
-    echo "Creating environment from spec list: ${input_txt_file}"
-    ${install_pgm} create --name $VENV --file "${input_txt_file}"
-else
-    echo "Creating new environment from environment file: ${input_yaml_file} with python version ${PYVER}"
-    # change python version in yaml file to match PYVER
-    sed 's/python='"${DEFAULT_PYVER}"'/python='"${PYVER}"'/' "${input_yaml_file}" > tmp.yml
-    ${install_pgm} env create -f tmp.yml
-    rm tmp.yml 
-fi
+echo "Creating new environment from environment file: ${input_yaml_file} with python version ${PYVER}"
+# change python version in yaml file to match PYVER
+sed 's/python='"${DEFAULT_PYVER}"'/python='"${PYVER}"'/' "${input_yaml_file}" > tmp.yml
+${install_pgm} env create -f tmp.yml
+rm tmp.yml 
 
 
 # Bail out at this point if the conda create command fails.
@@ -238,4 +208,4 @@ else
     fi
 fi
 
-echo "Reminder: Run 'conda activate' to enable the ShakeMap environment."
+echo "Reminder: Run 'conda activate shakemap' to enable the ShakeMap environment."
