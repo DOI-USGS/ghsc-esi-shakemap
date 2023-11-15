@@ -1,6 +1,7 @@
 ## main
 
 # v4.2
+ - Modify source_environment.yml to have more flexible python version.
  - Fixes to install.sh; no longer use deployment.txt files.
  - Made tests work.
  - Modified to use pypi-based esi-shakelib and shakemap-modules.
