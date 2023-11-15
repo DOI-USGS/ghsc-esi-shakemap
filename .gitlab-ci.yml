@@ -80,6 +80,7 @@ run tests and coverage:
 
   rules:
     - *fork
+    - *dev
     - *upstream
 
   # Run the jobs as parallel pipelines
