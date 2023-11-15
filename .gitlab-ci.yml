@@ -67,7 +67,7 @@ run tests and coverage:
     - !reference [.build_config, script]
     # Continue job script
     - pytest -x --cov=shakemap --cov-report xml:coverage.xml --cov-report term --junitxml junit.xml
-    - coverage xml
+    # - coverage xml
 
   # Define test coverage and reporting
   coverage: '/(?i)total.*? (100(?:\.0+)?\%|[1-9]?\d(?:\.\d+)?\%)$/'
