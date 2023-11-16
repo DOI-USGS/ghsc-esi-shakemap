@@ -202,7 +202,7 @@ if $developer; then
     fi
 else
     echo "############# Installing shakemap ##############"
-    if ! pip install . ; then
+    if ! pip install -e . ; then
         echo "Installation of shakemap failed."
         exit 1
     fi
