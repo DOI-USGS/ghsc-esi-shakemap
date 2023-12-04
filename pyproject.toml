@@ -12,8 +12,8 @@ readme = "README.md"
 requires-python = ">=3.9,<3.10"
 
 dependencies = [
-    "shakemap-modules[all]>=1.0.0",
-    "esi-shakelib>=1.0.0",
+    "shakemap-modules[all]>=1.0.3",
+    "esi-shakelib>=1.0.4",
     "daemon>=1.2",
     "lockfile>=0.12.2",
 ]
@@ -76,3 +76,5 @@ include-package-data = true
 where = ["src"]
 include = ["shakemap*"]
 exclude = ["tests*"]
+
+[tool.setuptools_scm]

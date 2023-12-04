@@ -52,7 +52,7 @@ stages:
 .build_config:
   script:
     - conda init bash
-    - bash install.sh -p ${PYTHON_VERSION}
+    - bash install.sh -p ${PYTHON_VERSION} -d
     - conda activate shakemap
     - echo "***********************************************"
     - conda list

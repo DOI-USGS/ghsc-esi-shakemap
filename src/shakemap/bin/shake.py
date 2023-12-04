@@ -19,7 +19,6 @@ from configobj import ConfigObj
 from validate import Validator
 
 # local imports
-import shakemap
 from esi_utils_rupture.origin import read_event_file
 from shakemap.utils.dependencies import CommandDatabase
 from shakemap.utils.exception import TerminateShakeMap
@@ -306,7 +305,10 @@ def main():
                 raise KeyError(f'Command "{cmd}" not found in ShakeMap.')
 
             cmd_class = _classes_[cmd]["class"]
-            cmd_obj = cmd_class(args.eventid)
+            if cmd == "model":
+                cmd_obj = cmd_class(args.eventid, shakemap_version=VERSION)
+            else:
+                cmd_obj = cmd_class(args.eventid)
             cmd_list[cmd] = cmd_obj
 
             if args.eventid.lower() == "help":

@@ -5,11 +5,10 @@ DEFAULT_PYVER=3.9
 
 usage()
 {
-  echo "Usage: install.sh [ -u  Update]
-                  [ -t  Run tests ]
-                  [ -n  Don't run tests]
+    echo "Usage: install.sh  [ -p Python version (3.9) ]
+                  [ -d  Install developer tools ]
             "
-  exit 2
+    exit 2
 }
 
 unamestr=`uname`
@@ -32,20 +31,17 @@ source $prof
 
 # Parse the command line arguments passed in by the user
 PYVER=$DEFAULT_PYVER
-run_tests=false
 input_yaml_file=source_environment.yml
+developer=false
 # Default is to use conda to install since mamba fails on some systems
 install_pgm=conda
-while getopts ":utp:n" options; do
+while getopts "p:d" options; do
     case "${options}" in                    # 
     p)
         PYVER=$OPTARG
         ;;
-    t)
-        run_tests=true
-        ;;
-    n)
-        run_tests=false
+    d)
+        developer=true
         ;;
     *)                            # If unknown (any other) option:
       usage                       # Exit abnormally.
@@ -202,7 +198,7 @@ if $developer; then
     fi
 else
     echo "############# Installing shakemap ##############"
-    if ! pip install . ; then
+    if ! pip install -e . ; then
         echo "Installation of shakemap failed."
         exit 1
     fi
