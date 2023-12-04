@@ -1,6 +1,7 @@
 ## main
 
 # v4.2
+ - Rev versions of esi-shakelib and shakemap-modules in pyproject.toml.
  - Add versioning info for shake to pass to the model module.
  - Modify source_environment.yml to have more flexible python version.
  - Fixes to install.sh; no longer use deployment.txt files.
