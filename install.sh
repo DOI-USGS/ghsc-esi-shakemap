@@ -230,6 +230,7 @@ if [ $? -ne 0 ]; then
     echo "Installation of pip requirements failed."
     exit 1
 fi
+pip install alpha-shapes
 pip install --upgrade --no-dependencies git+https://github.com/gem/oq-engine
 # pip install --upgrade --no-dependencies https://github.com/gem/oq-engine/archive/engine-3.12.zip
 
