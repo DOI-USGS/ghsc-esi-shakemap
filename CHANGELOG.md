@@ -1,6 +1,7 @@
 ## main
 
 # v4.2
+ - Add esi-utils-comcat to install.
  - Fix install bug -- package dependency on daemon should have been python-daemon.
  - Rev versions of esi-shakelib and shakemap-modules in pyproject.toml.
  - Add versioning info for shake to pass to the model module.

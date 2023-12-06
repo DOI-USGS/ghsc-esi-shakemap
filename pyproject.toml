@@ -14,6 +14,7 @@ requires-python = ">=3.9,<3.10"
 dependencies = [
     "shakemap-modules[all]>=1.0.3",
     "esi-shakelib>=1.0.4",
+    "esi-utils-comcat>=0.0.1",
     "python-daemon>=3.0",
     "lockfile>=0.12.2",
 ]
