@@ -5,7 +5,7 @@ esi-utils-io
 esi-utils-rupture>=1.0.3
 esi-utils-textformat
 esi-utils-time
-esi-utils-transfer
+esi-utils-transfer>=0.1.2
 esi-utils-vectors
 gmpacket>=0.1.2
 mapio>=0.8.8
