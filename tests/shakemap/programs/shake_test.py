@@ -4,7 +4,7 @@ import os
 import subprocess
 import shutil
 
-from shakemap.utils.config import get_config_paths
+from shakemap_modules.utils.config import get_config_paths
 
 homedir = os.path.dirname(os.path.abspath(__file__))  # where is this script?
 shakedir = os.path.abspath(os.path.join(homedir, "..", "..", ".."))
@@ -43,7 +43,7 @@ def test_shake():
 
     installdir, datadir = get_config_paths()
 
-    program = os.path.join(shakedir, "bin", "shake")
+    program = os.path.join(shakedir, "src", "shakemap", "bin", "shake.py")
     #
     # Run a bogus event
     #
@@ -74,5 +74,7 @@ def test_shake():
 # main program
 ########################################################################
 if __name__ == "__main__":
-    os.environ["CALLED_FROM_PYTEST"] = "True"
+    os.environ["CALLED_FROM_PYTEST"] = os.path.join(
+        os.path.dirname(__file__), "..", ".."
+    )
     test_shake()

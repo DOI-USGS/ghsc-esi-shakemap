@@ -1,0 +1,81 @@
+[project]
+name = "shakemap"
+dynamic = ["version"]
+description = "USGS Near-Real-Time Ground Motion Mapping"
+authors = [
+    {name = "Bruce Worden", email = "cbworden@usgs.gov"},
+    {name = "Mike Hearne", email = "mhearne@usgs.gov"},
+    {name = "Eric Thompson", email = "emthompson@usgs.gov"},
+]
+license = {file = "LICENSE.md"}
+readme = "README.md"
+requires-python = ">=3.9,<3.10"
+
+dependencies = [
+    "shakemap-modules[all]>=1.0.3",
+    "esi-shakelib>=1.0.4",
+    "esi-utils-comcat>=0.0.1",
+    "python-daemon>=3.0",
+    "lockfile>=0.12.2",
+]
+
+[project.optional-dependencies]
+dev = [
+    "build>=0.7.0",
+    "black>=21",
+    "flake8>=3.9",
+    "ipython>=8.13.2",
+]
+test = [
+    "pytest>=7.3.1",
+    "pytest-azurepipelines>=1.0.4",
+    "pytest-cov>=4.1.0",
+    "pytest-faulthandler>=2.0.1",
+]
+doc = [
+    "sphinx>5.0.0",
+    "sphinx-autoapi>=2.1.0",
+]
+build = [
+    "build",
+    "twine",
+    "check-wheel-contents",
+]
+
+[project.scripts]
+associate_amps = "shakemap.bin.associate_amps:main"
+getdyfi = "shakemap.bin.getdyfi:main"
+recieve_amps = "shakemap.bin.receive_amps:main"
+receive_origins = "shakemap.bin.receive_origins:main"
+receive_origins_gsm = "shakemap.bin.receive_origins_gsm:main"
+run_verification = "shakemap.bin.run_verification:main"
+shake = "shakemap.bin.shake:main"
+sm_check = "shakemap.bin.sm_check:main"
+sm_compare = "shakemap.bin.sm_compare:main"
+sm_create = "shakemap.bin.sm_create:main"
+sm_migrate = "shakemap.bin.sm_migrate:main"
+sm_profile = "shakemap.bin.sm_profile:main"
+sm_queue = "shakemap.bin.sm_queue:main"
+sm_rupture = "shakemap.bin.sm_rupture:main"
+sm_batch = "shakemap.bin.sm_batch:main"
+sm_sync = "shakemap.bin.sm_sync:main"
+fix_netcdf = "shakemap.bin.fix_netcdf:main"
+
+[build-system]
+requires = [
+  "setuptools>=42",
+  "wheel",
+  "setuptools_scm[toml]>=3.4",
+  "numpy",
+]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["shakemap*"]
+exclude = ["tests*"]
+
+[tool.setuptools_scm]

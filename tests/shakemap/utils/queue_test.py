@@ -14,14 +14,14 @@ from datetime import datetime, timedelta, timezone
 
 # third party imports
 import pytest
+from shapely.geometry import Polygon
 
 # local imports
-import shakemap.utils.queue as queue
 from esi_utils_rupture import constants
-from shakemap.utils.amps import AmplitudeHandler
-from shakemap.utils.config import get_config_paths
+import shakemap.utils.queue as queue
 from shakemap.utils.queue import EventQueue, Queue
-from shapely.geometry import Polygon
+from shakemap_modules.utils.amps import AmplitudeHandler
+from shakemap_modules.utils.config import get_config_paths
 
 
 def get_dummy_logger(name):

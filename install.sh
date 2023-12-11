@@ -5,11 +5,10 @@ DEFAULT_PYVER=3.9
 
 usage()
 {
-  echo "Usage: install.sh [ -u  Update]
-                  [ -t  Run tests ]
-                  [ -n  Don't run tests]
+    echo "Usage: install.sh  [ -p Python version (3.9) ]
+                  [ -d  Install developer tools ]
             "
-  exit 2
+    exit 2
 }
 
 unamestr=`uname`
@@ -17,12 +16,10 @@ if [ "$unamestr" == 'Linux' ]; then
     prof=~/.bashrc
     mini_conda_url=https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
     matplotlibdir=~/.config/matplotlib
-    output_txt_file=deployment_linux.txt
 elif [ "$unamestr" == 'FreeBSD' ] || [ "$unamestr" == 'Darwin' ]; then
     prof=~/.bash_profile
     mini_conda_url=https://repo.continuum.io/miniconda/Miniconda3-latest-MacOSX-x86_64.sh
     matplotlibdir=~/.matplotlib
-    output_txt_file=deployment_macos.txt
 else
     echo "Unsupported environment. Exiting."
     exit
@@ -34,29 +31,17 @@ source $prof
 
 # Parse the command line arguments passed in by the user
 PYVER=$DEFAULT_PYVER
-create_deploy_yaml=false
-run_tests=false
-input_txt_file=$output_txt_file
-input_yaml_file=""
+input_yaml_file=source_environment.yml
+developer=false
 # Default is to use conda to install since mamba fails on some systems
 install_pgm=conda
-while getopts ":utp:n" options; do
+while getopts "p:d" options; do
     case "${options}" in                    # 
-    u)                                    # If the option is u,
-        input_yaml_file=source_environment.yml
-        create_deploy_yaml=true
-        run_tests=true
-        # Only use mambe when rebuilding the env files since it sometimes fails.
-        install_pgm=mamba
-        ;;
     p)
         PYVER=$OPTARG
         ;;
-    t)
-        run_tests=true
-        ;;
-    n)
-        run_tests=false
+    d)
+        developer=true
         ;;
     *)                            # If unknown (any other) option:
       usage                       # Exit abnormally.
@@ -65,7 +50,6 @@ while getopts ":utp:n" options; do
 done
 
 echo "YAML file to use as input: ${input_yaml_file}"
-echo "Variable to indicate deployment: ${create_deploy_yaml}"
 echo "Using python version ${PYVER}"
 
 # Name of virtual environment, pull from yml file
@@ -140,7 +124,6 @@ else
 fi
 
 
-
 # Update the conda tool
 CVNUM=`conda -V | cut -f2 -d' '`
 LATEST=`conda search conda | tail -1 | tr -s ' ' | cut -f2 -d" "`
@@ -176,29 +159,12 @@ fi
 conda remove -y -n $VENV --all
 conda clean -y --all
 
-if [ ${install_pgm} == 'mamba' ]; then
-    # install mamba in *base* environment as it makes solving MUCH faster
-    which mamba
-    if [ $? -eq 0 ]; then
-        echo "Mamba already installed, skipping."
-    else
-        echo "Installing mamba in base environment..."
-        conda install mamba -n base -c conda-forge --strict-channel-priority -y
-    fi
-fi
-
 # Install the virtual environment
-echo "Creating the $VENV virtual environment:"
-if [ -z "${input_yaml_file}" ]; then
-    echo "Creating environment from spec list: ${input_txt_file}"
-    ${install_pgm} create --name $VENV --file "${input_txt_file}"
-else
-    echo "Creating new environment from environment file: ${input_yaml_file} with python version ${PYVER}"
-    # change python version in yaml file to match PYVER
-    sed 's/python='"${DEFAULT_PYVER}"'/python='"${PYVER}"'/' "${input_yaml_file}" > tmp.yml
-    ${install_pgm} env create -f tmp.yml
-    rm tmp.yml 
-fi
+echo "Creating new environment from environment file: ${input_yaml_file} with python version ${PYVER}"
+# change python version in yaml file to match PYVER
+sed 's/python='"${DEFAULT_PYVER}"'/python='"${PYVER}"'/' "${input_yaml_file}" > tmp.yml
+${install_pgm} env create -f tmp.yml
+rm tmp.yml 
 
 
 # Bail out at this point if the conda create command fails.
@@ -224,37 +190,18 @@ if [ -d bin/__pycache__ ]; then
     rm -rf bin/__pycache__
 fi
 
-echo "#############Installing pip dependencies##############"
-pip install -r requirements.txt 
-if [ $? -ne 0 ]; then
-    echo "Installation of pip requirements failed."
-    exit 1
-fi
-pip install alpha-shapes
-pip install --upgrade --no-dependencies git+https://github.com/gem/oq-engine
-# pip install --upgrade --no-dependencies https://github.com/gem/oq-engine/archive/engine-3.12.zip
-
-# Touch the C code to make sure it gets re-compiled
-echo "Installing ${VENV}..."
-touch shakemap/c/*.pyx
-touch shakemap/c/contour.c
-
-# Install this package
-echo "#############Installing shakemap code##############"
-pip install --no-deps -e .
-
-# now if the user has explicitly asked to run tests OR they're doing an update
-if  $run_tests; then
-    echo "Running tests..."
-    py.test --cov=.
-    if [ $? -eq 0 ]; then
-        if [ "${create_deploy_yaml}" == "true" ]; then
-            conda list --explicit  > "${output_txt_file}"
-            echo "Updated dependency file for your platform: ${output_txt_file}."
-        fi
-    else
-        echo "Tests failed. Please resolve these issues then trying re-installing."
+if $developer; then
+    echo "############# Installing shakemap with developer tools ##############"
+    if ! pip install -e '.[dev,test,doc]' ; then
+        echo "Installation of shakemap failed."
+        exit 1
+    fi
+else
+    echo "############# Installing shakemap ##############"
+    if ! pip install -e . ; then
+        echo "Installation of shakemap failed."
+        exit 1
     fi
 fi
 
-echo "Reminder: Run 'conda activate' to enable the ShakeMap environment."
+echo "Reminder: Run 'conda activate shakemap' to enable the ShakeMap environment."

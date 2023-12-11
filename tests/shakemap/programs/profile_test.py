@@ -18,7 +18,7 @@ def test_profile():
 
     with tempfile.TemporaryDirectory() as tmpdir:
         pfile = os.path.join(str(tmpdir), "profile.conf")
-        program = os.path.join(shakedir, "bin", "sm_profile")
+        program = os.path.join(shakedir, "src", "shakemap", "bin", "sm_profile.py")
         #
         # Do some stuff that won't work until we create a profile
         #
