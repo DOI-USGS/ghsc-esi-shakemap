@@ -211,6 +211,13 @@ def get_parser():
         help="Preserve model parameters detected in ComCat. Should only be "
         "used on ShakeMap 3.5 products",
     )
+    parser.add_argument(
+        "-v",
+        "--version-history",
+        action="store_true",
+        default=False,
+        help="Preserve and increment from ShakeMap run version detected in ComCat.",
+    )
     return parser
 
 
@@ -525,6 +532,10 @@ def main():
                         errmsg = str(e)
                         print(msg % (errmsg, fault_file))
 
+            if args.version_history:
+                jsonfile = event_xml_file = os.path.join(event_dir, "history.json")
+                write_history_json(jsonfile, shakemap)
+
             # if the user wanted to preserve the model parameters found
             # in info.json, set those here
             if args.preserve_params:
@@ -582,6 +593,14 @@ def main():
                 model.write()
 
     print("Wrote %i files to %s" % (len(os.listdir(event_dir)), event_dir))
+
+
+def write_history_json(jsonfile, shakemap):
+    url = shakemap["contents"]["download/info.json"]["url"]
+    jdict = json.loads(get_bytes(url).decode("utf8"))
+    versiondict = jdict["processing"]["shakemap_versions"]["map_data_history"]
+    with open(jsonfile, "wt") as f:
+        json.dump(versiondict, f)
 
 
 def _write_model_conf(

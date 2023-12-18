@@ -1,5 +1,7 @@
 ## main
 
+ - Add optional persistence of version history back into sm_create command.
+
 ## v4.2.0 / 2023-12-11
  - Add esi-utils-comcat to install.
  - Fix install bug -- package dependency on daemon should have been python-daemon.
