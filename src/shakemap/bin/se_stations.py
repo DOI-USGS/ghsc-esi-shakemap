@@ -120,7 +120,7 @@ def get_stationlist_dataframe(jdata):
     station_rows = []
     for station in jdata["features"]:
         props = station["properties"]
-        if props["station_type"] != "seismic":
+        if "station_type" in props and props["station_type"] != "seismic":
             continue
         row = (
             station["id"],
