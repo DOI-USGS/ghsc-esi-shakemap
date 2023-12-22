@@ -60,6 +60,7 @@ sm_rupture = "shakemap.bin.sm_rupture:main"
 sm_batch = "shakemap.bin.sm_batch:main"
 sm_sync = "shakemap.bin.sm_sync:main"
 fix_netcdf = "shakemap.bin.fix_netcdf:main"
+se_stations = "shakemap.bin.se_stations:main"
 
 [build-system]
 requires = [
