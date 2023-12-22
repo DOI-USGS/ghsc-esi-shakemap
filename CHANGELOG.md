@@ -1,7 +1,11 @@
 ## main
 
  - Add optional persistence of version history back into sm_create command.
+
+## v4.2.1 / 2023-12-11
  - Fix small bug in se_stations when JSON has no station_type.
+ - Add se_stations program for getting stationlist for scenarios.
+ - Re-add persistence of version history back into sm_create.
 
 ## v4.2.0 / 2023-12-11
  - Add esi-utils-comcat to install.

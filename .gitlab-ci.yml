@@ -97,7 +97,7 @@ pages:
     - <<: *upstream
       when: on_success
   variables:
-    PYTHON_VERSION: "3.10"
+    PYTHON_VERSION: "3.9"
 
   script:
     # Run build configuration script
