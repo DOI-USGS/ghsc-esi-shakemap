@@ -36,7 +36,7 @@ that users should be aware of and refer to when employing ShakeMap as
 part of their post-earthquake decision making.
 
 .. toctree::
-   :maxdepth: 1
+   :hidden:
 
    ug_background.rst
    ug_shakemap_operations.rst

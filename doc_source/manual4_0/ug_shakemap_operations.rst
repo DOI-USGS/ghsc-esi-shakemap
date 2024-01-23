@@ -78,7 +78,7 @@ via the Product Distribution Layer (PDL) to USGS’ Comprehensive Catalog
 (ComCat) database. PDL tags each product with a level of authoritativeness,
 such that they can be used and displayed online in an organized and
 systematic fashion.  All maps are available via ComCat and the event’s
-ShakeMap webpage. For example, in :num:`Figure #figure-authoritativeness`,
+ShakeMap webpage. For example, in :numref:`figure-authoritativeness`,
 Utah’s RSN ShakeMap
 (source=UU) is authoritative yet the GSM ShakeMap (source=US) is also
 available. 
@@ -131,7 +131,7 @@ revised, or if new seismic data arrive.
 
 RSN retriggering is often more complex, and numerous reruns and resulting
 Version updates will be produced. For example, as seen in the lower left
-of :num:`Figure #figure-authoritativeness`, the authoritative ShakeMap
+of :numref:`figure-authoritativeness`, the authoritative ShakeMap
 from Utah (UU) is on version 5.
 
 Whereas all ShakeMaps from different sources can be access from this

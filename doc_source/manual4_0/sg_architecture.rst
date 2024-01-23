@@ -8,7 +8,7 @@ Overview
 ========
 
 ShakeMap v4 is designed to allow flexibility in the organization of
-computing resources. :num:`Figure #architecture-overview` illustrates an
+computing resources. :numref:`architecture-overview` illustrates an
 idealized implementation where data preparation, processing, and rendering
 all take place within separate computational units. The processing sequence
 starts when an earthquake is identified and a decision is made to produce a
@@ -23,7 +23,6 @@ by subsequent processes.
 .. _architecture-overview:
 
 .. figure:: _static/sm4.*
-   :width: 700
    :align: left
 
    Overview of ShakeMap architecture.
@@ -41,13 +40,12 @@ system. ShakeCast operators may also have data not available to the
 authoritative system. Remote processing systems can receive *shake_data.hdf*
 from a messaging system, and run the program ``shake augment`` to add their own
 data and configuration choices to those contained in *shake_data.hdf*
-(see :num:`Figure #shake-consumer`). They may then run ``shake model`` to
+(see :numref:`shake-consumer`). They may then run ``shake model`` to
 generate a *shake_result.hdf* specific to their needs.
 
 .. _shake-consumer:
 
 .. figure:: _static/consumer.*
-   :width: 700px
    :align: left
 
    An example of a consumer of the *shake_data.hdf* product.
@@ -61,7 +59,7 @@ a messaging system or other means.
 
 An alternative approach, however, is to create a web service that delivers
 the products when they are requested. This approach is illustrated in
-:num:`Figure #shake-web`. When the website is notified of the existence
+:numref:`shake-web`. When the website is notified of the existence
 of *shake_result.hdf*, it can begin the process of creating a "page" for the
 event. It requests any necessary products from the web service, which in turn
 generates those products from *shake_result.hdf* (via ``shake`` modules). As
@@ -72,7 +70,6 @@ cached by the web system to improve performance.
 .. _shake-web:
 
 .. figure:: _static/web.*
-   :width: 700px
    :align: left
 
    An example of a website using a web service to retrieve products. The web
@@ -168,7 +165,7 @@ The user may have more than one profile, and can switch between them with
 ``sm_profile``. This allows the user to have different configurations
 and data repositories for different event sets (e.g., real time events,
 scenarios, and historic events). See the
-:ref:`sm_profile man page <sm-profile>` for usage and a list of options.
+``sm_profile`` help for usage and a list of options.
 
 shake
 -------
@@ -329,8 +326,6 @@ documentation.
 .. _shake-assemble:
 
 .. figure:: _static/assemble.*
-   :width: 700px
-   :align: left
 
    Data flow of the *assemble* module.
 
@@ -591,7 +586,7 @@ getdyfi
 -------
 
 ``getdyfi`` is a standalone program implementing the ``dyfi`` module's
-functionality.  See the :ref:`getdyfi man page <getdyfi>` for usage and a 
+functionality.  See the ``getdyfi`` help for usage and a 
 list of options.
 
 sm_compare
@@ -600,8 +595,7 @@ sm_compare
 Allows the user to compare two ShakeMaps by making images of their
 difference and ratio. 
 
-See the :ref:`sm_compare man page <sm-compare>` for usage and a 
-list of options.
+See the ``sm_compare`` help for usage and a list of options.
 
 
 sm_create
@@ -612,8 +606,7 @@ associated with an event and writes that data into the event's
 local *current* directory. The event will then be available for
 local processing.
 
-See the :ref:`sm_create man page <sm-create>` for usage and a 
-list of options.
+See the ``sm_create`` help for usage and a list of options.
 
 
 sm_migrate
@@ -623,8 +616,7 @@ Migrates a directory of ShakeMap 3.5 data files into ShakeMap v4 inputs.
 The migration of GMPEs is configurable via the *migrate.conf* configuration
 file.
 
-See the :ref:`sm_migrate man page <sm-migrate>` for usage and a 
-list of options.
+See the `sm_migrate`` help for usage and a list of options.
 
 
 sm_queue
@@ -638,8 +630,7 @@ file. This file is not copied to new profiles by default, so it
 may be retrieved from the source directory 
 ``<shake_install_dir>/shakemap/data``.
 
-See the :ref:`sm_queue man page <sm-queue>` for usage and a 
-list of options.
+See the ``sm_queue`` help for usage and a list of options.
 
 
 receive_amps, receive_origins, and associate_amps
@@ -686,3 +677,4 @@ sm_rupture
 
 Will create or convert a rupture file for ShakeMap v4. Run the program
 with the "--help" option for an explanation and a list of options.
+

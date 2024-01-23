@@ -44,7 +44,7 @@ systems.
 
 **Internationally**, USGS ShakeMap is installed and operational in Italy,
 France, Portugal, Switzerland, Romania, Indonesia, Iran, Iceland,
-Panama, and several other nations (see :num:`Figure #international-shakemaps-4`).
+Panama, and several other nations (see :numref:`international-shakemaps-4`).
 Several instances of ShakeMap are in testing
 or operational mode in the Middle East (including Oman, Morocco, and the U.A.E.; M.
 Franke, written comm., 2015). In addition, other ShakeMap installations are in
@@ -175,7 +175,7 @@ importance of calibrating empirical ground failure and loss models against a
 standardized
 set of uniformly-produced shaking hazard maps so as to allow comparison of
 models
-based on consistent hazard inputs. :num:`Figure #figure1-15-4` shows an
+based on consistent hazard inputs. :numref:`figure1-15-4` shows an
 example of the possibility of
 constraining shaking at landslide sites using ShakeMap layers for the
 2008 M7.9 Wenchuan, China earthquake, employing shaking constraints
@@ -241,7 +241,7 @@ regions of the United States (see :ref:`Thompson et al., 2016
 
 A ShakeMap earthquake scenario is simply a ShakeMap with an assumed
 magnitude and location, and, optionally, specified fault geometry. For
-example, :num:`Figure #figure1-13u-4` shows ShakeMap scenario intensity (top)
+example, :numref:`figure1-13u-4` shows ShakeMap scenario intensity (top)
 and peak velocity (bottom) maps for a hypothetical earthquake of M7.05 on
 the Hayward Fault in the eastern San Francisco Bay area. Due to the
 proximity to populated regions of Oakland, Berkeley, and surrounding cities,
@@ -350,7 +350,7 @@ among earthquakes of the same magnitude, and complex site effects are not
 accounted for with our methodology. For scenarios in which we wish to
 explore directivity explicitly, ShakeMap includes a tool based on
 :ref:`Rowshandel \(2010\) <rowshandel2010>` as shown in
-:num:`Figure #figure1-13u-4`. We
+:numref:`figure1-13u-4`. We
 are also exploring delivery of scenarios with multiple realizations of
 spatial variability (see :ref:`Verros et al. \(2016\) <verros2016>`.
 
@@ -439,8 +439,8 @@ risk estimation software, to
 develop associated damage estimates and other loss information products.
 Both Utah and Washington State officials have worked with USGS, FEMA,
 and other collaborators to produce online collections for scenario exercises
-and mitigation efforts, shown in :num:`Figure #shakemap-hazus-utah-4` and
-:num:`Figure #shakemap-hazus-washington-4`, respectively. 
+and mitigation efforts, shown in :numref:`shakemap-hazus-utah-4` and
+:numref:`shakemap-hazus-washington-4`, respectively. 
 
 .. _shakemap-hazus-utah-4:
 
@@ -475,7 +475,7 @@ and mitigation efforts, shown in :num:`Figure #shakemap-hazus-utah-4` and
    Washington State ShakeMap-based earthquake scenario collection.
    The selected layer (left) shows railways. 
 
-:num:`Figure #shakemap-hazus-railways-4` provides an example Washington
+:numref:`shakemap-hazus-railways-4` provides an example Washington
 State ShakeMap-based M9.0 Cascadia earthquake scenario.
 More details can be found online at the
 `Washington State (DNR) <https://fortress.wa.gov/dnr/seismicscenarios/>`_ Web site.

@@ -280,7 +280,7 @@ Workflow
 
 Below is a description of our Git workflow. This workflow
 is an adaption of a fairly common set of procedures for working with
-GitHub. :num:`Figure #workflow-figure` illustrates the process described
+GitHub. :numref:`workflow-figure` illustrates the process described
 below.
 
 .. _workflow-figure:

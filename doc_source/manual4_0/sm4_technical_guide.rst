@@ -10,7 +10,7 @@ initial descriptions in :ref:`Wald et al. \(1999a\) <wald1999a>` are
 outdated and are superseded by this current report. 
 
 .. toctree::
-   :maxdepth: 1
+   :hidden:
 
    tg_philosophy.rst
    tg_parameters.rst

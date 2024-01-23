@@ -38,7 +38,7 @@ The value of seismic monitoring and ShakeMap was addressed by a report by the Na
 (NRC) ad-hoc Committee on the Economic Benefits of Improved Seismic
 Monitoring (:ref:`National Research Council, 20006 <NRC2006>`). In Chapter 7, "Benefits for Emergency Response and Recovery”, the
 committee refers to the Oct. 16, 1999 M7.1 Hector Mine, California earthquake (ShakeMap shown
-in :num:`Figure #hector-mine-shakemap-4`). 
+in :numref:`hector-mine-shakemap-4`). 
 
 .. _nrc-committee-report-4:
 
@@ -102,7 +102,7 @@ Similarly, a report by the National Science and Technology Council `Subcommittee
     transmission from densely spaced seismic networks.*
 
 One of the earliest examples of the use of ShakeMap for emergency management and response was the 
-the M7.1 Hector Mine earthquake of October 16, 1999 (see :num:`Figure #hector-mine-shakemap-4`). 
+the M7.1 Hector Mine earthquake of October 16, 1999 (see :numref:`hector-mine-shakemap-4`). 
 This event provides an important lesson in the use of
 ShakeMap to assess the scope of an event and to determine the level of mobilization necessary.
 The Hector Mine earthquake produced ground motion that was widely felt in
@@ -136,7 +136,7 @@ all events, geometric-mean ground motions (as opposed to ShakeMap standard
 maximum component), and peak ground velocity in units of inches/sec rather than
 cm/s. The HAZUS-formatted ShakeMap shapefiles are made available to FEMA for scenarios and
 all significant domestic (U.S.) earthquakes 
-via webpages and ArcGIS services (see :ref:`gis_services`). 
+via webpages and ArcGIS services (see :ref:`gis-services-4`). 
 
 The use of ShakeMaps as the shaking hazard input into HAZUS is a major improvement in loss-estimation accuracy
 because actual ground-motion observations are used directly to assess damage, rather than relying on simpler
@@ -321,7 +321,7 @@ customization of the basemap layers and other content. Such
 interactive maps are in favor in newsrooms and educational contexts. 
 
 However, some of the static maps have made for the most widespread distribution.
-A widely used graphic (:num:`Figure #northridge-nisqually-4`), for example,
+A widely used graphic (:numref:`northridge-nisqually-4`), for example,
 compares ShakeMap-generated intensities for the 1994 Northridge earthquake, a
 shallow crustal earthquake near Los Angeles, with the 2001 deep, intraslab
 Nisqually, WA earthquake. This figure was reprinted in numerous reports,
@@ -388,7 +388,7 @@ same ShakeMap input in order for DOD to focus on defense support to civilian aut
 	   
 Internationally, USGS participates (through the National Oceanic and Atmospheric Association, NOAA) in an annual "Caribe
 Wave" earthquake and tsunami exercise for the Caribbean region
-(:ref:`IOC, 2012 <ioc2012>`; see :num:`Figure #caribewave-nle-4`). The USGS ShakeMap and PAGER group also work directly with the U.S.
+(:ref:`IOC, 2012 <ioc2012>`; see :numref:`caribewave-nle-4`). The USGS ShakeMap and PAGER group also work directly with the U.S.
 Agency for International Development (USAID) Office of Foreign
 Disaster Assistance (OFDA), the World Bank, and Geohazards International (GHI) (among many other agencies, countries, and NGOs) to
 develop global planning exercises and scenarios. 
