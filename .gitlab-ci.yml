@@ -102,10 +102,10 @@ pages:
   script:
     # Run build configuration script
     - !reference [.build_config, script]
-    - cd doc_source
+    - cd doc
     - pip install -r requirements.txt
     - cd ..
     - mkdir $HOME/.shakemap
-    - mv doc_source/skeleton_profile $HOME/.shakemap/profiles.conf
-    - sphinx-build doc_source/ public
+    - mv doc/skeleton_profile $HOME/.shakemap/profiles.conf
+    - sphinx-build doc/ public
   stage: docs
