@@ -44,7 +44,7 @@ The color coding for the Instrumental Intensity map uses a standard rainbow pale
 as it is used as a standard in many fields (for example, see USA Today's daily temperature 
 maps of the U.S.).  Note that we do not believe intensity II and III can be consistently 
 distinguished from ground-motions alone, so they are grouped together,
-see :num:`Figure #figure-mmi-scale`. In 
+see :numref:`figure-mmi-scale`. In 
 addition, we saturate intensity X+ with dark red; observed ground motions alone are not 
 sufficient to warrant any higher intensities, given that the available empirical relationships 
 do not have any values of intensity greater than IX. In recent years, the USGS has limited 
@@ -182,7 +182,7 @@ ShakeMap Intensity Scale and Peak Ground Motions
 
 The ShakeMap Instrumental Intensity Scale Legend provides the PGA and PGV
 associated with the central value in each 
-intensity box (see :num:`Figure #figure-mmi-scale`). For all current GMICEs,
+intensity box (see :numref:`figure-mmi-scale`). For all current GMICEs,
 the ground motion scale is 
 logarithmic, with an increase of one intensity unit resulting from approximately a 
 doubling of peak ground motion. Nevertheless, each GMICE has its own mapping of 
@@ -192,7 +192,7 @@ legends now have a citation in the lower left specifying which GMICE was used to
 produce the map and scale. Note, however, that while the mapping of ground motion to 
 intensity varies, the mapping of color to intensity remains the same for all maps. 
 
-We note that the ShakeMap legends (e.g., :num:`Figure #figure-mmi-scale`)
+We note that the ShakeMap legends (e.g., :numref:`figure-mmi-scale`)
 have evolved slightly from the 
 earlier version of ShakeMap and the 2005 ShakeMap Manual. The PGMs tabulated are 
 no longer provided by (previously redundant) PGM ranges, but rather by the median 
@@ -204,7 +204,7 @@ Color Coding Stations by Intensity
 Traditionally, stations on the PGM ShakeMaps were color-coded to the seismic network
 that provided them. More recent versions of ShakeMap, however, allow the operator to
 color the stations with the intensity they produced, with each PGM parameter (e.g., PGA,
-PGV, PSA03) using its own intensity correlation. :num:`Figure #figure-northridge-intensity-scales` (and 
+PGV, PSA03) using its own intensity correlation. :numref:`figure-northridge-intensity-scales` (and 
 many of the other figures throughout this guide) illustrates the color coding of stations
 by their intensity values for several parameters. The operator can elect this option by 
 calling the program *mapping* with the flag *-pgminten*.
@@ -213,8 +213,6 @@ calling the program *mapping* with the flag *-pgminten*.
 
 .. figure:: _static/northridge_intensity_scales.*
    :align: left
-   :width: 650px
-   :scale: 95 %
  
    ShakeMap for the 1994 M6.7 Northridge, CA earthquake with a finite fault (red 
    rectangle), strong motion data (triangles) and intensity data (circles).

@@ -1,5 +1,8 @@
 sphinx>3.0.0
 requests>=2
+furo
+myst-nb
+myst-parser
 altair
 nbsphinx
 recommonmark

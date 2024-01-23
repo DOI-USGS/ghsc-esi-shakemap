@@ -817,7 +817,7 @@ seismic station (above), except:
   PGM (i.e., they will have the value 'null').
 
 The station list JSON file is rendered by the online web pages. See
-:num:`Figure #napa-station-table-4` for an example.
+:numref:`napa-station-table-4` for an example.
 
 .. _napa-station-table-4:
 .. figure:: _static/Napa_station_table.png
@@ -825,7 +825,7 @@ The station list JSON file is rendered by the online web pages. See
    :align: left
 
    Station table view from ShakeMap event-specific webpages. Link is at
-   right of tabs above the map (see :num:`Figure #napa-event-page-4`).
+   right of tabs above the map (see :numref:`napa-event-page-4`).
 
 
 Static Maps and Plots (Images)
@@ -840,7 +840,7 @@ be depicted. Nonetheless, these static maps are ShakeMap’s signature products
 and serve as maps of record and for other purposes, as described below.
 Static maps
 can be accessed and selected using tabs along the top of the USGS earthquake
-event page, as shown in the example in :num:`Figure #napa-event-page-4`.
+event page, as shown in the example in :numref:`napa-event-page-4`.
 
 .. _napa-event-page-4:
 
@@ -876,8 +876,8 @@ provided as described in detail in the :ref:`technical-guide-4`.
           projection of the causative fault is shown with **black lines**.
 	  
 Strong motion and intensity data symbols default to "see-through” (unfilled)
-mode for the intensity map shown in :num:`Figure #napa-shakemap-mmi` and are
-color-filled for peak ground motion maps (:num:`Figure #napa-pga-4`). ShakeMap
+mode for the intensity map shown in :numref:`napa-shakemap-mmi` and are
+color-filled for peak ground motion maps (:numref:`napa-pga-4`). ShakeMap
 operators may chose to modify these defaults using alternative mapping
 configurations.
 
@@ -922,7 +922,7 @@ indicate the ground motion of the station converted to intensity.
 The ground-motion values are converted to the intensity color scheme via the
 selected ground-motion--intensity conversion equation (GMICE), and the
 corresponding color scale bar is provided at the bottom of the map (see
-example in :num:`Figure #napa-pga-4`). 
+example in :numref:`napa-pga-4`). 
 
 Interactive Maps
 -----------------
@@ -934,16 +934,16 @@ layers are provided via GeoJSON, KML, GIS, Raster, and other formats. The
 USGS Earthquake Program Web
 pages employ `Leaflet <http://leafletjs.com/>`_, an open-source JavaScript
 library that is suitable for mobile-friendly interactive maps (see, for
-example, :num:`Figure #napa-contours-4`). Many of the
+example, :numref:`napa-contours-4`). Many of the
 interactive features are geared towards balancing the experience for both
-desktop and mobile visitors (:num:`Figure #napa-mobile-4`). Since
+desktop and mobile visitors (:numref:`napa-mobile-4`). Since
 the interactive maps are zoomable, it is convenient to select
 individual stations to query station
 information and amplitudes (see the example in
-:num:`Figure #napa-stationpopup-4`).
+:numref:`napa-stationpopup-4`).
 The interactive map also allows users to select and show/hide specific layers,
 including seismic stations and DYFI geocoded intensity
-stations (:num:`Figure #napa-dyfi-4`). 	  
+stations (:numref:`napa-dyfi-4`). 	  
 
 .. _napa-contours-4:
 
@@ -1009,7 +1009,7 @@ Each ShakeMap page has an “Analysis” tab that allows comparison of any
 intensity measure against all data (both seismic and macroseismic) on
 the map, and users can select the IM, residual views, log or linear
 scales, different choices of distance measures (Rrup, hypocentral, Rjb),
-and either rock or soil site conditions. See :num:`Figure #regression-plot`.
+and either rock or soil site conditions. See :numref:`regression-plot`.
 
 If the GMM prediction curve is missing, it is likely that the RSN
 producing the ShakeMap is running an older version of ShakeMap than V4.0.
@@ -1025,8 +1025,8 @@ producing the ShakeMap is running an older version of ShakeMap than V4.0.
 
 ShakeMap also produces static graphs of the observational data
 plotted with the biased and unbiased GMPE. For example,
-:num:`Figure #northridge-mi-regr-w-dyfi-4` shows the 1994 M6.7 Northridge
-earthquake MMI data, and :num:`Figure #northridge-pga-regr-w-dyfi-4` shows the
+:numref:`northridge-mi-regr-w-dyfi-4` shows the 1994 M6.7 Northridge
+earthquake MMI data, and :numref:`northridge-pga-regr-w-dyfi-4` shows the
 PGA data and GMPE.
 
 
@@ -1126,7 +1126,7 @@ MMI Legend
 
 To aid with the production of interactive maps, ShakeMap produces a PNG
 file (*mmi_legend.png*) of the intensity legend using the GMICE used
-in the mapping. :num:`Figure #intensity-legend` is an example.
+in the mapping. :numref:`intensity-legend` is an example.
 
 .. _intensity-legend:
 .. figure:: _static/mmi_legend.png
@@ -1142,7 +1142,7 @@ Pin Thumbnail
 A thumbnail of a stylized ShakeMap MMI map is produced by the mapping 
 process. This PNG file (*pin-thumbnail.png*) may be used as a placeholder,
 entry point, part of an index, or as a visual identifier of
-ShakeMap. :num:`Figure #example-pin-thumbnail` is an example.
+ShakeMap. :numref:`example-pin-thumbnail` is an example.
 
 .. _example-pin-thumbnail:
 .. figure:: _static/pin-thumbnail.png

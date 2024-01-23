@@ -53,7 +53,7 @@ not work on all systems. The plots can be found in
 Test 0001
 ====================
 
-:num:`Figure #verification-test-one` shows the results of Test 0001. This
+:numref:`verification-test-one` shows the results of Test 0001. This
 test places two observation points along a line. 
 As discussed above, the GMPE evaluates to 0 (in log units) everywhere.  
 Both observations in this test also have an amplitude of 0.0 (in log units), 
@@ -86,7 +86,7 @@ MVN implementation is not introducing a bias or other anomalies.
 Test 0002
 ====================
 
-Test 0002 is shown in :num:`Figure #verification-test-two`. In this test,
+Test 0002 is shown in :numref:`verification-test-two`. In this test,
 one observation has an amplitude of +1.0, the other is --1.0. Because of
 the offsetting observations, the bias is again 0. The figure shows that
 the conditional amplitudes reach the expected value (+/-- 1.0) at the 
@@ -113,7 +113,7 @@ Test 0003
 ====================
 
 Verification Test 0003 has a single observation with an amplitude of +1.0
-along a line (see :num:`Figure #verification-test-three`). 
+along a line (see :numref:`verification-test-three`). 
 We start with equations 12 and 13 of
 :ref:`Engler et al. (2022) <engler2022>` (see :ref:`sec-processing-4` for
 additional discussion of the equations presented below):
@@ -182,7 +182,7 @@ The bias is then given by Engler et al. equation 14:
     \mathbf{\mu_{B_k|y_2}} = \mathbf{\tau_k}\mu_{H|y_2}
         = \tau\mu_{H|y_2} = 0.6 \times 0.6 = 0.36
 
-Thus, the bias is 0.36, as seen in :num:`Figure #verification-test-three` 
+Thus, the bias is 0.36, as seen in :numref:`verification-test-three` 
 (solid black line) at distance from the observation.
 
 As discussed in :ref:`subsubsec-engler-mvn-computation-4`, the conditional
@@ -283,7 +283,7 @@ point is distant from the observation point, the correlation is zero, and
 
     \sigma^2|y_2 = 0 + 0^2 \times 0.64 = 0
 
-As we see in :num:`Figure #verification-test-three`, at the observation
+As we see in :numref:`verification-test-three`, at the observation
 point, the mean is 1.0 (top), and the standard deviation is 0.0 (bottom).
 
 At distance from the observation (where :math:`\sigma_{{W_1}{W_2}}^2 = 0`),
@@ -311,7 +311,7 @@ we have:
 
     \sigma|y_2 = \sqrt{0.8704} = 0.93295
 
-Again, in :num:`Figure #verification-test-three` we see at distance from the
+Again, in :numref:`verification-test-three` we see at distance from the
 observation point, the mean is 0.36 (top), and the standard deviation is
 about 0.933 (bottom), verifying that our implementation of the MVN appears
 to be working as intended.
@@ -337,9 +337,9 @@ are two observations (of amplitude +1.0) at the same location.
 Because the observations are co-located and of the same period,
 their correlation is 1.0. This means that they will have the
 effect of a single observation. The result, illustrated in
-:num:`Figure #verification-test-four` confirms this. Note that
-:num:`Figure #verification-test-four` (which has two observations)
-is identical to :num:`Figure #verification-test-three` (which
+:numref:`verification-test-four` confirms this. Note that
+:numref:`verification-test-four` (which has two observations)
+is identical to :numref:`verification-test-three` (which
 has only one observation).
 
 
@@ -356,7 +356,7 @@ has only one observation).
    show the conditional mean +/-- the conditional standard
    deviation (upper plot), and the red line shows the conditional
    standard deviation (lower plot). Compare with 
-   :num:`Figure #verification-test-three`.
+   :numref:`verification-test-three`.
 
 
 Test 0004b
@@ -367,8 +367,8 @@ two observations (of amplitude +1.0) have been separated by 1
 degree of longitude. Thus, they are no longer highly correlated
 and, consequently, the event bias has increased. 
 The result is visualized in
-:num:`Figure #verification-test-four-b` which may be compared with
-:num:`Figure #verification-test-four`. Note that in Test 0004, the
+:numref:`verification-test-four-b` which may be compared with
+:numref:`verification-test-four`. Note that in Test 0004, the
 conditional mean far from the observations was less than 0.5, 
 whereas, in Test 4b, it is greater than 0.5; this consequence is
 a result of the greater bias of Test 0004b. Similarly, the 
@@ -390,7 +390,7 @@ bias, which lowers the overall uncertainty.
    show the conditional mean +/-- the conditional standard
    deviation (upper plot), and the red line shows the conditional
    standard deviation (lower plot). Compare with 
-   :num:`Figure #verification-test-four`.
+   :numref:`verification-test-four`.
    
 
 Test 0005
@@ -399,7 +399,7 @@ Test 0005
 Test 0005 also has two co-located observations (see Verification
 Test 0004, above), but here they have
 opposite amplitudes of +1.0 and --1.0. The result, shown in
-:num:`figure #verification-test-five`, is that the conditional mean
+:numref:`verification-test-five`, is that the conditional mean
 and standard deviation behave as if there were only a single
 observation with the mean amplitude of the two observations (i.e.,
 0).
@@ -422,13 +422,13 @@ observation with the mean amplitude of the two observations (i.e.,
 Test 0006
 ====================
 
-:num:`Figure #verification-test-six` illustrates Verification Test 0006. 
+:numref:`verification-test-six` illustrates Verification Test 0006. 
 Forty evenly-spaced observations, all with amplitudes of +1.0 are used. 
 Most of the observations are to the left of center of the plot (and
 extend some ways off the left edge of the plot). Here we note that 
 the bias has moved significantly toward the mean of the data (as 
 compared with a single observation as in 
-:num:`Figure #verification-test-three`), and the conditional
+:numref:`verification-test-three`), and the conditional
 standard deviation at distance has decreased toward the within-event
 value of 0.8.
 
@@ -489,7 +489,7 @@ value at the observation point. If we consider equations
 :eq:`mu-given-y2` and :eq:`var-given-y2`, and the supporting equations
 :eq:`c-bivariate` and :eq:`var-given-w2` from Test 0003, the additional
 uncertainty is represented by the term :math:`\sigma_\epsilon`.
-:num:`Figure #verification-test-eight`
+:numref:`verification-test-eight`
 illustrates five separate cases to show
 the effect of five values of :math:`\sigma_\epsilon`: 0.0, 0.75,
 1.5, 3.0, and 6.0 on an observation with an amplitude of 1.0 (as in 
@@ -544,7 +544,7 @@ At the observation point, we have:
 
     \sigma|y_2 = \sqrt{0.36} = 0.6
 
-As we see in :num:`Figure #verification-test-three`, at the observation
+As we see in :numref:`verification-test-three`, at the observation
 point, for the :math:`\sigma_\epsilon=0.75` line, the mean is 0.64 (top),
 and the standard deviation is 0.6 (bottom)
 
@@ -573,7 +573,7 @@ At distance from the observation we have:
 
     \sigma|y_2 = \sqrt{0.9171} = 0.9576
 
-In :num:`Figure #verification-test-three`, at distance from the observation
+In :numref:`verification-test-three`, at distance from the observation
 point, for the :math:`\sigma_\epsilon=0.75` line, the mean is about 0.23
 (top), and the standard deviation is about 0.96 (bottom).
 
@@ -595,13 +595,13 @@ the means are (0.36, 0.23, 0.11, 0.04, 0.01) with standard deviations
    The upper plot (solid lines) shows the conditional means,
    and the lower plot (dashed lines) shows the conditional standard
    deviations. The black lines should be identical to their 
-   counterparts in :num:`Figure #verification-test-three`.
+   counterparts in :numref:`verification-test-three`.
 
 Test 0009
 ====================
 
 Test 0009 (see 
-:num:`Figure #verification-test-nine`) has five observations:
+:numref:`verification-test-nine`) has five observations:
 the central observation has an amplitude of 0.75, while the 
 other four observations have amplitudes of 1.0. All five have 
 a standard 
@@ -632,7 +632,7 @@ Test 0010
 ====================
 
 Like Test 0009, Test 0010 (see 
-:num:`Figure #verification-test-ten`) has five observations:
+:numref:`verification-test-ten`) has five observations:
 the central observation has an amplitude of 0.75, while the 
 other four observations have amplitudes of 1.0. All five have 
 a standard 
@@ -658,7 +658,7 @@ observational value (0.75), or go below it.
    show the conditional mean +/-- the conditional standard
    deviation (upper plot), and the red line shows the conditional
    standard deviation (lower plot). Compare with
-   :num:`Figure #verification-test-nine`.
+   :numref:`verification-test-nine`.
 
 Test 0011
 ====================
@@ -666,7 +666,7 @@ Test 0011
 The purpose of this test is to verify the orientation of the Vs30
 grid and the generic amplification factors. The origin and magnitude
 are those of the January 17, 1994, Northridge, California earthquake.
-:num:`Figure #verification-test-eleven` is an image of 3.0 s PSA. It
+:numref:`verification-test-eleven` is an image of 3.0 s PSA. It
 shows that the coastline and 
 other geographic features of the Vs30 map are in the proper orientation.
 This test also uses two generic amplification files that cover the 

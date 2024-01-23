@@ -26,7 +26,7 @@ needs.  See the section :ref:`sec-products-4` in the Users Guide
 for a description of most of these products..
 
 .. toctree::
-   :maxdepth: 1
+   :hidden:
 
    sg_architecture.rst
    sg_installation.rst

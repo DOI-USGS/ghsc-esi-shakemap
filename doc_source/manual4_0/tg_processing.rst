@@ -60,12 +60,10 @@ GMPE set. One limitation of the NGA East model is that it was not developed for
 use with magnitudes less than 4. Our implementation includes an extension of their
 model to smaller magnitudes that extrapolates the small-magnitude scaling of
 ground motions. The slope of this adustment varies with period and distance,
-as illustrated in :num:`Figure #nga-east-slope`.
+as illustrated in :numref:`nga-east-slope`.
 
-.. _nga-east-sope:
-
+.. _nga-east-slope:
 .. figure:: _static/nga-east_smallM_slopes.*
-   :width: 500
    :align: left
 
    Estimated small-magnitue scaling of the NGA-East median ground motion model
@@ -126,12 +124,12 @@ between-event, and total variance of the MultiGMPE. Because variances are
 additive, the total is expected to be the sum of the within-event and
 between-event variances.
 
-:num:`Figure #gmpe-test-mean`
+:numref:`gmpe-test-mean`
 shows the mean ground motion field computed from a 50-50 weighting of
 the :ref:`Abrahamson et al (2014) <abrahamson2014>` and the 
 :ref:`Chiou and Youngs (2014) <chiou2014>` GMPEs. The
 field smoothly decays with distance, as expected. The
-standard deviation field (:num:`Figure #gmpe-test-sd`) shows a 
+standard deviation field (:numref:`gmpe-test-sd`) shows a 
 somewhat lower value near the source than at distance.
 Upon inspection of the cross-section plots and scale, however,
 we find that the variation is very small in amplitude. This
@@ -218,7 +216,7 @@ slope, but also explicitly constrains map values near Vs30 observations
 using kriging-with-a-trend to introduce the level of spatial variations
 seen in the Vs30 data (:ref:`Thompson et al., 2014 <thompson2014>`). 
 An example of Vs30 for California using this approach is provided in
-:num:`Figure #thompson-vs30`. Thompson et al. describe how 
+:numref:`thompson-vs30`. Thompson et al. describe how 
 differences among Vs30 base maps translate into variations in site
 amplification in ShakeMap. 
  
@@ -332,9 +330,9 @@ is the standard deviation of the ground motion to MMI conversion as given
 by the GMICE.
 
 Because many GMICEs are bilinear (see, for example, 
-:num:`Figure #wgrw12-pgv-mmi`), the predicted intensities
+:numref:`wgrw12-pgv-mmi`), the predicted intensities
 and their standard deviations can contain some features that are 
-less than ideal. For instance, :num:`Figure #gmice-test-mean` shows
+less than ideal. For instance, :numref:`gmice-test-mean` shows
 the mean intensity from a VirtualIPE of the 
 :ref:`Abrahamson et al (2014) <abrahamson2014>` and the 
 :ref:`Chiou and Youngs (2014) <chiou2014>` GMPEs combined with the
@@ -342,7 +340,7 @@ GMICE of :ref:`Worden et al. (2012) <worden2012>`. The MMI values
 display a distinct change in slope as the relation reaches the
 lower intensities. This change in slope is due to the different slopes
 of the two lines of the bilinear relationship. More significantly, 
-:num:`Figure #gmice-test-sd`
+:numref:`gmice-test-sd`
 displays a dramatic drop in the standard deviation at the 
 point where the two lines of the bi-linear relationship meet.
 Neither of these features is likely physical, but are a 
@@ -683,7 +681,7 @@ where the output SA is higher (or lower) than the highest (or lowest)
 SA in the input, we choose the single IMT at the highest (or lowest)           
 SA.)                                                                           
                                                                                
-:num:`Figure #cond-spectra-mean` illustrates this point. Conditional           
+:numref:`cond-spectra-mean` illustrates this point. Conditional           
 mean spectra were computed for two sets of points. One set had SA              
 observations at three periods (0.3, 1.0, and 3.0 seconds), and the other       
 set had observations at seven periods (0.02, 0.06, 0.3, 1.0, 3.0, 5.0,         
@@ -692,7 +690,7 @@ and 9.0 seconds). The observations the two sets had in common (0.3,
 shows that in the shared regions (between 0.3 and 1.0 seconds, and             
 between 1.0 and 3.0 seconds), there is very little difference between          
 the conditional spectra. This point is reinforced by                           
-:num:`Figure #cond-spectra-sd`, which shows the standard deviations of         
+:numref:`cond-spectra-sd`, which shows the standard deviations of         
 the two sets of conditional spectra. While the 7-point spectra is              
 better constrained overall, in the area of overlap (again, between 0.3         
 and 1.0 seconds, and between 1.0 and 3.0 seconds) there is virtually           
@@ -863,7 +861,7 @@ residuals. The approach described here apportions to the event term the
 fraction of the residuals that can be mathematically justified based on the
 size and number of residuals. Thus, we
 can compute a bias term (albeit a small one) even in situations where there
-is only one residual. :num:`Figure #event-term-number-obs`
+is only one residual. :numref:`event-term-number-obs`
 illustrates this effect using a uniform set
 of residuals. The event term only approaches the mean of the residuals as
 the number of observations becomes large. 

@@ -714,8 +714,8 @@ Here is a multi-segment example::
     }
 
     
-Generic Amplification Factors
-=============================
+Generic Amplification Factors File Format
+=========================================
 
 The ShakeMap generic amplification factor facility supports the inclusion
 of linear amplifications that are not otherwise supported (by, for example,

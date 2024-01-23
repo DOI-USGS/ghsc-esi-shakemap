@@ -5,8 +5,8 @@ Ground Motion Model Selection
 ******************************
 
 
-Overview
-========
+GMM Selection Overview
+======================
 
 Tectonic classification of earthquakes is a key component of the USGS
 Global ShakeMap system because it serves as the basis for the selection
@@ -50,7 +50,7 @@ documentation.
 Tectonic Regions
 ================
 
-:num:`Figure #select-regions` shows a global map of the first layer of
+:numref:`select-regions` shows a global map of the first layer of
 information, which is a set of four mutually exclusive and globally
 exhaustive classes, which we refer to as **tectonic regions**: active
 crustal region (ACR), stable continental region (SCR), subduction (SUB), and
@@ -161,7 +161,7 @@ Normalizing by the total, the final weights would be 0.625 'scr' and
 0.375 'acr'.
 
 
-:num:`Figure #tectonic-region-example` maps the probabilities for the main
+:numref:`tectonic-region-example` maps the probabilities for the main
 tectonic regions in the northwest US. This illustrates how the horizontal
 buffer smoothly transitions between the regions.
 
@@ -223,7 +223,7 @@ of ``select.conf`` is::
 These parameters define taper functions that give more probability to
 interface for larger magnitudes, crustal for shallow events, interface for
 intermediate depth events, and slab for deeper events, as illustrated
-in :num:`Figure #sub-no-slab`. 
+in :numref:`sub-no-slab`. 
 
 .. _sub-no-slab:
 

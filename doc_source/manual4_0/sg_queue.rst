@@ -94,7 +94,7 @@ The library module ``shakemap.utils.queue`` provides a helper function
 ``sm_queue``. For code written in other languages, the message must
 be serialized JSON encoded in UTF-8.
 
-:num:`Figure #basic-queue` is a simplified example of a generic
+:numref:`basic-queue` is a simplified example of a generic
 implementation of ``sm_queue``. The figure shows two example messages
 that might be sent by a triggering process ("User Process") to
 ``sm_queue``. ``sm_queue``
@@ -107,17 +107,14 @@ events from the database, etc.) and then goes back to listening on
 the socket.
 
 .. _basic-queue:
-
 .. figure:: _static/queue_basic.*
-   :width: 700
-   :align: left
 
    A simplified flowchart for ``sm_queue`` and a triggering process.
 
 When a trigger is received by ``sm_queue``, it uses the process 
-illustrated in :num:`Figure #process-origin` to determine the 
+illustrated in :numref:`process-origin` to determine the 
 disposition of the event. The purpose of the logic illustrated
-in :num:`Figure #process-origin` is twofold: 1) to determine if
+in :numref:`process-origin` is twofold: 1) to determine if
 the event meets the magnitude and timing criteria for the event
 to run, and 2) to prevent too many re-runs of events when
 trigger messages come very frequently. See *queue.conf* for 
@@ -125,10 +122,7 @@ details on the parameters and their effects on the processing
 logic.
 
 .. _process-origin:
-
 .. figure:: _static/process_origin.*
-   :width: 700
-   :align: left
 
    A flowchart illustrating the decision-making process of
    ``sm_queue``.
@@ -141,7 +135,7 @@ For AQMS systems that currently use the ShakeMap v3.5 ``queue`` process,
 we have provided a simple drop-in replacement that emulates the existing
 functionality through the GitHub repository 
 https://github.com/cbworden/shakemap-aqms.
-In this setup, illustrated in :num:`Figure #queue-aqms`, ``sm_queue`` is
+In this setup, illustrated in :numref:`queue-aqms`, ``sm_queue`` is
 configured as discussed above, but another process, ``aqms_queue`` is also
 runs alongside it. ``aqms_queue`` is designed to receive the same messages
 as the old ShakeMap v3.5 ``queue`` (that is, the messages from
@@ -153,10 +147,7 @@ unmodified (though Python versions of ``shake_alarm`` and ``shake_cancel``
 are provided for operators who wish to update from the older Perl versions).
 
 .. _queue-aqms:
-
 .. figure:: _static/queue_aqms.*
-   :width: 700
-   :align: left
 
    A flowchart illustrating the use of the AQMS extensions
    to ShakeMap v4.

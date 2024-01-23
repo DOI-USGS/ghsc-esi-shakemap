@@ -848,9 +848,9 @@ https://github.com/usgs/earthquake-global_vs30
 .. _worden2016b:
 
 Worden, C.B. and D.J. Wald (2016). ShakeMap Manual Online: technical manual, user's guide, and software guide, 
-U. S. Geological Survey. cbworden.github.io/shakemap. DOI: https://doi.org/10.5066/F7D21VPQ.
-Note: This manual is now deprecated; please see Worden et al. (2020)
-at http://cbworden.github.io/shakemap/index.html instead.
+U. S. Geological Survey. DOI: https://doi.org/10.5066/F7D21VPQ.
+Note: This manual is now deprecated; please see :ref:`Worden et al. (2020) <worden2020>` 
+instead.
 \
 
 .. _worden2017:
@@ -871,7 +871,7 @@ Spatial and Spectral Interpolation of Ground Motion Intensity Measure Observatio
 
 Worden, C.B., E.M. Thompson, M. Hearne, and D.J. Wald (2020). ShakeMap 
 Manual Online: technical manual, user’s guide, and software guide,
-U. S. Geological Survey. http://cbworden.github.io/shakemap/.
+U. S. Geological Survey. https://ghsc.code-pages.usgs.gov/esi/shakemap/.
 DOI: https://doi.org/10.5066/F7D21VPQ.
 
 Wu, Y.M., W.H.K. Lee, C.C. Chen, T.C. Shin, T.L. Teng, and Y.B. Tsai (2000). Performance of the 
