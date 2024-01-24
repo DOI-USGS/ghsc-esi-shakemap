@@ -1,3 +1,4 @@
+
 .. _sec-processing-4:
 
 ****************************
@@ -478,10 +479,10 @@ Computation
 -----------
 
 The conditional MVN can be summarized as a case in which we have a
-random variable of interest :math:`\bm{Y}` where we wish to compute
+random variable of interest :math:`\mathbf{Y}` where we wish to compute
 predictions
-at a set of *M* ordinates (:math:`\bm{Y}_1`) conditioned upon a set of
-*N* observations (:math:`\bm{Y}_2`). We can treat these as a vector with
+at a set of *M* ordinates (:math:`\mathbf{Y}_1`) conditioned upon a set of
+*N* observations (:math:`\mathbf{Y}_2`). We can treat these as a vector with
 two components:
 
 .. math::
@@ -489,7 +490,7 @@ two components:
     \mathbf{Y} = 
         \left\{
             \begin{array}{c}
-                \mathbf{Y_1} \\ \hdashline[2pt/2pt]
+                \mathbf{Y_1} \\ \hdashline
                 \mathbf{Y_2}
             \end{array}
         \right\},
@@ -498,11 +499,11 @@ with mean:
 
 .. math::
 
-    \bm{\mu_Y} = 
+    \mathbf{\mu_Y} = 
     \left\{
         \begin{array}{c}
-            \bm{\mu}_{\mathbf{Y_1}} \\ \hdashline[2pt/2pt]
-            \bm{\mu}_{\mathbf{Y_2}}
+            \mathbf{\mu}_{\mathbf{Y_1}} \\ \hdashline
+            \mathbf{\mu}_{\mathbf{Y_2}}
         \end{array}
     \right\},
 
@@ -510,12 +511,12 @@ and covariance:
 
 .. math::
 
-    \bm{\Sigma_Y} = 
+    \mathbf{\Sigma_Y} = 
         \left[
-            \begin{array}{ c;{2pt/2pt}c }
+            \begin{array}{ c;c }
                 \underset{M\times M}{\mathbf{\Sigma_{Y_1Y_1}}} & 
                 \underset{M\times N}{\mathbf{\Sigma_{Y_1Y_2}}} \\ 
-                \hdashline[2pt/2pt]
+                \hdashline
                 \underset{N\times M}{\mathbf{\Sigma_{Y_2Y_1}}} & 
                 \underset{N\times N}{\mathbf{\Sigma_{Y_2Y_2}}}
             \end{array}
@@ -546,7 +547,7 @@ where
 :math:`\Sigma_{{Y_i},{Y_j}}` is the element of the covariance matrix at
 position *(i, j)* in the matrix,
 :math:`\rho_{{Y_i},{Y_j}}` is the correlation between
-:math:`Y_i` and :math:`Y_j` of the vector :math:`\bm{Y}`, 
+:math:`Y_i` and :math:`Y_j` of the vector :math:`\mathbf{Y}`, 
 :math:`\phi_{Y_i}` and :math:`\phi_{Y_j}` are the within-event standard
 deviations of the elements :math:`Y_i` and :math:`Y_j`, and
 :math:`\tau_{Y_i}` and :math:`\tau_{Y_j}` are the between-event standard
@@ -556,13 +557,13 @@ correlation between :math:`Y_i` and :math:`Y_j` may be a function of
 distance: either physical separation, spectral separation, or both.
 
 Given a set of observations :math:`\mathbf{Y_2} = \mathbf{y_2}`, and
-their (usually predicted) means :math:`\bm{\mu}_{\mathbf{Y_2}}`, we define 
+their (usually predicted) means :math:`\mathbf{\mu}_{\mathbf{Y_2}}`, we define 
 a vector of residuals
 
 .. math::
 
-    \bm{\zeta} = 
-        \mathbf{y}_2 - \bm{\mu}_{\mathbf{Y_2}}.
+    \mathbf{\zeta} = 
+        \mathbf{y}_2 - \mathbf{\mu}_{\mathbf{Y_2}}.
 
 The distribution of :math:`\mathbf{Y_1}`, given that 
 :math:`\mathbf{Y_2} = \mathbf{y_2}`, is multivariate normal with mean 
@@ -570,63 +571,63 @@ The distribution of :math:`\mathbf{Y_1}`, given that
 .. math::
    :label: cond-mean
 
-    \bm{\mu}_{\mathbf{Y_1}|\mathbf{y_2}} = 
-        \bm{\mu}_{\mathbf{Y_1}} + 
+    \mathbf{\mu}_{\mathbf{Y_1}|\mathbf{y_2}} = 
+        \mathbf{\mu}_{\mathbf{Y_1}} + 
             \mathbf{\Sigma_{Y_1Y_2}}
-            \mathbf{\Sigma^{-1}_{Y_2Y_2}}\bm{\zeta}\text{,} 
+            \mathbf{\Sigma^{-1}_{Y_2Y_2}}\mathbf{\zeta}\text{,} 
 
 and covariance
 
 .. math::
    :label: cond-covariance
 
-    \bm{\Sigma}_{\mathbf{Y_1Y_1}|\mathbf{y_2}} = 
+    \mathbf{\Sigma}_{\mathbf{Y_1Y_1}|\mathbf{y_2}} = 
         \mathbf{\Sigma_{Y_1Y_1}} - 
             \mathbf{\Sigma_{Y_1Y_2}}
             \mathbf{\Sigma^{-1}_{Y_2Y_2}}
             \mathbf{\Sigma_{Y_2Y_1}}.
 
-The constituents of :math:`\bm{Y_1}` may be a particular IMT at multiple 
+The constituents of :math:`\mathbf{Y_1}` may be a particular IMT at multiple 
 locations, multiple IMTs at a given location, or both: multiple IMTs at
 multiple locations. In a ShakeMap, we may have an output grid of Q 
 locations and wish to compute this output grid for P different IMTs. 
 Thus, :math:`M = P \times Q`. Similarly, the N constituents of
-:math:`\bm{Y_2}` consist of a number of IMTs at each of a number of
+:math:`\mathbf{Y_2}` consist of a number of IMTs at each of a number of
 observation locations. Thus, as long as the elements of the covariance
-matrix :math:`\bm{\Sigma_Y}` can be computed, Equations :eq:`cond-mean` 
+matrix :math:`\mathbf{\Sigma_Y}` can be computed, Equations :eq:`cond-mean` 
 and :eq:`cond-covariance` could be computed just once to provide the 
 complete grids for all of the output IMTs. In most cases, however,
 this approach is impractical and inefficient.
 
 We note that in Equation :eq:`cond-mean` there is no interdependence
-on the computed elements of :math:`\bm{\mu}_{\mathbf{Y_1}|\mathbf{y_2}}`.
-That is, the vector of output ordinates :math:`\bm{Y_1}` may be 
+on the computed elements of :math:`\mathbf{\mu}_{\mathbf{Y_1}|\mathbf{y_2}}`.
+That is, the vector of output ordinates :math:`\mathbf{Y_1}` may be 
 divided in any 
 convenient way, the elements of  
-:math:`\bm{\mu_Y}` and :math:`\bm{\Sigma_Y}` adjusted accordingly,
+:math:`\mathbf{\mu_Y}` and :math:`\mathbf{\Sigma_Y}` adjusted accordingly,
 and the computations can proceed independently. The 
 same cannot be said for Equation :eq:`cond-covariance`, where the full
 matrices must be used in order to compute the full covariance matrix
-:math:`\bm{\Sigma}_{\mathbf{Y_1Y_1}|\mathbf{y_2}}`.
+:math:`\mathbf{\Sigma}_{\mathbf{Y_1Y_1}|\mathbf{y_2}}`.
 
 For even a small Shake map of 200 by 300 grid points, the
 matrix :math:`\mathbf{\Sigma_{Y_1Y_1}}` becomes 60,000 by 60,000
 elements. In a typical ShakeMap run, at least 6 output IMTs are
 computed, making this matrix 36 times larger. This large size makes
 the computation of 
-:math:`\bm{\Sigma}_{\mathbf{Y_1Y_1}|\mathbf{y_2}}` impractical for
+:math:`\mathbf{\Sigma}_{\mathbf{Y_1Y_1}|\mathbf{y_2}}` impractical for
 most situations. For ShakeMap uses, however, we are only interested 
 in the diagonal
-elements of :math:`\bm{\Sigma}_{\mathbf{Y_1Y_1}|\mathbf{y_2}}`, 
+elements of :math:`\mathbf{\Sigma}_{\mathbf{Y_1Y_1}|\mathbf{y_2}}`, 
 that is, the variances of the conditional means. In this case, we
 can modify Equation :eq:`cond-covariance` by making the following
 definitions:
 
 .. math::
 
-    \bm{\sigma_{Y_1}}^2 = \text{diag}\left(\mathbf{\Sigma_{Y_1Y_1}}\right),
+    \mathbf{\sigma_{Y_1}}^2 = \text{diag}\left(\mathbf{\Sigma_{Y_1Y_1}}\right),
 
-(that is, :math:`\bm{\sigma_{Y_1}}^2` is a column vector formed from the
+(that is, :math:`\mathbf{\sigma_{Y_1}}^2` is a column vector formed from the
 diagonal elements of :math:`\mathbf{\Sigma_{Y_1Y_1}}`) and
 
 .. math::
@@ -640,13 +641,13 @@ Then the conditional variances may be found by:
 
 .. math::
 
-    \bm{\sigma}_{\mathbf{Y_1}|\mathbf{y_2}}^2 = 
-        \bm{\sigma_{Y_1}}^2 - \mathbf{\Phi}\bm{J}
+    \mathbf{\sigma}_{\mathbf{Y_1}|\mathbf{y_2}}^2 = 
+        \mathbf{\sigma_{Y_1}}^2 - \mathbf{\Phi}\mathbf{J}
 
-where :math:`\bm{J}` is a column vector of ones.
+where :math:`\mathbf{J}` is a column vector of ones.
 
 As with the conditional mean, this formulation is insensitive to any 
-particular partitioning of the :math:`\bm{Y_1}` vector. For ShakeMap
+particular partitioning of the :math:`\mathbf{Y_1}` vector. For ShakeMap
 purposes, it is both convenient and computationally efficient to process 
 each row of the output grid for each IMT separately.
 
@@ -737,7 +738,7 @@ Notation
 
 In this section we introduce some additional notation that will be
 used in the following sections. As discussed above, our vector
-:math:`\bm{Y}` is broken into two parts, with part 1 being the elements we
+:math:`\mathbf{Y}` is broken into two parts, with part 1 being the elements we
 want to predict, and part 2 being our observations. However, our 
 implementation closely follows that of
 :ref:`Engler et al. (2022) <engler2022>`, Appendix B, so we will use

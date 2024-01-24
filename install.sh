@@ -192,6 +192,7 @@ fi
 
 if $developer; then
     echo "############# Installing shakemap with developer tools ##############"
+    conda install mathjax
     if ! pip install -e '.[dev,test,doc]' ; then
         echo "Installation of shakemap failed."
         exit 1

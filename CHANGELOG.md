@@ -1,5 +1,6 @@
 ## main
 
+ - Refactor docs a bunch.
  - Add optional persistence of version history back into sm_create command.
 
 ## v4.2.1 / 2023-12-11

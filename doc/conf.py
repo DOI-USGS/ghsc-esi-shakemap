@@ -41,7 +41,7 @@ extensions = [
     "sphinx.ext.doctest",
     "sphinx.ext.intersphinx",
     "sphinx.ext.coverage",
-    "sphinx.ext.imgmath",
+    "sphinx.ext.mathjax",
     "sphinx.ext.ifconfig",
     "sphinxarg.ext",
     "sphinxcontrib.programoutput",
@@ -130,8 +130,8 @@ exclude_patterns = ["_build", "Thumbs.db", "DS_Store"]
 html_theme = "furo"
 # html_theme = 'readable'
 
-# base_url = "https://code.usgs.gov/ghsc/esi/shakemap/-/raw/main/doc_source/"
-base_url = "/Users/cbworden/Unix/python/shakemap/doc_source/"
+base_url = "https://code.usgs.gov/ghsc/esi/shakemap/-/raw/main/doc_source/"
+# base_url = "/Users/cbworden/Unix/python/shakemap/doc_source/"
 
 announcement_html = """
     <a href='https://www.usgs.gov/' style='text-decoration: none'>
@@ -413,8 +413,8 @@ autodoc_member_order = "bysource"
 napoleon_include_special_with_doc = False
 todo_include_todos = True
 
-imgmath_image_format = "png"
-imgmath_latex_preamble = r"\usepackage{arydshln}"
+# imgmath_image_format = "png"
+# imgmath_latex_preamble = r"\usepackage{arydshln}"
 
 
 def setup(app):
