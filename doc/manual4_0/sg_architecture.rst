@@ -254,8 +254,6 @@ The event ID must be an ID that the ComCat system recognizes, thus the use of
 event IDs other than those produced by NEIC or the US regional networks is
 unlikely to produce results.
 
-See :meth:`shakemap.coremods.dyfi` for the module's API documentation.
-
 assemble
 ````````
 
@@ -312,6 +310,25 @@ with the current timestamp, originator, and version.
 *shake_data.hdf* in the event's *current* directory. If *shake_data.hdf*
 already exists in that location, it will be overwritten.
 
+``assemble`` can also cause ShakeMap to be run in points mode if it is
+called with the ``-p`` or ``--points`` command-line argument. 
+Use of this option 
+means that the computations will be carried out on the input set
+of latitudes and longitudes instead of a grid. The input file should
+be an Excel spreadsheet or CSV file with column headers:
+
+  - lat (or any string beginning with 'lat' when lowercased) REQUIRED
+  - lon (or any string beginning with 'lon' when lowercased) REQUIRED
+  - id (or any string beginning with 'id' when lowercased) OPTIONAL
+  - vs30 (or any string beginning with 'vs30' when lowercased) OPTIONAL
+
+
+lat/lon/vs30 values should be floating point values, id should be a string 
+unique for each row that describes the location. The input file should be
+specified in ``model.conf`` with the parameter ``file`` in the section 
+``interp->prediction_location``. (See the module ``makecsv`` below for the
+means of extracting the processed points after ``model`` has run.)
+
 ``assemble`` takes an optional command-line argument (``-c COMMENT``
 or ``--comment COMMENT``) to provide a comment
 that will be added to the history for the
@@ -320,8 +337,6 @@ and a comment is not provided on the command line, ``assemble``
 will prompt the user for a comment.
 Run ``shake help assemble`` for more.
 
-See :meth:`shakemap.coremods.assemble` for the module's API
-documentation.
 
 .. _shake-assemble:
 
@@ -361,9 +376,6 @@ and a comment is not provided on the command line, ``assemble``
 will prompt the user for a comment.
 Run ``shake help augment`` for more.
 
-See :meth:`shakemap.coremods.augment` for the module's API 
-documentation.
-
 model
 `````
 
@@ -392,9 +404,6 @@ subdirectory of the event's *current* directory.
 See the section :ref:`sec-products-4` of the Users Guide for more on the
 format and content of *shake_result.hdf*.
 
-See :meth:`shakemap.coremods.model` for the module's API
-documentation.
-
 contour
 ```````
 
@@ -403,8 +412,6 @@ contours for each of the intensity measure types found therein. The contours
 are written as GeoJSON to files called *cont_<imt_type>.json* in the event's
 *current/products* subdirectory.
 
-See :meth:`shakemap.coremods.contour` for the module's API documentation..
-
 coverage
 ````````
 
@@ -412,8 +419,6 @@ coverage
 and high-resolution "coverages" for interactive maps and plots in the 
 `CoverageJSON format <https://www.w3.org/TR/covjson-overview/>`_, and places
 them in the *current/products* subdirectory.
-
-See :meth:`shakemap.coremods.coverage` for the module's API documentation..
 
 gridxml
 ```````
@@ -428,17 +433,11 @@ directly from *shake_result.hdf*.
 See the section :ref:`sec-products-4` of the Users Guide for more on the
 format and content of *shake_result.hdf*.
 
-See :meth:`shakemap.coremods.gridxml` for the module's API
-documentation.
-
 info
 ```````
 
 ``info`` reads an event's *shake_result.hdf* and produces *info.json*,
 which contains metadata about the ShakeMap.
-
-See :meth:`shakemap.coremods.info` for the module's API
-documentation.
 
 kml
 ````
@@ -449,6 +448,40 @@ reading into Google Earth. The layers include an MMI overlay and MMI
 polygons, contours of MMI and the other IMTs found in ``shake_result.hdf``,
 station locations and data, and the event's epicenter.
 
+makecsv
+```````
+
+This module will operate in one of two modes:
+
+Mode 1
+''''''
+
+If model was run in grid mode, ``makecsv`` will take an input CSV file
+that contains columns that includes column headers:
+
+  - lat (or any string beginning with 'lat' when lowercased) REQUIRED
+  - lon (or any string beginning with 'lon' when lowercased) REQUIRED
+
+
+Points will be extracted from the grid (in a nearest-neighbor manner) and 
+new columns will be added to the CSV file with the means, the conditional
+standard deviation and conditional tau, and the unconditional phi of the 
+various computed ground-motion metrics.
+
+Mode 2
+''''''
+
+If the model was run in points mode, ``makecsv`` will create the specified
+CSV file at the points specified in the input file. The output file will
+include columns for ``lat``, ``lon``, and ``id``, as well as the means,
+the conditional
+standard deviation and conditional tau, and the unconditional phi of the 
+various computed ground-motion metrics.
+
+If ``makecsv`` is called with the ``-g`` or ``--generate-stationlist`` 
+argument, instead of creating a CSV file it will create a file
+``stationlist.json`` that is suitable for input to ShakeMap via ``assemble``.
+
 mapping
 ```````
 
@@ -458,7 +491,6 @@ thumbnail image of MMI which may be used as a symbolic logo or pin for
 the event's ShakeMap products. The module also produces a PNG intensity
 "overlay" and its associated world file..
 
-See :meth:`shakemap.coremods.mapping` for the module's API documentation.
 See the configuration file *products.conf* for information on configuring
 the ``mapping`` module.
 
@@ -497,18 +529,12 @@ raster
 raster files of the mean and standard deviation for each of the
 IMTs in *shake_result.hdf*.
 
-See :meth:`shakemap.coremods.raster` for the module's API
-documentation.
-
 rupture
 ```````
 
 ``rupture`` reads an event's *shake_result.hdf* and produces a
 file, *rupture.json* containing the coordinates of the rupture
 plane(s) supplied via the input file *<>_fault.txt* or *<>_fault.json*.
-
-See :meth:`shakemap.coremods.rupture` for the module's API
-documentation.
 
 shape
 `````
@@ -530,9 +556,6 @@ intra-event uncertainties for each type of prediction, converted amplitudes
 (PGM to MMI or MMI to PGM), distance metrics, etc. 
 
 
-See :meth:`shakemap.coremods.stations` for the module's API
-documentation.
-
 transfer
 `````````
 
@@ -544,9 +567,6 @@ allow the operator to transfer ShakeMap products to
 other systems via PDL or ssh, and notify users with an email with the event
 summary information. See the documentation in *transfer.conf*
 for details on configuring the ``transfer_*`` programs.
-
-See :meth:`shakemap.coremods.transfer` for the module's API
-documentation.
 
 Miscellaneous shake Modules
 ---------------------------

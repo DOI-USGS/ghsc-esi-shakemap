@@ -130,7 +130,7 @@ exclude_patterns = ["_build", "Thumbs.db", "DS_Store"]
 html_theme = "furo"
 # html_theme = 'readable'
 
-base_url = "https://code.usgs.gov/ghsc/esi/shakemap/-/raw/main/doc_source/"
+base_url = "https://code.usgs.gov/ghsc/esi/shakemap/-/raw/main/doc/"
 # base_url = "/Users/cbworden/Unix/python/shakemap/doc_source/"
 
 announcement_html = """

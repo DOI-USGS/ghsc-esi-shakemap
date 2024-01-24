@@ -43,9 +43,6 @@ documentation for information on adding additional layers, then use
 *select.conf* to customize the ground motion modules that the new
 layers will use.
 
-See :meth:`shakemap.coremods.select` for the module's API
-documentation.
-
 
 Tectonic Regions
 ================
