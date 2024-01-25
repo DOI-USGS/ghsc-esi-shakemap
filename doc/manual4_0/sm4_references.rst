@@ -847,10 +847,13 @@ https://github.com/usgs/earthquake-global_vs30
 
 .. _worden2016b:
 
-Worden, C.B. and D.J. Wald (2016). ShakeMap Manual Online: technical manual, user's guide, and software guide, 
-U. S. Geological Survey. DOI: https://doi.org/10.5066/F7D21VPQ.
-Note: This manual is now deprecated; please see :ref:`Worden et al. (2020) <worden2020>` 
-instead.
+Worden, C.B. and D.J. Wald (2016). ShakeMap Manual Online: technical manual, 
+user's guide, and software guide, U. S. Geological Survey. 
+DOI: https://doi.org/10.5066/F7D21VPQ.
+Note: This manual is for ShakeMap v3.5 and is now deprecated; please 
+see :ref:`Worden et al. (2020) <worden2020>` instead. For historical reference a 
+PDF of the :download:`ShakeMap v3.5 Manual <_static/ShakeMapManual_3_5.pdf>` is
+still available.
 \
 
 .. _worden2017:
