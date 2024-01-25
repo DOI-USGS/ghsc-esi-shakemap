@@ -1,0 +1,4 @@
+This directory exists to contain the source for building the legacy
+ShakeMap v3.5 manual. To build the manual install the required
+packages (including latex) and type "make latexpdf", which should
+create a ShakeMapManual.pdf in _build/latex.
