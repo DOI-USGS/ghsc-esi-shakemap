@@ -1,5 +1,6 @@
 ## main
 
+ - Fix to receive_amps.
  - Refactor docs a bunch.
  - Add optional persistence of version history back into sm_create command.
 

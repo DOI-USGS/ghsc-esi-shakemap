@@ -54,7 +54,7 @@ build = [
 [project.scripts]
 associate_amps = "shakemap.bin.associate_amps:main"
 getdyfi = "shakemap.bin.getdyfi:main"
-recieve_amps = "shakemap.bin.receive_amps:main"
+receive_amps = "shakemap.bin.receive_amps:main"
 receive_origins = "shakemap.bin.receive_origins:main"
 receive_origins_gsm = "shakemap.bin.receive_origins_gsm:main"
 run_verification = "shakemap.bin.run_verification:main"
