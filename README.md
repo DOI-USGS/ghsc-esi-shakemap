@@ -5,9 +5,9 @@ ShakeMap is a system for rapidly characterizing the extent and distribution of
 strong ground shaking following significant earthquakes. The code is 
 primarily written in the Python programming language. 
 
-To receive updates on ShakeMap and discuss the software, please join the
-[shake-dev](https://geohazards.usgs.gov/mailman/listinfo/shake-dev>)
-mailing list. We also encourage requests, questions, and discussions through
+To receive updates on ShakeMap please sign up at 
+[Gov Delivery](https://public.govdelivery.com/accounts/USDOIGS/signup/39355).
+We also encourage requests, questions, and discussions through
 the Github issues tab associated with this repository.
 
 # Documentation
