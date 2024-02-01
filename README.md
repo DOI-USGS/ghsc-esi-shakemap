@@ -8,7 +8,8 @@ primarily written in the Python programming language.
 To receive updates on ShakeMap please sign up at 
 [Gov Delivery](https://public.govdelivery.com/accounts/USDOIGS/signup/39355).
 We also encourage requests, questions, and discussions through
-the Github issues tab associated with this repository.
+the Github issues tab associated with this repository. You may contact
+the developers at shakemap@usgs.gov. 
 
 # Documentation
 
